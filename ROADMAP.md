@@ -94,6 +94,8 @@
 2026-05-24 | 03-poc    | PoC riprogettato come retrospettivo (archivio già valutato = ground truth) + braccio live ridotto; risolve l'obiezione "il PoC chiede a Mondadori di rileggere 200 manoscritti"
 2026-05-24 | 03-poc    | KPI riancorati: north-star = recall sui titoli acquisiti; concordanza via Cohen's κ vs decisione editoriale reale; baseline tempo/costo rilevate in Fase 1 (non inventate)
 2026-05-24 | 03-poc    | Divisione target fissata: Sperling & Kupfer (era "Sperling o Einaudi")
+2026-05-24 | align     | Allineati positioning, deck, budget e investor-tone al PoC retrospettivo (rimossi i residui "200 manoscritti / valutazione parallela")
+2026-05-24 | 06-product| Aggiunta sezione "Addestramento e calibrazione del modello" in architecture.md
 ```
 
 ---

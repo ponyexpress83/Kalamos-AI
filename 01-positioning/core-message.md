@@ -69,7 +69,7 @@ In ordine di preferenza, da testare con utenti veri:
 
 ## Cosa scrivere se hai 30 secondi (elevator pitch)
 
-> "Kalamos AI è l'infrastruttura di intelligenza editoriale per i grandi publisher. Risolviamo un problema che il publishing trade conosce da sempre: troppi manoscritti, troppo poco tempo per valutarli, troppi talenti che si perdono nel backlog. Il nostro modello legge un manoscritto in minuti e produce una scheda di valutazione paragonabile a quella di un lettore senior, calibrata sull'identità della collana che state cercando di alimentare. Costruito da un team che combina 8+ anni di AI engineering e autorità editoriale reale — una poetessa pubblicata co-fondatrice. Cerchiamo un partner editoriale serio per il primo deployment su 200 manoscritti reali."
+> "Kalamos AI è l'infrastruttura di intelligenza editoriale per i grandi publisher. Risolviamo un problema che il publishing trade conosce da sempre: troppi manoscritti, troppo poco tempo per valutarli, troppi talenti che si perdono nel backlog. Il nostro modello legge un manoscritto in minuti e produce una scheda di valutazione paragonabile a quella di un lettore senior, calibrata sull'identità della collana che state cercando di alimentare. Costruito da un team che combina 8+ anni di AI engineering e autorità editoriale reale — una poetessa pubblicata co-fondatrice. Cerchiamo un partner editoriale serio per un primo deployment validato sull'archivio reale di un editore."
 
 (Conteggio: 110 parole, ~30-35 secondi a velocità di lettura naturale.)
 
@@ -81,6 +81,6 @@ Prima di considerare questo file chiuso, ogni claim sopra deve passare questi 5 
 
 1. **Specificità**: posso citare numeri o esempi concreti? (Sì = OK)
 2. **Difendibilità**: se un competitor copiasse domani, perché perderebbe? (Verticalità + autorità editoriale del team)
-3. **Misurabilità**: il valore promesso si può misurare in 90 giorni? (Sì: tempo per scheda, accuracy, fit-score correlation con accettazioni)
+3. **Misurabilità**: il valore promesso si può misurare in 90 giorni? (Sì: recall sui titoli acquisiti, concordanza di triage, tempo e costo per scheda)
 4. **Specifico per Mondadori**: posso adattarlo a una loro divisione precisa? (Sì: vedi `target-division.md`)
 5. **Non è fuffa AI**: un editor reale lo capisce in 30 secondi? (DA TESTARE con editor veri prima della submission)

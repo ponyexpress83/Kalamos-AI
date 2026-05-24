@@ -41,14 +41,14 @@
 
 | Voce | Stima | Note |
 |------|-------|------|
-| API Claude (Anthropic) | €4.500 | 200 manoscritti × analisi multi-step × prompt complessi |
+| API Claude (Anthropic) | €5.000 | ~350 manoscritti (≈300 retrospettivi in batch −50% + ~50 live) × analisi multi-step |
 | API OpenAI (back-up / embedding) | €1.500 | Embedding per retrieval, fallback |
 | Hosting cloud (AWS / Vercel) | €1.800 | Setup + 90 giorni production |
 | Database & storage | €1.200 | Postgres managed + S3 manoscritti |
 | Monitoring & logging | €600 | Sentry, Logflare equivalenti |
 | Vector database | €900 | Per fit-scoring per collana |
 | Tooling sviluppo | €500 | Linear, Figma, GitHub Copilot, etc. |
-| Buffer infrastrutturale | €2.000 | Picchi di uso, debugging |
+| Buffer infrastrutturale | €1.500 | Picchi di uso, debugging |
 | **Subtotale Infrastruttura** | **€13.000** | |
 
 📝 **AWS credits via PLAI**: AWS è partner ufficiale PLAI. Possibile credits significativi che riducono questa voce. Da chiarire post-selezione.
@@ -59,7 +59,7 @@
 |------|-------|------|
 | Advisor editoriale senior (es. ex-Mondadori) | €6.000 | 30 ore × €200 + retainer mensile €1.000 × 3 |
 | Editor consultivi (2 freelance, validazione modello) | €3.600 | 30 ore × €60 × 2 persone |
-| Lettori esterni (calibrazione + control group) | €2.400 | 30 ore × €80 |
+| Lettori esterni (calibrazione + validazione campione) | €2.400 | 30 ore × €80 |
 | **Subtotale Expert** | **€12.000** | |
 
 ⚠️ Questo è il segmento di costo dove **non si risparmia mai**. La qualità della calibrazione editoriale dipende dalla qualità degli expert ingaggiati.
@@ -131,7 +131,7 @@ Riserva per imprevisti. È buona pratica avere il 4-8% di contingency in qualsia
 Per il pitch finale, riassumere in una sola visualizzazione:
 
 ```
-€100K — 90 giorni — 200 manoscritti
+€100K — 90 giorni — ~350 manoscritti (≈300 retrospettivi + 50 live)
 ─────────────────────────────────────
 Team Kalamos              ████████████ €52K
 Infrastructure            ███          €13K

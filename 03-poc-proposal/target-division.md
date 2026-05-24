@@ -43,7 +43,7 @@ Valutazione su 6 dimensioni, voto 1-5 (più alto = meglio per il PoC).
 ## Pros & Cons del primary target (Sperling & Kupfer)
 
 ### Pro
-- Volume alto di manoscritti unsolicited → assicura i 200 manoscritti del PoC senza dover usare backlog
+- Volume alto di sottomissioni → l'archivio degli ultimi 18-24 mesi contiene abbastanza casi, inclusi titoli acquisiti a sufficienza per misurare il recall
 - Catalogo ampio (narrativa, manualistica, self-help, true crime) → testa Kalamos su generi diversi, dimostrando versatilità
 - Identità editoriale ben definita ma non ultra-rigida → buon equilibrio per dimostrare fit-scoring
 - Storicamente più aperta all'innovation rispetto ad altri brand Mondadori
@@ -64,7 +64,7 @@ Valutazione su 6 dimensioni, voto 1-5 (più alto = meglio per il PoC).
 - Editor di altissimo livello → la validazione qualitativa, se positiva, è ferrea
 
 ### Contro
-- Volume più contenuto, possibile difficoltà a raggiungere 200 manoscritti
+- Volume più contenuto → l'archivio potrebbe avere pochi titoli acquisiti, indebolendo la potenza statistica sul recall
 - Cultura editoriale più "human-first" → resistenza interna potenziale più alta
 - Sponsor exec più difficile da identificare (struttura più verticale e tradizionale)
 

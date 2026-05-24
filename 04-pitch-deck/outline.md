@@ -34,7 +34,7 @@ TAM publishing trade Italia: ~€1.5B. Editori target (top 20 + medi indipendent
 SaaS B2B annuale + setup fee + tier per volume. Pipeline attuale: [N] conversazioni qualificate, [N] LOI, [N] pilot in corso. Se la traction è ancora sottile: essere onesti e mostrare la velocità di apprendimento.
 
 ## Slide 9 — La proposta a Mondadori (PoC 90 giorni)
-Una slide dedicata. Pilot su **Sperling & Kupfer** (primary). 200 manoscritti, 90 giorni, KPI misurabili, €100K budget PLAI, IP condiviso, possibilità di rollout su altre divisioni. Mostrare che è già pensato.
+Una slide dedicata. Pilot su **Sperling & Kupfer**. Validazione retrospettiva su ~300 manoscritti già giudicati dall'archivio (ground truth = decisioni reali della divisione) + pilot live su 30-50. 90 giorni, north-star sul recall dei titoli acquisiti, €100K budget PLAI, IP condiviso. Mostrare che è già pensato.
 
 ## Slide 10 — Team
 Foto + 1 riga ciascuno. Massimo 4 persone. Evidenziare: anni esperienza tech, esperienza editoriale, advisor di nome (se ingaggiato). Nessuna foto stock.

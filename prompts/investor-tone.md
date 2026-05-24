@@ -90,4 +90,4 @@ QUANDO MI FORNISCI UN DRAFT:
 
 ❌ **Prima**: *"Stiamo cercando partner strategici che credano nella nostra visione e che ci supportino nel nostro percorso di crescita."*
 
-✅ **Dopo**: *"Chiediamo 100K equity initial + 100K PoC budget. Useremo il PoC budget per un pilot 90 giorni con Sperling & Kupfer su 200 manoscritti con KPI misurabili."*
+✅ **Dopo**: *"Chiediamo 100K equity initial + 100K PoC budget. Useremo il PoC budget per un pilot 90 giorni con Sperling & Kupfer, validato sull'archivio di manoscritti già giudicati, con KPI sul recall dei titoli acquisiti."*

@@ -33,7 +33,7 @@ In ogni materiale lungo, ricorrere queste tre frasi in punti diversi:
 2. **"Nessun ML engineer impara in 6 mesi cosa rende buono un manoscritto. Per noi è la base, non il risultato."**
    (Difende verticalità del team)
 
-3. **"Il primo deploy in 90 giorni in una vostra divisione, su 200 manoscritti reali, con KPI quantitativi misurabili."**
+3. **"Il primo deploy in 90 giorni su Sperling & Kupfer, validato sull'archivio di manoscritti già giudicati, con KPI quantitativi misurabili."**
    (Trasforma astrazione in azione)
 
 ---

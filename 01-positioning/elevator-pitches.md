@@ -20,7 +20,7 @@
 >
 > Differenza chiave: non è ChatGPT con un prompt diverso. È un sistema costruito da chi conosce l'editoria — la mia co-founder è una poetessa pubblicata da Pequod — su misura per i workflow trade.
 >
-> Cerchiamo Mondadori per un PoC di 90 giorni su 200 manoscritti veri, in una divisione come Sperling o Einaudi Stile Libero.
+> Cerchiamo Mondadori per un PoC di 90 giorni su Sperling & Kupfer, validato sull'archivio di manoscritti che la divisione ha già giudicato.
 
 **Quando usarla**: nel pitch deck slide 1, primo colloquio con un investitore, presentazione corta a una conferenza editoriale.
 
@@ -36,7 +36,7 @@
 >
 > **La nostra risposta.** Kalamos AI è un SaaS che produce schede di lettura strutturate in 15-30 minuti, con un livello di qualità che il nostro target di clienti — direttori editoriali di publisher trade — possa accettare nel proprio workflow. La differenza tecnica chiave rispetto a un ChatGPT generico è il **fit scoring per collana**: lo stesso manoscritto riceve una valutazione diversa se chiediamo "è giusto per Strade Blu?" o "è giusto per Einaudi Stile Libero?". Questo richiede modellare l'identità editoriale di ciascuna collana, cosa che richiede vera competenza editoriale, non solo prompt engineering.
 >
-> Il PoC che proponiamo: 90 giorni con una divisione Mondadori, 200 manoscritti reali, valutazione parallela AI + lettore umano interno. Misuriamo accuracy (la valutazione AI quanto sarebbe stata d'accordo con il lettore?), tempo (quanto abbiamo risparmiato?), e fit-score correlation (i manoscritti con score alto sono effettivamente quelli che il publisher avrebbe accettato?).
+> Il PoC che proponiamo: 90 giorni su Sperling & Kupfer. Kalamos rivaluta alla cieca circa 300 manoscritti che la divisione ha già giudicato negli ultimi due anni — le loro decisioni sono il nostro metro di verità. La domanda a cui rispondiamo è semplice: dei testi che avete acquisito, quanti Kalamos vi avrebbe segnalato? Affianchiamo un pilot live su 30-50 manoscritti per misurare tempi e integrazione nel workflow reale.
 >
 > **Perché noi.** Ci sono due categorie di team che possono provarci: ingegneri AI che leggono libri, e editor che usano ChatGPT. Noi siamo la terza: un AI engineer con laurea in Filologia Moderna e ventures editoriali alle spalle, e una poetessa pubblicata che insegna lettere e ha una plaquette tradotta in romeno e presentata a saloni letterari in Europa orientale. Stiamo ingaggiando un advisor editoriale di settore prima del programma. Per la parte di scaling tecnico, AWS e Startupbootcamp tra i partner PLAI sono esattamente le competenze che serviranno nella fase di crescita.
 >
