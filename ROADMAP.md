@@ -96,6 +96,7 @@
 2026-05-24 | 03-poc    | Divisione target fissata: Sperling & Kupfer (era "Sperling o Einaudi")
 2026-05-24 | align     | Allineati positioning, deck, budget e investor-tone al PoC retrospettivo (rimossi i residui "200 manoscritti / valutazione parallela")
 2026-05-24 | 06-product| Aggiunta sezione "Addestramento e calibrazione del modello" in architecture.md
+2026-05-24 | 09-demo   | Q&A tecniche su addestramento e difensibilità (Q26-28); allineate Q16/Q17 al PoC retrospettivo
 ```
 
 ---

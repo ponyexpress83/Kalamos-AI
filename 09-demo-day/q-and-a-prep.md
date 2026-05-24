@@ -69,10 +69,10 @@
 > Tre motivi specifici di PLAI: (1) accesso operativo Mondadori per PoC su dati reali, (2) network publishing italiano via i partner, (3) timing — accelerazione coincide con la nostra fase di product-market fit enterprise. VC ci darebbe solo capitale.
 
 ### 16. "Sperling come primary target: avete confermato il loro interesse?"
-> Onesto. *"Abbiamo identificato Sperling come primary per fit volume/innovazione. Conferma operativa dipende dall'intro che PLAI può facilitare in fase di onboarding. Plan B: Einaudi Stile Libero, identificato come backup. Plan C: collaborare con il team PLAI per identificare la divisione meglio allineata."*
+> Onesto. *"Abbiamo scelto Sperling & Kupfer e sappiamo perché: il volume di sottomissioni garantisce un archivio con abbastanza titoli acquisiti per validare il recall, l'identità editoriale è definita, c'è apertura all'innovation. La conferma operativa dipende dall'intro che PLAI può facilitare. Se internamente indicate uno sponsor più immediato in un'altra divisione — Einaudi Stile Libero è la più naturale — ci adattiamo."*
 
 ### 17. "Cosa fa Kalamos in 12 mesi se entra in PLAI?"
-> Tre milestone: (1) 3 pilot enterprise (1 Mondadori + 2 altri editori target), (2) ARR €170K, (3) team 5 persone. KPI di accelerazione: 80% concordanza Kalamos vs lettore senior misurata su 500+ manoscritti.
+> Tre milestone: (1) 3 pilot enterprise (1 Mondadori + 2 altri editori target), (2) ARR €170K, (3) team 5 persone. KPI di accelerazione: recall ≥80% sui titoli acquisiti, misurato su un archivio retrospettivo di 500+ manoscritti.
 
 ### 18. "Cosa fa Kalamos in 12 mesi se NON entra in PLAI?"
 > Stesso prodotto, sales ciclo più lungo (12-18 mesi per primi 2 contratti), probabile fundraising seed esterno per coprire il gap. Va detto perché segnala risolutezza, non disperazione.
@@ -105,6 +105,19 @@
 
 ### 25. "Quanto velocemente potete chiudere se passate?"
 > Pronti a firmare term sheet entro 30 giorni dalla comunicazione positiva, on-board entro 60 giorni, operativi su PoC entro 90 giorni. Tempistica realistica.
+
+---
+
+## DOMANDE TECNICHE (addestramento e difensibilità)
+
+### 26. "Come addestrate il modello? Avete un modello vostro o è una chiamata a Claude?"
+> Onestamente: oggi non abbiamo un modello nostro, ed è una scelta. Kalamos gira su Claude. "Addestrare Kalamos" vuol dire quattro cose. Codificare in prompt strutturati la rubrica di valutazione di Sperling — il lavoro degli editor, non nostro. Dare al modello esempi di manoscritti già giudicati, così rispecchia il vostro gusto e non un giudizio generico. Costruire per ogni collana un profilo vettoriale dal catalogo pubblicato, per il fit-score. E tarare le soglie di decisione sui vostri verdetti storici. Il fine-tuning di un modello proprietario è un'ottimizzazione futura, sensata quando i dati la giustificano — non un prerequisito.
+
+### 27. "Allora è prompt engineering con un altro nome. Cosa vi rende difendibili?"
+> In parte è giusto chiamarla così, e non mi nascondo. La difensibilità non è nell'algoritmo — embeddare un testo contro un catalogo è cosa nota, un competitor la replica in settimane. È nel corpus di calibrazione: rubrica, esempi gold, soglie, costruiti conversazione per conversazione con i vostri editor. Cresce a ogni mese di uso. Un competitor non lo ha; un team interno dovrebbe ricostruirlo da zero. Vendiamo l'asset accumulato, non il codice.
+
+### 28. "Quanti dati servono perché funzioni? E se l'archivio di Sperling è troppo piccolo?"
+> Per la calibrazione bastano poche decine di manoscritti già giudicati: il modello di frontiera fa il lavoro pesante, gli esempi lo orientano. Per la validazione serve invece abbastanza storico da contenere un numero significativo di titoli acquisiti — è la ragione per cui guardiamo a 18-24 mesi di archivio e per cui abbiamo scelto Sperling, che ha il volume giusto. Se l'archivio fosse magro, allarghiamo la finestra temporale prima di ridurre il campione.
 
 ---
 
