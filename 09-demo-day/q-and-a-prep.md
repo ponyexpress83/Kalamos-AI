@@ -33,7 +33,7 @@
 > Tre ragioni. (1) Costo opportunity: un major dovrebbe distogliere 4-6 ML engineer per 18 mesi per arrivare al nostro punto attuale. (2) Verticalità: il fit-score è il risultato di iterazione su workflow editoriali, non solo codice. (3) Network effect: ogni cliente Kalamos beneficia delle calibrazioni anonimizzate dell'intero network.
 
 ### 8. "ARPU 55K vi sembra realistico per il mercato italiano?"
-> Sì, perché stiamo sostituendo €150-500 per scheda × migliaia di schede/anno. Per un Pro tier che processa 2.000 manoscritti, il valore creato è 300K+. ARPU 42K = capture del 14%. Conservativo.
+> Sì, ma l'ancora non è il costo della singola scheda — è la capacità. Un editore oggi valuta seriamente meno del 15% di ciò che riceve; con Kalamos copre l'intero flusso, e il valore sta nei manoscritti che oggi non legge affatto. Anche con la stima di settore più prudente sul costo per scheda, su migliaia di schede/anno il valore creato per un Pro tier supera i €300K. ARPU €42K = capture intorno al 14%. Conservativo.
 
 ### 9. "Quanto è lungo il sales ciclo enterprise editoriale?"
 > 4-9 mesi. È lento e va detto. È il motivo per cui chiediamo l'accelerazione PLAI: il warm intro Mondadori comprime quel ciclo da 9 a 3 mesi per i primi 2-3 contratti.

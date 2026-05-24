@@ -27,7 +27,7 @@ L'output non è un riassunto generico. È:
 - **Struttura narrativa** (arco, ritmo, snodi).
 - **Voce e registro** (analisi stilistica, riferimenti possibili).
 - **Mercato di riferimento** (target, posizionamento, comparable).
-- **Fit-score di collana** (es. "Strade Blu: 0.71 — buona compatibilità, criticità su X"; "Einaudi Stile Libero: 0.43 — fuori perimetro").
+- **Fit-score di collana** (es. "Strade Blu: 71/100 — buona compatibilità, criticità su X"; "Einaudi Stile Libero: 43/100 — fuori perimetro").
 - **Verdetto operativo** (richiamare l'autore / chiedere revisioni / archiviare con feedback).
 
 L'editor riceve un input strutturato che gli permette di decidere in 20 minuti se vale la pena leggere il manoscritto in versione integrale. Il giudizio finale resta umano, sempre. Kalamos è l'imbuto che ribalta il rapporto segnale/rumore.

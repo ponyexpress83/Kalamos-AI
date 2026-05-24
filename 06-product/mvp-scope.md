@@ -55,7 +55,7 @@
 
 1. Editor apre Kalamos, dashboard mostra "12 nuovi manoscritti in coda"
 2. Click su manoscritto X → vede la scheda generata, tempo di lettura della scheda: 3-4 minuti
-3. Scheda mostra fit-score per la collana "Strade Blu" (es. 0.72) — buon match
+3. Scheda mostra fit-score per la collana "Strade Blu" (es. 72/100) — buon match
 4. Editor scrolla verdetto operativo: "Richiamare l'autore per chiedere capitoli aggiuntivi"
 5. Editor clicca "Esporta scheda PDF" → genera documento professionale
 6. Editor torna alla dashboard, vede metriche: "questa settimana 47 manoscritti processati, 6 selezionati per lettura integrale"

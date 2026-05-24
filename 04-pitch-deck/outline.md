@@ -13,7 +13,7 @@
 Footer: nome speaker, ruolo, data, "Confidenziale — per PLAI 2026".
 
 ## Slide 2 — Il problema (in numeri)
-Un grande editore italiano riceve **8.000–15.000 manoscritti/anno**. Ne valuta seriamente <15%. Tempo medio per scheda di lettura: **5–15 giorni**. Costo medio: **€150–500** a manoscritto. Risultato: backlog cronico, talenti persi, decisioni basate su campione non rappresentativo.
+Un grande editore italiano riceve **8.000–15.000 manoscritti/anno** e ne valuta seriamente **meno del 15%**. Il collo di bottiglia non è la qualità che arriva: è la capacità di leggerla. Una scheda richiede **5–15 giorni** e **€150–500** a manoscritto (stime di settore, da confermare con la divisione). Risultato: backlog cronico, talenti persi, decisioni prese su un campione non rappresentativo.
 
 ## Slide 3 — Cosa manca al mercato
 Esistono tool generici (Sudowrite, NovelAI) per *scrivere*. Non esiste un'infrastruttura per *valutare* a scala editoriale, calibrata sull'identità di collana. Gli editori non vogliono "AI che scrive". Vogliono leggere meglio.

@@ -25,7 +25,7 @@
 
 *(zoom sul box fit-score)*
 
-> "Fit-score 0.71 sulla collana Strade Blu. 0.43 su Stile Libero. L'editor sa, prima di leggere una sola riga, se questo manoscritto vale la sua attenzione per questa specifica collana — non in astratto."
+> "Fit-score 71 su 100 sulla collana Strade Blu. 43 su Stile Libero. L'editor sa, prima di leggere una sola riga, se questo manoscritto vale la sua attenzione per questa specifica collana — non in astratto."
 
 *(scroll giù alla sezione verdetto)*
 
@@ -57,8 +57,6 @@ Esportare in: MP4 H.264, 1920×1080, 30fps, max 50MB.
 
 Se la demo live o il video saltano (problemi tecnici, no audio, no rete), usare le **schede di esempio** in `schede-esempio/` come prova tangibile da mettere sul tavolo. Sono opere di pubblico dominio nel formato di output reale e mostrano il differenziatore in modo immediato: *La coscienza di Zeno* riceve "Rigetta" su Sperling e "Acquisizione forte" su una collana letteraria — prova visiva che il fit-score misura il rapporto testo–collana, non una qualità astratta. Stamparne due e portarle sempre.
 
-> Nota di coerenza: le schede usano una scala fit-score 0-100; il demo live qui sotto la cita in formato 0-1. Uniformare la scala prima di mostrarle insieme.
-
 ---
 
 ## Cose da NON fare durante il demo
@@ -80,7 +78,7 @@ Se la demo live o il video saltano (problemi tecnici, no audio, no rete), usare 
 ## Manoscritto di demo: criteri di scelta
 
 - **Reale** (anonimizzato, consenso dell'autore)
-- **Mediamente buono** (fit-score né 0.95 né 0.10 — il valore di Kalamos si vede nelle sfumature)
+- **Mediamente buono** (fit-score né 95 né 10 su 100 — il valore di Kalamos si vede nelle sfumature)
 - **Italiano**
 - **Lunghezza 70-100K parole** (rappresentativo di un romanzo trade)
 - **Genere**: scegliere un genere coerente con la collana target Mondadori (Sperling/Strade Blu).
