@@ -53,6 +53,14 @@ Esportare in: MP4 H.264, 1920×1080, 30fps, max 50MB.
 
 ---
 
+## Leave-behind e backup statico
+
+Se la demo live o il video saltano (problemi tecnici, no audio, no rete), usare le **schede di esempio** in `schede-esempio/` come prova tangibile da mettere sul tavolo. Sono opere di pubblico dominio nel formato di output reale e mostrano il differenziatore in modo immediato: *La coscienza di Zeno* riceve "Rigetta" su Sperling e "Acquisizione forte" su una collana letteraria — prova visiva che il fit-score misura il rapporto testo–collana, non una qualità astratta. Stamparne due e portarle sempre.
+
+> Nota di coerenza: le schede usano una scala fit-score 0-100; il demo live qui sotto la cita in formato 0-1. Uniformare la scala prima di mostrarle insieme.
+
+---
+
 ## Cose da NON fare durante il demo
 
 - ❌ Mostrare il backend, la console, il codice
