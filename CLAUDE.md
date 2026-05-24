@@ -72,7 +72,7 @@ Kalamos è **verticale, profondo, costruito da chi conosce davvero il mondo edit
 
 ### PoC immediato e misurabile
 Possiamo proporre subito un PoC concreto:
-- **90 giorni**, **200 manoscritti reali**, **una divisione Mondadori** (Sperling & Kupfer o Einaudi Stile Libero), **valutazione parallela AI + lettore umano**, **KPI quantitativi su tempo, costo, accuratezza**.
+- **90 giorni**, **Sperling & Kupfer**, **braccio retrospettivo** su ~300 manoscritti già valutati dall'archivio (decisioni storiche = ground truth) + **pilot live** su 30-50 manoscritti, **KPI quantitativi** con north-star sul recall dei titoli acquisiti.
 
 Questo trasforma la candidatura da "speranza" a "proposta operativa pronta".
 
@@ -249,7 +249,7 @@ Se ti distrai, ricordati che queste tre cose contano più di tutto il resto:
 | 00-context | 🟢 base esistente | Claude | da arricchire con ricerca aggiornata Mondadori |
 | 01-positioning | 🟡 bozza esistente | Valerio+Claude | da rifinire dopo lavoro precedente |
 | 02-application | 🔴 da fare | — | partire dopo positioning chiuso |
-| 03-poc-proposal | 🟡 concept esistente | Claude | espandere il 90-day plan |
+| 03-poc-proposal | 🟢 design retrospettivo + divisione fissata | Claude | KPI riancorati su recall/κ; validare volumi reali in Fase 1 |
 | 04-pitch-deck | 🔴 outline solo | — | da costruire |
 | 05-financials | 🔴 da fare | Valerio | esiste in formato vecchio |
 | 06-product | 🔴 da fare | Valerio | architecture deve esistere prima del PoC |

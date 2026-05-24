@@ -2,16 +2,17 @@
 
 > Documento di decisione strategica. Una volta scelta la divisione, va comunicata a tutti i materiali (application, deck, one-pager PoC).
 >
-> **Stato**: bozza con raccomandazione preliminare. Da finalizzare con Valerio entro settimana 2.
+> **Stato**: DECISA — Sperling & Kupfer. Da validare con i dati di volume reali in Fase 1 del PoC, ma il materiale di candidatura nomina Sperling senza ambiguità.
 
 ---
 
-## Raccomandazione preliminare
+## Decisione
 
-**Primary target**: **Sperling & Kupfer**
-**Secondary target (backup / parallel)**: **Einaudi Stile Libero**
+**Divisione target del PoC**: **Sperling & Kupfer**.
 
-Razionale: vedi analisi sotto.
+Non "Sperling o Einaudi": **Sperling**. La candidatura, il deck e il one-pager nominano una sola divisione — l'indecisione è una debolezza che il panel legge a colpo d'occhio. Einaudi Stile Libero resta un'alternativa esplicita **solo** se Mondadori indica lì uno sponsor executive più immediato (vedi contingency in fondo).
+
+Razionale del voto: vedi matrice sotto. In sintesi — Sperling combina il volume di sottomissioni più alto (assicura il dataset retrospettivo senza forzature) con un'identità editoriale comunque definita e una storica apertura all'innovation.
 
 ---
 

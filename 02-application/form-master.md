@@ -190,7 +190,7 @@ PLAI è l'unico acceleratore italiano con focus esplicito su AI applicata + spon
 4. Network industriale per espansione a publisher trade italiani secondari
 
 ### 7.3 Proposta PoC concreta
-**Abbiamo già una proposta operativa pronta**: PoC di 90 giorni su 200 manoscritti reali in una divisione Mondadori (target preliminare: Sperling & Kupfer), valutazione parallela AI + lettore umano, KPI quantitativi su tempo, costo, accuracy e fit-score correlation. Budget €100K compatibile con allocation PLAI. Tutto documentato nel one-pager allegato.
+**Abbiamo già una proposta operativa pronta**: PoC di 90 giorni su Sperling & Kupfer, con un braccio retrospettivo su ~300 manoscritti già valutati dall'archivio (le decisioni editoriali storiche sono il ground truth) più un pilot live di 30-50 manoscritti per testare workflow e tempi. KPI primario: recall sui titoli che la divisione ha effettivamente acquisito. Questo disegno non chiede ai lettori Mondadori di rileggere centinaia di manoscritti. Budget €100K compatibile con allocation PLAI. Tutto documentato nel one-pager allegato.
 
 > Allegare in submission: `03-poc-proposal/poc-onepager.pdf` (da generare)
 

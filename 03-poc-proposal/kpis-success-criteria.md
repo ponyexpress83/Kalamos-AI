@@ -14,29 +14,47 @@ Il PoC è valutato su **tre dimensioni** ortogonali:
 
 Solo se tutte e tre le dimensioni passano la soglia, raccomandiamo deployment esteso.
 
+### Da dove viene il "ground truth"
+
+La validità editoriale **non** si misura contro l'opinione di un singolo lettore — due lettori bravi dissentono di continuo, quindi la concordanza con uno solo è un metro rumoroso. Si misura contro la **decisione editoriale realmente presa** dalla divisione sui manoscritti d'archivio (rigetto / approfondimento / acquisizione) e, per i pubblicati, contro l'**esito commerciale**. È un fatto, non un parere.
+
+### Quale braccio misura cosa
+
+- **Efficienza operativa (sezione A)** → misurata sul **braccio live**, dove Kalamos gira nel workflow reale. Non ha senso misurare tempo e costo sul retrospettivo.
+- **Qualità editoriale (sezione B)** → misurata sul **braccio retrospettivo**, contro le decisioni storiche, dove c'è abbastanza N (campione stratificato per includere tutti i titoli acquisiti).
+- **Validità strategica (sezione C)** → su entrambi, più il business case.
+
+### Nota sulla potenza statistica
+
+Il KPI che conta davvero — "Kalamos non si perde i testi di valore?" — riguarda eventi rari (i titoli acquisiti). Il disegno retrospettivo lo rende misurabile **oversamplando l'archivio** per includere tutti i titoli acquisiti nella finestra di 18-24 mesi, invece di sperare che ne emergano abbastanza tra 200 manoscritti nuovi (sarebbero 1-3). È la differenza tra un risultato e un aneddoto.
+
 ---
 
 ## KPI ufficiali (quelli che vanno nel contratto)
 
-### A. Efficienza operativa
+### A. Efficienza operativa — *misurata sul braccio live*
 
-| KPI | Baseline (da rilevare) | Target | Soglia minima | Metodo |
-|-----|------------------------|--------|---------------|--------|
+Le baseline sono **rilevate in Fase 1** sui dati reali della divisione. Nessuna cifra a priori: un numero inventato è la prima cosa che un panel interno smonta.
+
+| KPI | Baseline | Target | Soglia minima | Metodo |
+|-----|----------|--------|---------------|--------|
 | A1. Tempo medio AI per scheda | n/a | <30 min | <60 min | Telemetria automatica |
-| A2. Tempo medio totale (AI + revisione umana leggera) | 5-15 giorni | <2 ore | <4 ore | Tracking lettore |
-| A3. Costo per scheda all-in | €150-500 | <€15 | <€30 | Costing analitico |
-| A4. Throughput settimanale (schede/settimana) | 10-30 | >100 | >50 | Conteggio output |
-| A5. Time-to-decision per manoscritto | 3-9 mesi | -40% rispetto baseline | -25% | Tracking workflow |
+| A2. Tempo medio totale (AI + revisione umana leggera) | [DA RILEVARE] | <2 ore | <4 ore | Tracking lettore |
+| A3. Costo per scheda all-in | [DA RILEVARE] | −80% vs baseline | −50% vs baseline | Costing analitico |
+| A4. Throughput settimanale (schede/settimana) | [DA RILEVARE] | >5× baseline | >3× baseline | Conteggio output |
+| A5. Time-to-decision per manoscritto | [DA RILEVARE] | −40% vs baseline | −25% vs baseline | Tracking workflow |
 
-### B. Qualità editoriale
+### B. Qualità editoriale — *misurata sul braccio retrospettivo*
+
+**B1 è la north-star del PoC**: di tutti i manoscritti che la divisione ha effettivamente acquisito nella finestra, quanti Kalamos avrebbe segnalato? È la promessa centrale ("non vi perdete i testi di valore"), ed è misurabile perché sappiamo quali furono acquisiti.
 
 | KPI | Target | Soglia minima | Metodo |
 |-----|--------|---------------|--------|
-| B1. Concordanza decisione finale AI vs lettore senior (acquisire / rigettare / approfondire) | ≥75% | ≥65% | Blind comparison 200 casi |
-| B2. % schede AI usabili senza riedit sostanziale | ≥50% | ≥35% | Tagging in review settimanale |
-| B3. Fit-score correlation con accettazioni storiche | r ≥ 0.6 | r ≥ 0.45 | Pearson correlation sul dataset di calibrazione |
-| B4. Comparable analysis: % comparabili pertinenti (giudicate da editor) | ≥70% | ≥55% | Sample review 50 schede |
-| B5. False negative rate (manoscritti di valore classificati come "rigetto") | <8% | <15% | Validazione post-hoc su decisioni edit |
+| B1. **Recall sui titoli acquisiti** (quota collocata nel quartile alto di fit-score) | ≥80% | ≥65% | Ranking Kalamos vs decisioni storiche, test set cieco |
+| B2. Concordanza triage 3 livelli vs decisione editoriale storica (Cohen's κ) | κ ≥ 0.45 | κ ≥ 0.30 | Confusion matrix su ~300 casi |
+| B3. False negative sui titoli acquisiti (acquisito classificato "rigetta") | <8% | <15% | Audit retrospettivo |
+| B4. Comparable analysis: % comparabili pertinenti (giudicate da editor) | ≥70% | ≥55% | Sample review ~40 schede |
+| B5. % schede usabili senza riedit sostanziale *(braccio live)* | ≥50% | ≥35% | Tagging in review settimanale |
 
 ### C. Validità strategica
 
@@ -55,12 +73,12 @@ Solo se tutte e tre le dimensioni passano la soglia, raccomandiamo deployment es
 Se durante il PoC emergono questi segnali, fermiamo e rinegoziamo lo scope con Mondadori:
 
 🚨 **Stop immediato**:
-- B5 (false negative) > 25% sul primo batch di 50 manoscritti → modello pericoloso, ricalibrazione obbligatoria
+- B3 (false negative sui titoli acquisiti) > 25% sul primo batch retrospettivo → modello pericoloso, ricalibrazione obbligatoria
 - C5 (compliance) → fail su GDPR o IP → fix legale prima di proseguire
 - Editor unanimi su rifiuto del modello dopo fase 1 → riesame prompt e approccio
 
 🟡 **Alert** (continuiamo ma con maggiore attenzione):
-- B1 (concordanza) < 60% a metà PoC → review intensiva delle divergenze
+- B2 (concordanza, κ) < 0.30 a metà validazione → review intensiva delle divergenze
 - A1 (tempo AI) > 60 minuti per scheda → ottimizzazione tecnica
 - A4 (throughput) < 50 schede/settimana a fine fase 2 → ridiscussione capacity
 

@@ -91,6 +91,9 @@
 
 ```
 2026-05-24 | setup    | Progetto Claude Code creato con struttura base e CLAUDE.md
+2026-05-24 | 03-poc    | PoC riprogettato come retrospettivo (archivio già valutato = ground truth) + braccio live ridotto; risolve l'obiezione "il PoC chiede a Mondadori di rileggere 200 manoscritti"
+2026-05-24 | 03-poc    | KPI riancorati: north-star = recall sui titoli acquisiti; concordanza via Cohen's κ vs decisione editoriale reale; baseline tempo/costo rilevate in Fase 1 (non inventate)
+2026-05-24 | 03-poc    | Divisione target fissata: Sperling & Kupfer (era "Sperling o Einaudi")
 ```
 
 ---
@@ -103,6 +106,14 @@
 2026-MM-DD | DECIDED: [decisione]
 RAZIONALE: [perché]
 ALTERNATIVE CONSIDERATE: [cosa abbiamo scartato]
+
+2026-05-24 | DECIDED: il PoC usa un braccio retrospettivo come spina dorsale di validazione, non la doppia lettura parallela
+RAZIONALE: l'archivio di manoscritti già valutati dà ground truth gratuito e abbastanza titoli acquisiti per misurare il recall; la doppia lettura chiedeva a Mondadori di spendere la risorsa scarsa (tempo di lettura) e su 200 nuovi manoscritti i casi positivi sarebbero stati 1-3
+ALTERNATIVE CONSIDERATE: doppia lettura parallela su 200 manoscritti nuovi (scartata: costosa per Mondadori e statisticamente debole)
+
+2026-05-24 | DECIDED: divisione target = Sperling & Kupfer
+RAZIONALE: volume di sottomissioni più alto (assicura il dataset retrospettivo) + identità editoriale comunque definita + apertura storica all'innovation
+ALTERNATIVE CONSIDERATE: Einaudi Stile Libero (tenuta come contingency se Mondadori ha lì uno sponsor più immediato); Strade Blu / Piemme (volume/fit inferiori)
 ```
 
 ---

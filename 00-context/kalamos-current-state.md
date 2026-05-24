@@ -18,7 +18,7 @@
 - ✅ **Deck parziale** (struttura abbozzata)
 - ✅ **Application PLAI draft** (lavoro precedente con Claude, marzo 2026)
 - ✅ **Positioning core** ("Editorial Intelligence Engine")
-- ✅ **PoC proposal concept** (90 giorni, 200 manoscritti, parallel evaluation AI+human)
+- ✅ **PoC proposal** (90 giorni su Sperling & Kupfer, braccio retrospettivo su archivio già valutato + pilot live)
 - ❌ Pitch deck finale
 - ❌ Demo video
 - ❌ MVP cliccabile
