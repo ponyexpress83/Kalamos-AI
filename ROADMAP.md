@@ -100,6 +100,7 @@
 2026-05-24 | 09-demo   | Q&A tecniche su addestramento e difensibilità (Q26-28); allineate Q16/Q17 al PoC retrospettivo
 2026-05-24 | 06-product| Create 2 schede di lettura di esempio (Salgari, Svevo) su opere di pubblico dominio: prova tangibile del formato e del fit-score per collana (attacca l'obiezione #1 "manca una prova")
 2026-05-24 | align     | Scala fit-score uniformata a 0-100; numeri "dolore" (€150-500 / 5-15gg) marcati come stime di settore da verificare (deck, Q&A) e argomento spostato sulla capacità
+2026-05-26 | 06-product| MVP cliccabile (Next.js): login redazione → coda manoscritti → scheda con fit-score per collana e verdetto. Dati di esempio (incl. schede Salgari/Svevo). Build verde, deployabile su Vercel. Risolve il 404 (il repo non era un'app web)
 ```
 
 ---
