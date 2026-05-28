@@ -4,9 +4,24 @@
 
 ## Cos'è questo repository
 
-Non è un repo di codice. È un **workspace strutturato per la candidatura PLAI**, ottimizzato per essere usato con Claude Code (o qualsiasi assistente AI che legge file).
+È in parte un **workspace strutturato per la candidatura PLAI** (i documenti nelle cartelle numerate) e in parte un **prototipo MVP cliccabile** di Kalamos AI (app Next.js alla root — vedi sotto).
 
 L'idea: invece di gestire la candidatura come una serie di chat sparse, qui c'è un **single source of truth** versionabile, dove ogni asset (positioning, application, PoC, deck, financials) vive in un file dedicato che puoi rifinire iterativamente.
+
+## MVP cliccabile (app Next.js)
+
+Un prototipo dimostrativo del prodotto: login redazione → coda manoscritti → scheda di lettura con fit-score per collana e verdetto operativo. Popolato con dati di esempio, incluse le due schede su opere di pubblico dominio (`06-product/schede-esempio/`). **Non fa inferenza AI in tempo reale** — serve a far vedere e cliccare il flusso, anche dopo il login.
+
+```bash
+npm install
+npm run dev      # http://localhost:3000  (login: qualsiasi email/password)
+npm run build    # build di produzione
+```
+
+**Deploy su Vercel**: collegare il repo; Vercel rileva Next.js e builda da solo. Nessuna configurazione necessaria (root directory = root del repo).
+
+**Riservatezza**: l'app serve solo le proprie route (`/`, `/dashboard`). I documenti `.md` riservati (`05-financials/`, `08-outreach/`, ecc.) **non** vengono pubblicati dal sito — restano nel repo ma non sono raggiungibili via URL. Restano però visibili a chi ha accesso al repository Git: valuta la visibilità del repo separatamente.
+
 
 ## Setup (3 minuti)
 
