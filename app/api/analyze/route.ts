@@ -10,7 +10,7 @@ import { getDemoScheda } from "@/lib/cache";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 // Vercel Hobby limita le serverless function a 10s. Su Pro si può alzare a 60.
-export const maxDuration = 10;
+export const maxDuration = 60;
 
 // Default rapido per la demo dal vivo (sta nei 10s di Hobby). Su Pro puoi
 // impostare ANTHROPIC_MODEL=claude-opus-4-8 per la massima qualità.
