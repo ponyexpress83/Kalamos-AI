@@ -29,7 +29,7 @@ npm run build    # build di produzione
 Variabili d'ambiente (vedi `.env.example`):
 
 - `ANTHROPIC_API_KEY` — chiave Anthropic. **Mai hardcoded.** Senza chiave restano disponibili le 4 schede demo in cache.
-- `ANTHROPIC_MODEL` — opzionale, default `claude-opus-4-8`. Per una demo dal vivo più rapida/economica: `claude-sonnet-4-6`.
+- `ANTHROPIC_MODEL` — opzionale, default `claude-sonnet-4-6` (rapido, rientra nei 10s delle function su Vercel Hobby). Su piano Pro puoi usare `claude-opus-4-8` per la massima qualità.
 
 ### Come aggiungere un manoscritto demo
 

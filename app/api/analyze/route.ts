@@ -9,9 +9,12 @@ import { getDemoScheda } from "@/lib/cache";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-export const maxDuration = 60;
+// Vercel Hobby limita le serverless function a 10s. Su Pro si può alzare a 60.
+export const maxDuration = 10;
 
-const MODEL = process.env.ANTHROPIC_MODEL || "claude-opus-4-8";
+// Default rapido per la demo dal vivo (sta nei 10s di Hobby). Su Pro puoi
+// impostare ANTHROPIC_MODEL=claude-opus-4-8 per la massima qualità.
+const MODEL = process.env.ANTHROPIC_MODEL || "claude-sonnet-4-6";
 
 const SYSTEM_PROMPT = `Sei un lettore editoriale senior italiano. Valuti manoscritti per case editrici trade. Sei rigoroso, concreto, mai compiacente. Non scrivi né riscrivi il libro: lo valuti. Rispetti il giudizio dell'editor: la tua è una raccomandazione, non una decisione. Rispondi SOLO con il JSON dello schema richiesto, in italiano.`;
 
