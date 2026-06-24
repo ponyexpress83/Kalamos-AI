@@ -252,7 +252,7 @@ Se ti distrai, ricordati che queste tre cose contano più di tutto il resto:
 | 03-poc-proposal | 🟢 design retrospettivo + divisione fissata | Claude | KPI riancorati su recall/κ; validare volumi reali in Fase 1 |
 | 04-pitch-deck | 🔴 outline solo | — | da costruire |
 | 05-financials | 🔴 da fare | Valerio | esiste in formato vecchio |
-| 06-product | 🟢 MVP cliccabile + architecture + schede | Claude+Valerio | prototipo Next.js (login→dashboard→scheda, no inferenza reale); manca il modello vero |
+| 06-product | 🟢 Demo cliccabile con inferenza reale | Claude+Valerio | Next.js: Analizza (demo/incolla/upload) → /api/analyze su Claude (structured output zod) → scheda + fit-score per collana; vista Redazione; schede demo in cache; no login |
 | 07-research | 🟡 parziale | Claude | competitor + market sizing OK, deep-dive Mondadori manca |
 | 08-outreach | 🔴 da fare | Valerio | identificare decision maker PLAI è prioritario |
 | 09-demo-day | 🔴 in lontananza | — | solo dopo essere stati selezionati |
@@ -272,4 +272,4 @@ Aggiorna questa tabella ogni volta che chiudi una sezione.
 
 ---
 
-*Ultimo aggiornamento di questo file: 24 maggio 2026. Aggiornare il timestamp se modifichi il contenuto.*
+*Ultimo aggiornamento di questo file: 24 giugno 2026. Aggiornare il timestamp se modifichi il contenuto.*

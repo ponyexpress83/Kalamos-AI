@@ -1,0 +1,54 @@
+{
+  "_note": "Manifest dei manoscritti demo per Kalamos AI. I campi 'expected_*' sono SOLO per il builder/QA: NON mostrarli all'utente nella UI. Servono a verificare che la pipeline produca la gamma attesa di esiti e fit-score divergenti per collana. Tutti i testi sono originali (nessun copyright).",
+  "imprints_demo": ["Sperling & Kupfer", "Einaudi Stile Libero", "Mondadori Strade Blu"],
+  "manuscripts": [
+    {
+      "id": "01_il-giardino-di-vetro",
+      "file": "manuscripts/01_il-giardino-di-vetro.txt",
+      "titolo": "Il giardino di vetro",
+      "autore": "Marta Bevilacqua",
+      "genere_atteso": "narrativa letteraria / memoir-fiction",
+      "parole_circa": 720,
+      "expected_recommendation": "prioritario",
+      "expected_prosa_voto": "8-9",
+      "expected_fit": { "Einaudi Stile Libero": "alto", "Mondadori Strade Blu": "alto", "Sperling & Kupfer": "medio-basso" },
+      "scopo_demo": "Caso forte: voce, controllo, immagine guida (il vetro/conservare). Mostra che il sistema riconosce qualità letteraria e la indirizza alle collane d'autore, non al mainstream commerciale."
+    },
+    {
+      "id": "02_sette-giorni-a-portofino",
+      "file": "manuscripts/02_sette-giorni-a-portofino.txt",
+      "titolo": "Sette giorni a Portofino",
+      "autore": "Carla Montersino",
+      "genere_atteso": "commercial / feel-good romance",
+      "parole_circa": 650,
+      "expected_recommendation": "seconda_lettura",
+      "expected_prosa_voto": "6-7",
+      "expected_fit": { "Sperling & Kupfer": "alto", "Einaudi Stile Libero": "basso", "Mondadori Strade Blu": "basso-medio" },
+      "scopo_demo": "Caso commerciale: hook forte, leggibilità, dialogo brillante ma poca profondità. Mostra che il fit ribalta lo scoring di '01': qui vince Sperling, non Einaudi SL. È la prova visiva del differenziale fit-per-collana."
+    },
+    {
+      "id": "03_le-ombre-del-passato",
+      "file": "manuscripts/03_le-ombre-del-passato.txt",
+      "titolo": "Le ombre del passato",
+      "autore": "R. Vinci",
+      "genere_atteso": "thriller / giallo",
+      "parole_circa": 560,
+      "expected_recommendation": "scarta",
+      "expected_prosa_voto": "2-4",
+      "expected_fit": { "Sperling & Kupfer": "basso", "Einaudi Stile Libero": "basso", "Mondadori Strade Blu": "basso" },
+      "scopo_demo": "Caso debole (slush tipica): cliché ('notte buia e tempestosa'), avverbi a raffica, telling, info-dump, personaggi piatti. Mostra che il sistema sa dire NO con motivazioni concrete, senza essere compiacente."
+    },
+    {
+      "id": "04_la-stagione-delle-locuste",
+      "file": "manuscripts/04_la-stagione-delle-locuste.txt",
+      "titolo": "La stagione delle locuste",
+      "autore": "Nuccio Carbè",
+      "genere_atteso": "noir / narrativa civile del Sud",
+      "parole_circa": 720,
+      "expected_recommendation": "prioritario",
+      "expected_prosa_voto": "8",
+      "expected_fit": { "Einaudi Stile Libero": "molto alto", "Mondadori Strade Blu": "medio-alto", "Sperling & Kupfer": "medio" },
+      "scopo_demo": "Caso AMBIGUO/forte: noir d'autore con tema civile (mafia/silenzio/terra). Spacca lo scoring: idealmente molto alto per Einaudi Stile Libero (crime d'autore), ma con punteggio decente anche per Sperling (gancio thriller) e Strade Blu (voce). È lo slide-momento del pitch: 'guardate come lo stesso testo viene letto in modo diverso da tre collane'."
+    }
+  ]
+}

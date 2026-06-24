@@ -1,6 +1,6 @@
 {
-  "name": "kalamos-mvp",
-  "version": "0.1.0",
+  "name": "kalamos-demo",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,9 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "14.2.x",
+    "@anthropic-ai/sdk": "^0.105.0",
+    "next": "14.2.33",
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",

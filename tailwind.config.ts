@@ -1,21 +1,32 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: [
-    "./app/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-  ],
+  content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        carta: "#FAF7F2",
-        "carta-scura": "#EFE9DF",
-        inchiostro: "#1A1A1A",
-        ruggine: "#8B3A2A",
+        // Palette di brand Kalamos
+        inchiostro: "#14213d", // blu inchiostro
+        accento: "#b3001b", // rosso editoriale
+        carta: "#fbfaf7", // bianco carta
+        "carta-scura": "#ece7dd", // bordi / superfici sommesse
       },
       fontFamily: {
-        serif: ["Georgia", "Cambria", "'Times New Roman'", "serif"],
-        sans: ["ui-sans-serif", "system-ui", "-apple-system", "'Segoe UI'", "Roboto", "Helvetica", "Arial", "sans-serif"],
+        // Heading serif (editoriale), corpo sans pulito
+        serif: ["Spectral", "Georgia", "Cambria", "'Times New Roman'", "serif"],
+        sans: [
+          "ui-sans-serif",
+          "system-ui",
+          "-apple-system",
+          "'Segoe UI'",
+          "Roboto",
+          "Helvetica",
+          "Arial",
+          "sans-serif",
+        ],
+      },
+      maxWidth: {
+        scheda: "46rem",
       },
     },
   },

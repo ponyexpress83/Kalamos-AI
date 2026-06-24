@@ -14,4 +14,7 @@ body {
   .no-print {
     display: none !important;
   }
+  body {
+    background: #fff;
+  }
 }

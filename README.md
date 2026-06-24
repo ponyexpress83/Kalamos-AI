@@ -8,19 +8,42 @@
 
 L'idea: invece di gestire la candidatura come una serie di chat sparse, qui c'è un **single source of truth** versionabile, dove ogni asset (positioning, application, PoC, deck, financials) vive in un file dedicato che puoi rifinire iterativamente.
 
-## MVP cliccabile (app Next.js)
+## Demo cliccabile (app Next.js)
 
-Un prototipo dimostrativo del prodotto: login redazione → coda manoscritti → scheda di lettura con fit-score per collana e verdetto operativo. Popolato con dati di esempio, incluse le due schede su opere di pubblico dominio (`06-product/schede-esempio/`). **Non fa inferenza AI in tempo reale** — serve a far vedere e cliccare il flusso, anche dopo il login.
+La demo dimostrativa del prodotto: **Analizza** → scegli un manoscritto (4 testi originali precaricati) oppure incolla un testo o carica un `.txt`/`.pdf` → seleziona una o più collane → ottieni una **scheda di lettura strutturata** con **fit-score diverso per collana** (sintesi, voto prosa, comparabili, forze/criticità, raccomandazione). La vista **Redazione** mostra una tabella ordinabile di tutti i manoscritti analizzati, con KPI di throughput.
+
+L'analisi dal vivo gira su Claude (Anthropic) in una route server (`/api/analyze`) che **non espone mai la chiave al client**. Le 4 schede demo sono in cache: la demo parte istantanea anche **senza chiave e offline**; la chiave serve solo per analizzare testi nuovi (incolla/upload) o per "ri-analizzare dal vivo" un demo.
+
+### Setup
 
 ```bash
+# 1. Configura la chiave API (necessaria solo per l'analisi dal vivo)
+cp .env.example .env.local
+#   poi apri .env.local e incolla la tua ANTHROPIC_API_KEY
+
 npm install
-npm run dev      # http://localhost:3000  (login: qualsiasi email/password)
+npm run dev      # http://localhost:3000  (niente login)
 npm run build    # build di produzione
 ```
 
-**Deploy su Vercel**: collegare il repo; Vercel rileva Next.js e builda da solo. Nessuna configurazione necessaria (root directory = root del repo).
+Variabili d'ambiente (vedi `.env.example`):
 
-**Riservatezza**: l'app serve solo le proprie route (`/`, `/dashboard`). I documenti `.md` riservati (`05-financials/`, `08-outreach/`, ecc.) **non** vengono pubblicati dal sito — restano nel repo ma non sono raggiungibili via URL. Restano però visibili a chi ha accesso al repository Git: valuta la visibilità del repo separatamente.
+- `ANTHROPIC_API_KEY` — chiave Anthropic. **Mai hardcoded.** Senza chiave restano disponibili le 4 schede demo in cache.
+- `ANTHROPIC_MODEL` — opzionale, default `claude-opus-4-8`. Per una demo dal vivo più rapida/economica: `claude-sonnet-4-6`.
+
+### Come aggiungere un manoscritto demo
+
+1. Metti il file di testo in `data/manuscripts/` (es. `05_titolo.txt`).
+2. Aggiungi una voce in `lib/manuscripts.ts` (`id`, `file`, `titolo`, `autore`, `genere`, `parole`).
+3. (Facoltativo) Per la scheda istantanea in cache e la presenza in Redazione, aggiungi la scheda pre-generata in `lib/cache.ts` con la stessa `id`. Senza cache il manoscritto si analizza comunque dal vivo.
+
+### Come aggiungere o modificare una collana
+
+Edita `config/imprints.ts`: aggiungi un oggetto con `id`, `nome`, `gruppo` e una `descrizione` (è il testo iniettato nel prompt per calcolare fit-score e motivazione). Niente altro da toccare: UI e API leggono da lì. Scrivi descrizioni che facciano **divergere** i punteggi.
+
+**Deploy su Vercel**: collegare il repo; Vercel rileva Next.js e builda da solo. Imposta `ANTHROPIC_API_KEY` tra le Environment Variables del progetto.
+
+**Riservatezza**: l'app serve solo le proprie route (`/`, `/redazione`, `/scheda/...`, `/api/analyze`). I documenti `.md` riservati (`05-financials/`, `08-outreach/`, ecc.) **non** vengono pubblicati dal sito — restano nel repo ma non sono raggiungibili via URL. Restano però visibili a chi ha accesso al repository Git: valuta la visibilità del repo separatamente. Il testo del manoscritto analizzato dal vivo viene inviato all'API Anthropic solo per la valutazione.
 
 
 ## Setup (3 minuti)
