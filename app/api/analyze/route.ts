@@ -138,7 +138,8 @@ export async function POST(req: Request) {
         model: MODEL,
         max_tokens: 4000,
         system: SYSTEM_PROMPT,
-        output_config: { format: zodOutputFormat(schedaSchema), effort: "medium" },
+        thinking: { type: "disabled" },
+        output_config: { format: zodOutputFormat(schedaSchema) },
         messages: [
           {
             role: "user",
@@ -167,7 +168,8 @@ export async function POST(req: Request) {
         model: MODEL,
         max_tokens: 4000,
         system: SYSTEM_PROMPT,
-        output_config: { format: zodOutputFormat(schedaSchema), effort: "medium" },
+        thinking: { type: "disabled" },
+        output_config: { format: zodOutputFormat(schedaSchema) },
         messages: [{ role: "user", content: userPrompt }],
       });
       parsed = res.parsed_output;

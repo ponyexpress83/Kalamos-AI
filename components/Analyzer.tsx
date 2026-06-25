@@ -152,13 +152,38 @@ export default function Analyzer({
         body.text = pasted;
       }
 
-      const res = await fetch("/api/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      const data = await res.json();
-      if (!res.ok) {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 75_000);
+      let res: Response;
+      try {
+        res = await fetch("/api/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+          signal: ctrl.signal,
+        });
+      } catch {
+        throw new Error(
+          "L'analisi non ha risposto in tempo. Su piani con limite di esecuzione breve usa un manoscritto demo (istantaneo) oppure riprova.",
+        );
+      } finally {
+        clearTimeout(timer);
+      }
+
+      // Un timeout della funzione serverless (es. Vercel Hobby, 10s) risponde
+      // con una pagina HTML, non JSON: gestiamolo con un messaggio chiaro.
+      let data: (AnalysisResult & { error?: string }) | null = null;
+      try {
+        data = await res.json();
+      } catch {
+        data = null;
+      }
+      if (!res.ok || !data) {
+        if (res.status === 504 || res.status === 408 || !data) {
+          throw new Error(
+            "L'analisi dal vivo ha superato il tempo limite del server. Su Vercel Hobby le funzioni si fermano a 10s: usa un manoscritto demo (istantaneo) o passa al piano Pro per l'analisi su testi nuovi.",
+          );
+        }
         throw new Error(data?.error || "Errore durante l'analisi.");
       }
       return data as AnalysisResult;
