@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { AnalysisResult } from "@/lib/schema";
 import type { ManuscriptMeta } from "@/lib/manuscripts";
+import { analyzeHeuristic } from "@/lib/heuristic";
 import SchedaView from "./SchedaView";
 import LoadingSteps from "./LoadingSteps";
 import ImprintChips, { type ImprintChip } from "./ImprintChips";
@@ -53,6 +54,7 @@ export default function Analyzer({
   const [file, setFile] = useState<UploadedFile | null>(null);
   const [selected, setSelected] = useState<string[]>(imprints.map((i) => i.id));
   const [live, setLive] = useState(false);
+  const [demoOffline, setDemoOffline] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
@@ -131,11 +133,38 @@ export default function Analyzer({
     setError(null);
     setView("loading");
 
+    // Testo disponibile lato client (paste o .txt): abilita l'euristica offline.
+    const localText =
+      file?.kind === "txt"
+        ? file.text
+        : !demoId && !file
+          ? pasted
+          : undefined;
+    const localTitolo = file?.kind === "txt"
+      ? file.name.replace(/\.[^.]+$/, "")
+      : "Testo incollato";
+    const selectedNames = selected.map((id) => nameById[id]);
+
+    function heuristic(): AnalysisResult {
+      return analyzeHeuristic(localText as string, {
+        titolo: localTitolo,
+        imprintNames: selectedNames,
+      });
+    }
+
     const work = (async (): Promise<AnalysisResult> => {
-      // Demo + collane in cache + nessun "dal vivo" forzato → risposta istantanea
-      if (demoId && !live) {
+      // Demo + collane in cache → risposta istantanea (anche in modalità offline)
+      if (demoId && (!live || demoOffline)) {
         const cached = cachedFor(demoId);
         if (cached) return cached;
+      }
+
+      // Modalità dimostrativa offline: nessuna API. Euristica per testo/.txt.
+      if (demoOffline) {
+        if (localText && localText.trim()) return heuristic();
+        throw new Error(
+          "L'anteprima offline non è disponibile per i PDF né per i demo senza scheda in cache. Usa un testo/.txt, oppure disattiva la modalità offline per l'analisi dal vivo.",
+        );
       }
 
       const body: Record<string, unknown> = { imprintIds: selected };
@@ -163,15 +192,18 @@ export default function Analyzer({
           signal: ctrl.signal,
         });
       } catch {
+        // Rete/timeout: se abbiamo il testo in locale, ripieghiamo sull'euristica
+        // così la demo resta sempre provabile.
+        if (localText && localText.trim()) return heuristic();
         throw new Error(
-          "L'analisi non ha risposto in tempo. Su piani con limite di esecuzione breve usa un manoscritto demo (istantaneo) oppure riprova.",
+          "L'analisi non ha risposto in tempo. Usa un manoscritto demo (istantaneo) o attiva la modalità dimostrativa offline.",
         );
       } finally {
         clearTimeout(timer);
       }
 
       // Un timeout della funzione serverless (es. Vercel Hobby, 10s) risponde
-      // con una pagina HTML, non JSON: gestiamolo con un messaggio chiaro.
+      // con una pagina HTML, non JSON: gestiamolo con un fallback all'euristica.
       let data: (AnalysisResult & { error?: string }) | null = null;
       try {
         data = await res.json();
@@ -179,12 +211,11 @@ export default function Analyzer({
         data = null;
       }
       if (!res.ok || !data) {
-        if (res.status === 504 || res.status === 408 || !data) {
-          throw new Error(
-            "L'analisi dal vivo ha superato il tempo limite del server. Su Vercel Hobby le funzioni si fermano a 10s: usa un manoscritto demo (istantaneo) o passa al piano Pro per l'analisi su testi nuovi.",
-          );
-        }
-        throw new Error(data?.error || "Errore durante l'analisi.");
+        if (localText && localText.trim()) return heuristic();
+        throw new Error(
+          data?.error ||
+            "L'analisi dal vivo ha superato il tempo limite del server. Usa un manoscritto demo o la modalità dimostrativa offline.",
+        );
       }
       return data as AnalysisResult;
     })();
@@ -222,7 +253,9 @@ export default function Analyzer({
             <span className="font-sans text-xs text-stone-400">
               {result.meta.fonte === "demo"
                 ? "scheda dimostrativa in cache"
-                : "analisi generata dal vivo"}
+                : result.meta.fonte === "simulata"
+                  ? "anteprima simulata · offline"
+                  : "analisi generata dal vivo"}
             </span>
             <PrintButton />
           </div>
@@ -370,6 +403,25 @@ export default function Analyzer({
             </span>
           )}
         </div>
+
+        <label className="mt-4 flex items-start gap-2 font-sans text-xs text-stone-500">
+          <input
+            type="checkbox"
+            checked={demoOffline}
+            onChange={(e) => setDemoOffline(e.target.checked)}
+            className="mt-0.5 accent-accento"
+          />
+          <span>
+            <span className="font-medium text-inchiostro">
+              Modalità dimostrativa offline
+            </span>{" "}
+            — anteprima istantanea senza API (euristica sui segnali del testo,
+            non inferenza AI). Utile dal vivo, su qualsiasi manoscritto incollato
+            o .txt, anche senza chiave o connessione. Il risultato è etichettato
+            come simulato.
+          </span>
+        </label>
+
         <p className="mt-4 font-sans text-xs text-stone-400">
           <Link href="/redazione" className="underline hover:text-accento">
             Vista Redazione →

@@ -5,6 +5,7 @@ import { schedaSchema, type AnalysisResult } from "@/lib/schema";
 import { imprints, getImprint } from "@/config/imprints";
 import { getManuscriptText, getManuscriptMeta } from "@/lib/manuscripts";
 import { buildExcerpt } from "@/lib/extract";
+import { analyzeHeuristic } from "@/lib/heuristic";
 import { getDemoScheda } from "@/lib/cache";
 
 export const runtime = "nodejs";
@@ -105,19 +106,31 @@ export async function POST(req: Request) {
     );
   }
 
-  // Chiave API
+  const { nomi, testo: collaneTesto } = collaneBlock(validIds);
+
+  // Chiave API. Senza chiave, se abbiamo il testo ripieghiamo sull'euristica
+  // offline (fonte "simulata") così la demo resta provabile anche a chiave
+  // assente. Per i soli PDF (niente testo estratto qui) serve la chiave.
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
+    if (testoCompleto) {
+      return NextResponse.json(
+        analyzeHeuristic(testoCompleto, {
+          titolo: titoloInput,
+          autore,
+          imprintNames: nomi,
+        }),
+      );
+    }
     return NextResponse.json(
       {
         error:
-          "ANTHROPIC_API_KEY non configurata. Imposta la chiave nell'ambiente per l'analisi dal vivo (le schede demo restano disponibili).",
+          "ANTHROPIC_API_KEY non configurata. Imposta la chiave per l'analisi dal vivo, oppure usa la modalità dimostrativa offline (testo/.txt).",
       },
       { status: 503 },
     );
   }
 
-  const { nomi, testo: collaneTesto } = collaneBlock(validIds);
   const client = new Anthropic({ apiKey, timeout: 55_000, maxRetries: 1 });
 
   const t0 = Date.now();
@@ -198,6 +211,18 @@ export async function POST(req: Request) {
 
     return NextResponse.json(result);
   } catch (err) {
+    // Chiave errata: la segnaliamo (così l'utente la corregge).
+    // Altri errori (rete, rate limit, 5xx): se abbiamo il testo, ripieghiamo
+    // sull'euristica offline per non lasciare la demo senza risposta.
+    if (!(err instanceof Anthropic.AuthenticationError) && testoCompleto) {
+      return NextResponse.json(
+        analyzeHeuristic(testoCompleto, {
+          titolo: titoloInput,
+          autore,
+          imprintNames: nomi,
+        }),
+      );
+    }
     const status =
       err instanceof Anthropic.AuthenticationError
         ? 401

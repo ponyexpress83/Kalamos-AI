@@ -51,6 +51,20 @@ export default function SchedaView({ result }: { result: AnalysisResult }) {
         </p>
       </header>
 
+      {meta.fonte === "simulata" && (
+        <div className="mb-5 rounded-xl border border-amber-300 bg-amber-50 p-4">
+          <div className="font-sans text-xs font-semibold uppercase tracking-wide text-amber-800">
+            Anteprima simulata · offline
+          </div>
+          <p className="mt-1 font-sans text-[13px] leading-relaxed text-amber-900">
+            Valutazione euristica basata sui segnali del testo (lunghezza,
+            dialogo, cliché, lessico), <strong>non</strong> inferenza AI. Serve a
+            provare il flusso su qualsiasi manoscritto. Per la scheda reale,
+            disattiva la modalità offline e usa l'analisi dal vivo.
+          </p>
+        </div>
+      )}
+
       {/* Banner raccomandazione */}
       <div className={`mb-5 flex items-center justify-between gap-3 rounded-xl border p-4 ${banner}`}>
         <div>

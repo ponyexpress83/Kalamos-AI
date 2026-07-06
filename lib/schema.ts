@@ -59,7 +59,7 @@ export interface AnalysisMeta {
   parole_inviate: number;
   collane_richieste: string[];
   tempo_secondi: number;
-  fonte: "demo" | "live"; // scheda in cache o inferenza reale
+  fonte: "demo" | "live" | "simulata"; // cache · inferenza reale · euristica offline
 }
 
 export interface AnalysisResult {

@@ -31,6 +31,16 @@ Variabili d'ambiente (vedi `.env.example`):
 - `ANTHROPIC_API_KEY` — chiave Anthropic. **Mai hardcoded.** Senza chiave restano disponibili le 4 schede demo in cache.
 - `ANTHROPIC_MODEL` — opzionale, default `claude-sonnet-4-6` (rapido, rientra nei 10s delle function su Vercel Hobby). Su piano Pro puoi usare `claude-opus-4-8` per la massima qualità.
 
+### Modalità dimostrativa offline (sempre provabile)
+
+L'analisi dal vivo su Claude produce una scheda ricca ma richiede ~20–40s: **non rientra nei 10s delle function del piano Vercel Hobby**. Per rendere la demo provabile **con qualsiasi manoscritto**, in qualunque contesto (dal palco, su Hobby, offline, o senza chiave), c'è una **modalità dimostrativa offline** (checkbox sotto "Analizza"):
+
+- Genera una scheda **istantanea** da un'euristica sui segnali del testo (lunghezza, dialogo, cliché, avverbi, lessico di genere) e fa comunque **divergere i fit-score per collana** (testo commerciale → Sperling alto; letterario → Einaudi/Strade Blu alti; slush → scarta).
+- È **chiaramente etichettata come "anteprima simulata"** — non è inferenza AI. Serve a provare il flusso, non a sostituire la valutazione reale.
+- Scatta anche **in automatico come fallback** se l'analisi dal vivo va in timeout o manca la chiave (per testo incollato / `.txt`; i PDF richiedono la chiave).
+
+In sintesi: i 4 demo in cache e la modalità offline garantiscono che la demo **funzioni sempre**; l'analisi dal vivo (Pro consigliato) resta il valore reale.
+
 ### Come aggiungere un manoscritto demo
 
 1. Metti il file di testo in `data/manuscripts/` (es. `05_titolo.txt`).
