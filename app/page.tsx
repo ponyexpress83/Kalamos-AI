@@ -4,7 +4,13 @@ import { demoSchede } from "@/lib/cache";
 import { imprints } from "@/config/imprints";
 
 export default function HomePage() {
-  const imprintChips = imprints.map((i) => ({ id: i.id, nome: i.nome }));
+  const imprintChips = imprints.map((i) => ({
+    id: i.id,
+    nome: i.nome,
+    reparto: i.reparto,
+    profilo: i.profilo,
+    defaultOn: Boolean(i.defaultOn),
+  }));
 
   return (
     <div>

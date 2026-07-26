@@ -52,7 +52,10 @@ export default function Analyzer({
   const [demoId, setDemoId] = useState<string | null>(null);
   const [pasted, setPasted] = useState("");
   const [file, setFile] = useState<UploadedFile | null>(null);
-  const [selected, setSelected] = useState<string[]>(imprints.map((i) => i.id));
+  const [selected, setSelected] = useState<string[]>(() => {
+    const on = imprints.filter((i) => i.defaultOn).map((i) => i.id);
+    return on.length > 0 ? on : imprints.map((i) => i.id);
+  });
   const [live, setLive] = useState(false);
   const [demoOffline, setDemoOffline] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
@@ -62,6 +65,12 @@ export default function Analyzer({
   const nameById = useMemo(() => {
     const m: Record<string, string> = {};
     imprints.forEach((i) => (m[i.id] = i.nome));
+    return m;
+  }, [imprints]);
+
+  const profiloById = useMemo(() => {
+    const m: Record<string, ImprintChip["profilo"]> = {};
+    imprints.forEach((i) => (m[i.id] = i.profilo));
     return m;
   }, [imprints]);
 
@@ -143,12 +152,15 @@ export default function Analyzer({
     const localTitolo = file?.kind === "txt"
       ? file.name.replace(/\.[^.]+$/, "")
       : "Testo incollato";
-    const selectedNames = selected.map((id) => nameById[id]);
+    const selectedImprints = selected.map((id) => ({
+      nome: nameById[id],
+      profilo: profiloById[id],
+    }));
 
     function heuristic(): AnalysisResult {
       return analyzeHeuristic(localText as string, {
         titolo: localTitolo,
-        imprintNames: selectedNames,
+        imprints: selectedImprints,
       });
     }
 

@@ -107,6 +107,10 @@ export async function POST(req: Request) {
   }
 
   const { nomi, testo: collaneTesto } = collaneBlock(validIds);
+  const heuristicImprints = validIds
+    .map((id) => getImprint(id))
+    .filter((i): i is NonNullable<typeof i> => Boolean(i))
+    .map((i) => ({ nome: i.nome, profilo: i.profilo }));
 
   // Chiave API. Senza chiave, se abbiamo il testo ripieghiamo sull'euristica
   // offline (fonte "simulata") così la demo resta provabile anche a chiave
@@ -118,7 +122,7 @@ export async function POST(req: Request) {
         analyzeHeuristic(testoCompleto, {
           titolo: titoloInput,
           autore,
-          imprintNames: nomi,
+          imprints: heuristicImprints,
         }),
       );
     }
@@ -219,7 +223,7 @@ export async function POST(req: Request) {
         analyzeHeuristic(testoCompleto, {
           titolo: titoloInput,
           autore,
-          imprintNames: nomi,
+          imprints: heuristicImprints,
         }),
       );
     }

@@ -47,9 +47,20 @@ In sintesi: i 4 demo in cache e la modalità offline garantiscono che la demo **
 2. Aggiungi una voce in `lib/manuscripts.ts` (`id`, `file`, `titolo`, `autore`, `genere`, `parole`).
 3. (Facoltativo) Per la scheda istantanea in cache e la presenza in Redazione, aggiungi la scheda pre-generata in `lib/cache.ts` con la stessa `id`. Senza cache il manoscritto si analizza comunque dal vivo.
 
+### Collane incluse
+
+La demo copre più reparti (config `config/imprints.ts`):
+
+- **Narrativa** — Sperling & Kupfer, Einaudi Stile Libero, Mondadori Strade Blu *(selezionate di default)*
+- **Poesia** — Ladolfi Editore, Samuele Editore, Interno Poesia
+- **Bambini e ragazzi** — Il Battello a Vapore (narrativa per ragazzi), Topipittori (albi illustrati)
+- **Generi** — Il Giallo Mondadori (giallo), Fanucci Editore (fantasy), Harmony (romance), Bao Publishing (graphic novel)
+
+I chip sono raggruppati per reparto; di default sono attive le tre collane di narrativa (per tenere l'analisi dal vivo rapida e coerente con i demo). Un testo in versi indirizza il fit verso le collane di poesia, un giallo verso Il Giallo Mondadori, e così via — anche in modalità offline.
+
 ### Come aggiungere o modificare una collana
 
-Edita `config/imprints.ts`: aggiungi un oggetto con `id`, `nome`, `gruppo` e una `descrizione` (è il testo iniettato nel prompt per calcolare fit-score e motivazione). Niente altro da toccare: UI e API leggono da lì. Scrivi descrizioni che facciano **divergere** i punteggi.
+Edita `config/imprints.ts`: aggiungi un oggetto con `id`, `nome`, `gruppo`, `reparto` (sezione UI), `profilo` (guida l'euristica offline), una `descrizione` (testo iniettato nel prompt dal vivo) e, se vuoi che sia preselezionata, `defaultOn: true`. Niente altro da toccare: UI e API leggono da lì. Scrivi descrizioni che facciano **divergere** i punteggi.
 
 **Deploy su Vercel**: collegare il repo; Vercel rileva Next.js e builda da solo. Imposta `ANTHROPIC_API_KEY` tra le Environment Variables del progetto.
 
