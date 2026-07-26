@@ -59,9 +59,9 @@ function buildUserPrompt(testo: string, caseEditrici: string): string {
 CASE EDITRICI E LORO COLLANE (calcola un fit per OGNI collana di OGNI casa):
 ${caseEditrici}
 
-Per OGNI collana elencata sopra calcola uno score da 0 a 1 (1 = fit perfetto) e una motivazione di 1-2 frasi specifica di quella collana. Popola "fit_collane" con un elemento per ciascuna collana, indicando "editore" e "collana" con i nomi ESATTI qui sopra. Per ciascuna casa editrice, la collana con lo score più alto è quella che stai suggerendo: assicurati che il migliore fit rifletta davvero l'identità della collana. Lo stesso testo può avere score molto diversi tra collane e tra case: il fit misura il rapporto testo-collana, non una qualità astratta.
+Per ciascuna casa editrice individua la collana con il fit migliore. Popola "fit_collane" così: per OGNI casa includi la collana suggerita e AL MASSIMO 2 collane alternative della stessa casa (le più rilevanti) — quindi al massimo 3 voci per casa, non tutte le collane. Per ogni voce indica "editore" e "collana" con i nomi ESATTI qui sopra, uno "score" da 0 a 1 e una "motivazione": 1 frase per la collana suggerita, molto breve (max 10 parole) per le alternative. Lo stesso testo può avere score molto diversi tra collane e tra case: il fit misura il rapporto testo-collana.
 
-Compila tutti i campi dello schema. La sintesi sia di 4-6 frasi (trama/impianto, struttura, voce). Indica 2-3 comparable con il motivo del paragone. Sii concreto e mai compiacente.
+Compila tutti gli altri campi dello schema. La sintesi sia di 4-6 frasi (trama/impianto, struttura, voce). Indica 2-3 comparable con il motivo del paragone. Sii concreto, sintetico e mai compiacente.
 
 === TESTO DEL MANOSCRITTO ===
 ${testo}

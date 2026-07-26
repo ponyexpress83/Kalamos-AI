@@ -59,6 +59,7 @@ export default function Analyzer({
   });
   const [demoOffline, setDemoOffline] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
+  const [resultNote, setResultNote] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
 
@@ -150,8 +151,12 @@ export default function Analyzer({
       });
     }
 
+    // Motivo dell'eventuale ripiego offline (per dirlo all'utente).
+    let fallbackNote: string | null = null;
+    const troppiEditori = selected.length >= 3;
+
     const work = (async (): Promise<AnalysisResult> => {
-      // Modalità offline: nessuna API. Euristica per qualsiasi testo disponibile.
+      // Modalità offline scelta dall'utente: nessuna API.
       if (demoOffline) {
         if (localText && localText.trim()) return heuristic();
         throw new Error(
@@ -174,7 +179,7 @@ export default function Analyzer({
       }
 
       const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 75_000);
+      const timer = setTimeout(() => ctrl.abort(), 90_000);
       let res: Response;
       try {
         res = await fetch("/api/analyze", {
@@ -184,10 +189,13 @@ export default function Analyzer({
           signal: ctrl.signal,
         });
       } catch {
-        if (localText && localText.trim()) return heuristic();
-        throw new Error(
-          "L'analisi non ha risposto in tempo. Usa un manoscritto demo o attiva la modalità dimostrativa offline.",
-        );
+        if (localText && localText.trim()) {
+          fallbackNote = `Analisi dal vivo non riuscita (timeout).${
+            troppiEditori ? " Hai selezionato più case editrici: riprova con 1-2 per volta." : ""
+          } Sotto trovi un'anteprima offline.`;
+          return heuristic();
+        }
+        throw new Error("L'analisi dal vivo non ha risposto in tempo. Riprova con meno case editrici o un manoscritto demo.");
       } finally {
         clearTimeout(timer);
       }
@@ -199,10 +207,23 @@ export default function Analyzer({
         data = null;
       }
       if (!res.ok || !data) {
-        if (localText && localText.trim()) return heuristic();
+        if (localText && localText.trim()) {
+          const cap =
+            res.status === 503
+              ? "Chiave API non configurata sul server."
+              : res.status === 401
+                ? "Chiave API non valida."
+                : `Analisi dal vivo non riuscita (tempo limite del server${troppiEditori ? "; troppe case editrici selezionate" : ""}).`;
+          fallbackNote = `${cap} Sotto trovi un'anteprima offline; per la scheda reale ${
+            res.status === 503 || res.status === 401
+              ? "configura la chiave su Vercel"
+              : "riprova con 1-2 case editrici (o piano Vercel Pro)"
+          }.`;
+          return heuristic();
+        }
         throw new Error(
           data?.error ||
-            "L'analisi dal vivo ha superato il tempo limite del server. Usa un manoscritto demo o la modalità dimostrativa offline.",
+            "L'analisi dal vivo ha superato il tempo limite del server. Riprova con meno case editrici o un manoscritto demo.",
         );
       }
       return data as AnalysisResult;
@@ -211,6 +232,11 @@ export default function Analyzer({
     try {
       const [r] = await Promise.all([work, delay(MIN_LOADING_MS)]);
       setResult(r);
+      setResultNote(
+        demoOffline
+          ? "Modalità dimostrativa offline attiva: nessuna chiamata all'API."
+          : fallbackNote,
+      );
       setView("result");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Errore durante l'analisi.");
@@ -220,6 +246,7 @@ export default function Analyzer({
 
   function reset() {
     setResult(null);
+    setResultNote(null);
     setView("input");
   }
 
@@ -238,12 +265,19 @@ export default function Analyzer({
           <div className="flex items-center gap-3">
             <span className="font-sans text-xs text-stone-400">
               {result.meta.fonte === "simulata"
-                ? "anteprima simulata · offline"
+                ? resultNote && !demoOffline
+                  ? "anteprima offline · dal vivo non riuscita"
+                  : "anteprima simulata · offline"
                 : "analisi generata dal vivo"}
             </span>
             <PrintButton />
           </div>
         </div>
+        {resultNote && (
+          <div className="no-print mb-5 rounded-xl border border-amber-300 bg-amber-50 p-3 font-sans text-sm text-amber-900">
+            {resultNote}
+          </div>
+        )}
         <SchedaView result={result} />
       </div>
     );
@@ -343,7 +377,8 @@ export default function Analyzer({
         </h2>
         <p className="mb-3 font-sans text-sm text-stone-500">
           Il cliente è l'editore: Kalamos suggerisce in automatico la collana
-          più adatta tra quelle reali del suo catalogo.
+          più adatta tra quelle reali del suo catalogo. Per l'analisi dal vivo
+          bastano 1-2 case editrici — sceglierne molte la rende più lenta.
         </p>
         <PublisherChips
           publishers={publishers}
