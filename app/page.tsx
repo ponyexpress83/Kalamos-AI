@@ -1,15 +1,23 @@
-import Analyzer from "@/components/Analyzer";
-import { manuscripts } from "@/lib/manuscripts";
-import { demoSchede } from "@/lib/cache";
-import { imprints } from "@/config/imprints";
+import Analyzer, { type DemoManuscript } from "@/components/Analyzer";
+import { manuscripts, getManuscriptText } from "@/lib/manuscripts";
+import { publishers } from "@/config/publishers";
 
 export default function HomePage() {
-  const imprintChips = imprints.map((i) => ({
-    id: i.id,
-    nome: i.nome,
-    reparto: i.reparto,
-    profilo: i.profilo,
-    defaultOn: Boolean(i.defaultOn),
+  const demoManuscripts: DemoManuscript[] = manuscripts.map((m) => ({
+    id: m.id,
+    titolo: m.titolo,
+    autore: m.autore,
+    genere: m.genere,
+    parole: m.parole,
+    text: getManuscriptText(m.id) ?? "",
+  }));
+
+  const publisherOptions = publishers.map((p) => ({
+    id: p.id,
+    nome: p.nome,
+    ambito: p.ambito,
+    defaultOn: Boolean(p.defaultOn),
+    collane: p.collane.map((c) => ({ nome: c.nome, profilo: c.profilo })),
   }));
 
   return (
@@ -19,20 +27,17 @@ export default function HomePage() {
           Editorial Intelligence Engine
         </p>
         <h1 className="mt-2 max-w-2xl font-serif text-4xl font-bold leading-tight text-inchiostro">
-          Una scheda di lettura in pochi secondi, in parallelo all'editor.
+          Scegli la casa editrice. Kalamos propone la collana giusta.
         </h1>
         <p className="mt-3 max-w-2xl font-serif text-lg leading-relaxed text-inchiostro/75">
-          Kalamos legge un manoscritto e ne restituisce una valutazione
-          strutturata — sintesi, prosa, comparabili — con un fit-score diverso
-          per ogni collana. Non scrive il libro: lo valuta. L'editor decide.
+          Kalamos legge un manoscritto e ne restituisce una scheda strutturata —
+          sintesi, prosa, comparabili — e, in base al catalogo reale dell'editore
+          scelto, suggerisce automaticamente la collana più adatta. Non scrive il
+          libro: lo valuta. L'editor decide.
         </p>
       </section>
 
-      <Analyzer
-        manuscripts={manuscripts}
-        demoSchede={demoSchede}
-        imprints={imprintChips}
-      />
+      <Analyzer manuscripts={demoManuscripts} publishers={publisherOptions} />
     </div>
   );
 }

@@ -2,14 +2,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import SchedaView from "@/components/SchedaView";
 import PrintButton from "@/components/PrintButton";
-import { getDemoScheda, demoSchede } from "@/lib/cache";
+import { heuristicForDemo } from "@/lib/demo";
+import { manuscripts } from "@/lib/manuscripts";
 
 export function generateStaticParams() {
-  return Object.keys(demoSchede).map((id) => ({ id }));
+  return manuscripts.map((m) => ({ id: m.id }));
 }
 
 export default function SchedaPage({ params }: { params: { id: string } }) {
-  const result = getDemoScheda(params.id);
+  const result = heuristicForDemo(params.id);
   if (!result) notFound();
 
   return (

@@ -10,7 +10,7 @@ L'idea: invece di gestire la candidatura come una serie di chat sparse, qui c'è
 
 ## Demo cliccabile (app Next.js)
 
-La demo dimostrativa del prodotto: **Analizza** → scegli un manoscritto (4 testi originali precaricati) oppure incolla un testo o carica un `.txt`/`.pdf` → seleziona una o più collane → ottieni una **scheda di lettura strutturata** con **fit-score diverso per collana** (sintesi, voto prosa, comparabili, forze/criticità, raccomandazione). La vista **Redazione** mostra una tabella ordinabile di tutti i manoscritti analizzati, con KPI di throughput.
+La demo dimostrativa del prodotto: **Analizza** → scegli un manoscritto (4 testi originali precaricati) oppure incolla un testo o carica un `.txt`/`.pdf` → **scegli la casa editrice** (il cliente) → ottieni una **scheda di lettura strutturata** (sintesi, voto prosa, comparabili, forze/criticità, raccomandazione) in cui Kalamos **suggerisce automaticamente la collana più adatta** tra quelle **reali** del catalogo di quell'editore. La vista **Redazione** mostra una tabella ordinabile dei manoscritti con la collana suggerita.
 
 L'analisi dal vivo gira su Claude (Anthropic) in una route server (`/api/analyze`) che **non espone mai la chiave al client**. Le 4 schede demo sono in cache: la demo parte istantanea anche **senza chiave e offline**; la chiave serve solo per analizzare testi nuovi (incolla/upload) o per "ri-analizzare dal vivo" un demo.
 
@@ -35,7 +35,7 @@ Variabili d'ambiente (vedi `.env.example`):
 
 L'analisi dal vivo su Claude produce una scheda ricca ma richiede ~20–40s: **non rientra nei 10s delle function del piano Vercel Hobby**. Per rendere la demo provabile **con qualsiasi manoscritto**, in qualunque contesto (dal palco, su Hobby, offline, o senza chiave), c'è una **modalità dimostrativa offline** (checkbox sotto "Analizza"):
 
-- Genera una scheda **istantanea** da un'euristica sui segnali del testo (lunghezza, dialogo, cliché, avverbi, lessico di genere) e fa comunque **divergere i fit-score per collana** (testo commerciale → Sperling alto; letterario → Einaudi/Strade Blu alti; slush → scarta).
+- Genera una scheda **istantanea** da un'euristica sui segnali del testo (versi, dialogo, cliché, avverbi, lessico di genere) e suggerisce comunque una **collana reale per editore** (poesia in versi → case di poesia; giallo → *La memoria* di Sellerio; slush → scarta).
 - È **chiaramente etichettata come "anteprima simulata"** — non è inferenza AI. Serve a provare il flusso, non a sostituire la valutazione reale.
 - Scatta anche **in automatico come fallback** se l'analisi dal vivo va in timeout o manca la chiave (per testo incollato / `.txt`; i PDF richiedono la chiave).
 
@@ -47,20 +47,20 @@ In sintesi: i 4 demo in cache e la modalità offline garantiscono che la demo **
 2. Aggiungi una voce in `lib/manuscripts.ts` (`id`, `file`, `titolo`, `autore`, `genere`, `parole`).
 3. (Facoltativo) Per la scheda istantanea in cache e la presenza in Redazione, aggiungi la scheda pre-generata in `lib/cache.ts` con la stessa `id`. Senza cache il manoscritto si analizza comunque dal vivo.
 
-### Collane incluse
+### Case editrici e collane (reali)
 
-La demo copre più reparti (config `config/imprints.ts`):
+Si seleziona la **casa editrice** (il cliente); Kalamos suggerisce la **collana** più adatta tra quelle **reali** del suo catalogo. Case e collane sono verificate — nessuna collana inventata (config `config/publishers.ts`), raggruppate per ambito:
 
-- **Narrativa** — Sperling & Kupfer, Einaudi Stile Libero, Mondadori Strade Blu *(selezionate di default)*
-- **Poesia** — Ladolfi Editore, Samuele Editore, Interno Poesia
-- **Bambini e ragazzi** — Il Battello a Vapore (narrativa per ragazzi), Topipittori (albi illustrati)
-- **Generi** — Il Giallo Mondadori (giallo), Fanucci Editore (fantasy), Harmony (romance), Bao Publishing (graphic novel)
+- **Poesia** — Giuliano Ladolfi Editore (Atelier poesia, Perle poesia, Zaffiro, Onice, Opale) · Samuele Editore (Scilla, La Gialla, I Poeti di Pordenone) · Interno Poesia (Interno Libri, Books, Novecento, Classici, Beta)
+- **Narrativa** — Einaudi (Supercoralli, I Coralli, Einaudi Stile Libero) · Sellerio (La memoria, Il contesto, La rosa dei venti) *(default)*
+- **Bambini e ragazzi** — Il Battello a Vapore/Piemme (Serie Bianca, Azzurra, Arancio, Rossa per fasce d'età) · Topipittori (Albi, Parola magica, Gli anni in tasca, PiPPO)
+- **Fantasy e fantascienza** — Oscar Vault/Mondadori (Oscar Fantastica, Draghi, Fabula, Ink)
 
-I chip sono raggruppati per reparto; di default sono attive le tre collane di narrativa (per tenere l'analisi dal vivo rapida e coerente con i demo). Un testo in versi indirizza il fit verso le collane di poesia, un giallo verso Il Giallo Mondadori, e così via — anche in modalità offline.
+Di default sono attive Einaudi e Sellerio (i demo sono narrativa). Un testo in versi indirizza il fit verso le case di poesia, un giallo verso *La memoria* di Sellerio, e così via — anche in modalità offline.
 
-### Come aggiungere o modificare una collana
+### Come aggiungere o modificare una casa editrice / collana
 
-Edita `config/imprints.ts`: aggiungi un oggetto con `id`, `nome`, `gruppo`, `reparto` (sezione UI), `profilo` (guida l'euristica offline), una `descrizione` (testo iniettato nel prompt dal vivo) e, se vuoi che sia preselezionata, `defaultOn: true`. Niente altro da toccare: UI e API leggono da lì. Scrivi descrizioni che facciano **divergere** i punteggi.
+Edita `config/publishers.ts`: ogni casa ha `id`, `nome`, `ambito` (sezione UI), `descrizione` (iniettata nel prompt dal vivo), `defaultOn` opzionale e l'elenco `collane`. Ogni collana ha `nome`, `descrizione` (reale) e `profilo` (guida l'euristica offline). Usa **solo collane reali** e descrizioni che facciano divergere i punteggi.
 
 **Deploy su Vercel**: collegare il repo; Vercel rileva Next.js e builda da solo. Imposta `ANTHROPIC_API_KEY` tra le Environment Variables del progetto.
 

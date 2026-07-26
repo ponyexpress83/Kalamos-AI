@@ -1,33 +1,25 @@
 import type { AnalysisResult, Raccomandazione, Scheda } from "./schema";
-import type { Profilo } from "../config/imprints";
+import type { Profilo } from "../config/publishers";
 
 /**
  * Valutazione EURISTICA offline (nessuna inferenza AI).
  *
  * Rende la demo sempre provabile — senza chiave API, offline, o quando
- * l'analisi dal vivo va in timeout. Deriva una scheda plausibile da segnali
- * testuali di superficie (lunghezza, dialogo, versi, cliché, avverbi, lessico
- * di genere) e fa divergere i fit-score in base al `profilo` di ogni collana.
+ * l'analisi dal vivo va in timeout. Deriva una scheda plausibile dai segnali
+ * di superficie del testo (versi, dialogo, cliché, avverbi, lessico di genere)
+ * e assegna un fit a ogni COLLANA di ogni casa editrice selezionata, in base
+ * al `profilo` della collana. Il risultato è sempre `fonte: "simulata"`.
  *
- * Modulo PURO (niente fs / API): gira sia lato client sia lato server. Il
- * risultato è sempre `fonte: "simulata"` e la scheda lo dichiara.
+ * Modulo PURO (niente fs / API): gira sia lato client sia lato server.
  */
 
 const CLICHES = [
-  "notte buia e tempestosa",
-  "gelare il sangue",
-  "cuore spezzato",
-  "occhi azzurri penetranti",
-  "un uomo di poche parole",
-  "silenzio irreale",
-  "un brivido lungo la schiena",
-  "il destino aveva deciso",
-  "non credeva nelle coincidenze",
-  "sangue nelle vene",
-  "una lacrima solitaria",
+  "notte buia e tempestosa", "gelare il sangue", "cuore spezzato",
+  "occhi azzurri penetranti", "un uomo di poche parole", "silenzio irreale",
+  "un brivido lungo la schiena", "il destino aveva deciso",
+  "non credeva nelle coincidenze", "sangue nelle vene", "una lacrima solitaria",
   "come un fulmine a ciel sereno",
 ];
-
 const KW_COMMERCIAL = ["amore", "cuore", "bacio", "baciò", "vacanza", "sorrise", "sorriso", "estate", "mare", "spiaggia", "sposa", "matrimonio", "romantic", "innamor", "abbracci"];
 const KW_THRILLER = ["omicidio", "ispettore", "commissario", "maresciallo", "sangue", "morto", "morte", "indagine", "delitto", "assassino", "cadavere", "pistola", "vittima", "detective", "indizio"];
 const KW_LITERARY = ["memoria", "silenzio", "tempo", "terra", "madre", "padre", "ricordo", "luce", "ombra", "stagione", "infanzia", "vetro", "assenza"];
@@ -35,21 +27,10 @@ const KW_FANTASY = ["drago", "draghi", "magia", "magico", "mago", "maga", "streg
 const KW_CHILDREN = ["bambino", "bambina", "bimbo", "bimba", "mamma", "papà", "orso", "orsetto", "coniglio", "bosco", "scuola", "giocare", "favola", "fiaba", "draghetto", "maestra", "nonno", "nonna"];
 
 interface Signals {
-  wc: number;
-  sentences: number;
-  avgLen: number;
-  avgWordLen: number;
-  dialogueRatio: number;
-  adverbsPer1000: number;
-  cliches: number;
-  commercial: number;
-  thriller: number;
-  literary: number;
-  fantasy: number;
-  children: number;
-  verseLike: boolean;
-  simple: boolean;
-  firstSentence: string;
+  wc: number; sentences: number; avgLen: number; avgWordLen: number;
+  dialogueRatio: number; adverbsPer1000: number; cliches: number;
+  commercial: number; thriller: number; literary: number; fantasy: number;
+  children: number; verseLike: boolean; simple: boolean; firstSentence: string;
 }
 
 function analyzeSignals(text: string): Signals {
@@ -66,26 +47,20 @@ function analyzeSignals(text: string): Signals {
   const cliches = CLICHES.reduce((n, c) => (lower.includes(c) ? n + 1 : n), 0);
   const countKw = (kws: string[]) => kws.reduce((n, k) => (lower.includes(k) ? n + 1 : n), 0);
 
-  // Rilevamento versi: molte righe brevi, con più righe che frasi.
   const lines = raw.split("\n");
   const nonEmpty = lines.filter((l) => l.trim().length > 0);
   const shortLines = nonEmpty.filter((l) => l.trim().length <= 60).length;
   const avgLineWords = wc / Math.max(1, nonEmpty.length);
   const verseLike =
-    nonEmpty.length >= 4 &&
-    shortLines / nonEmpty.length > 0.6 &&
-    avgLineWords < 9 &&
-    nonEmpty.length / sentences > 1.2;
+    nonEmpty.length >= 4 && shortLines / nonEmpty.length > 0.6 &&
+    avgLineWords < 9 && nonEmpty.length / sentences > 1.2;
 
   const avgWordLen = wc > 0 ? charTotal / wc : 0;
   const avgLen = wc / sentences;
   const simple = avgWordLen < 4.7 && avgLen < 13;
 
   return {
-    wc,
-    sentences,
-    avgLen,
-    avgWordLen,
+    wc, sentences, avgLen, avgWordLen,
     dialogueRatio: quotes / sentences,
     adverbsPer1000: wc > 0 ? (adverbs / wc) * 1000 : 0,
     cliches,
@@ -94,27 +69,15 @@ function analyzeSignals(text: string): Signals {
     literary: countKw(KW_LITERARY),
     fantasy: countKw(KW_FANTASY),
     children: countKw(KW_CHILDREN),
-    verseLike,
-    simple,
+    verseLike, simple,
     firstSentence: (verseLike ? nonEmpty[0] : sentenceParts[0] ?? clean).slice(0, 180),
   };
 }
 
-function clamp(n: number, lo: number, hi: number): number {
-  return Math.max(lo, Math.min(hi, n));
-}
-function round1(n: number): number {
-  return Math.round(n * 2) / 2;
-}
+const clamp = (n: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, n));
+const round1 = (n: number) => Math.round(n * 2) / 2;
 
-type Bucket =
-  | "poesia"
-  | "fantasy"
-  | "ragazzi"
-  | "thriller"
-  | "commercial"
-  | "literary"
-  | "neutro";
+type Bucket = "poesia" | "fantasy" | "ragazzi" | "thriller" | "commercial" | "literary" | "neutro";
 
 function dominantBucket(s: Signals): Bucket {
   if (s.verseLike) return "poesia";
@@ -141,42 +104,40 @@ function prosaVoto(s: Signals): number {
   return clamp(round1(v), 2, 9);
 }
 
-/** Fit 0-1 di una collana secondo il suo profilo e i segnali del testo. */
+/** Fit 0-1 di una collana in base al suo profilo e ai segnali del testo. */
 function fitFor(profilo: Profilo, s: Signals, voto: number): number {
   const q = (voto - 5) / 10;
   const dlg = clamp(s.dialogueRatio, 0, 1.5);
+  const verse = s.verseLike ? 1 : 0;
   let base: number;
 
   switch (profilo) {
-    case "narrativa_commerciale":
-      base = 0.42 + 0.07 * s.commercial + 0.12 * dlg - 0.06 * s.literary - 0.02 * s.thriller - (s.verseLike ? 0.3 : 0);
+    case "poesia":
+      base = (s.verseLike ? 0.75 : 0.14) + 0.04 * s.literary + 0.3 * q - 0.12 * dlg - 0.05 * s.commercial - 0.05 * s.thriller;
+      break;
+    case "narrativa":
+      base = 0.4 + 0.07 * s.literary + 0.5 * q - 0.05 * s.commercial - 0.03 * s.thriller - 0.28 * verse;
       break;
     case "narrativa_autore":
-      base = 0.34 + 0.08 * s.literary + 0.045 * s.thriller + 0.6 * q - 0.06 * s.commercial - (s.verseLike ? 0.25 : 0);
-      break;
-    case "narrativa_upmarket":
-      base = 0.4 + 0.07 * s.literary + 0.55 * q - 0.05 * s.commercial - 0.03 * s.thriller - (s.verseLike ? 0.25 : 0);
-      break;
-    case "poesia":
-      base = (s.verseLike ? 0.72 : 0.14) + 0.04 * s.literary + 0.3 * q - 0.12 * dlg - 0.05 * s.commercial - 0.05 * s.thriller;
-      break;
-    case "ragazzi":
-      base = 0.3 + (s.simple ? 0.28 : 0) + 0.06 * s.children + 0.05 * dlg - 0.07 * s.thriller - 0.04 * s.literary - (s.verseLike ? 0.15 : 0);
-      break;
-    case "albi":
-      base = 0.16 + (s.wc < 300 ? 0.38 : s.wc > 800 ? -0.05 : 0.1) + (s.simple ? 0.18 : 0) + 0.05 * s.children;
+      base = 0.34 + 0.08 * s.literary + 0.05 * s.thriller + 0.6 * q - 0.06 * s.commercial - 0.25 * verse;
       break;
     case "giallo":
-      base = 0.34 + 0.11 * s.thriller + 0.04 * dlg + 0.03 * s.commercial - 0.05 * s.literary - (s.verseLike ? 0.3 : 0);
+      base = 0.34 + 0.11 * s.thriller + 0.04 * dlg + 0.03 * s.commercial - 0.05 * s.literary - 0.3 * verse;
       break;
     case "fantasy":
-      base = 0.3 + 0.13 * s.fantasy + 0.04 * dlg + 0.03 * s.literary - (s.verseLike ? 0.25 : 0);
+      base = 0.3 + 0.13 * s.fantasy + 0.04 * dlg + 0.03 * s.literary - 0.25 * verse;
       break;
-    case "romance":
-      base = 0.34 + 0.1 * s.commercial + 0.06 * dlg - 0.05 * s.literary - 0.05 * s.thriller - (s.verseLike ? 0.3 : 0);
+    case "albo":
+      base = 0.16 + (s.wc < 300 ? 0.4 : s.wc > 800 ? -0.05 : 0.1) + (s.simple ? 0.18 : 0) + 0.05 * s.children;
       break;
-    case "graphic":
-      base = 0.4 + 0.06 * dlg + 0.25 * q - (s.verseLike ? 0.2 : 0);
+    case "ragazzi_piccoli":
+      base = 0.25 + (s.simple ? 0.3 : 0) + (s.wc < 400 ? 0.2 : s.wc > 1200 ? -0.15 : 0) + 0.05 * s.children + 0.04 * dlg - 0.1 * verse;
+      break;
+    case "ragazzi_medi":
+      base = 0.3 + (s.simple ? 0.2 : 0) + (s.avgLen < 16 ? 0.12 : 0) + 0.05 * s.children + 0.03 * dlg - 0.1 * verse;
+      break;
+    case "ragazzi_grandi":
+      base = 0.32 + 0.06 * s.children + 0.03 * dlg + (s.avgLen > 14 ? 0.1 : 0) - 0.03 * s.thriller - 0.1 * verse;
       break;
     default:
       base = 0.4 + 0.4 * q;
@@ -194,55 +155,50 @@ function raccFromVoto(voto: number): Raccomandazione {
 
 function genereFor(b: Bucket): string {
   const map: Record<Bucket, string> = {
-    poesia: "Poesia (stima)",
-    fantasy: "Fantasy / fantastico (stima)",
-    ragazzi: "Narrativa per ragazzi (stima)",
-    thriller: "Giallo / thriller (stima)",
-    commercial: "Commercial / feel-good (stima)",
-    literary: "Narrativa letteraria (stima)",
+    poesia: "Poesia (stima)", fantasy: "Fantasy / fantastico (stima)",
+    ragazzi: "Narrativa per ragazzi (stima)", thriller: "Giallo / thriller (stima)",
+    commercial: "Commercial / feel-good (stima)", literary: "Narrativa letteraria (stima)",
     neutro: "Narrativa non classificata (stima)",
   };
   return map[b];
 }
-
 function comparablesFor(b: Bucket): Scheda["comparable_titles"] {
   const map: Record<Bucket, Scheda["comparable_titles"]> = {
     poesia: [{ titolo: "Raccolta di poesia contemporanea di catalogo", autore: "—", perche: "Struttura in versi e lessico affini alla poesia d'autore." }],
     fantasy: [{ titolo: "Fantasy di catalogo con world-building", autore: "—", perche: "Immaginario e lessico fantastico riconoscibili." }],
     ragazzi: [{ titolo: "Narrativa per ragazzi per fasce di lettura", autore: "—", perche: "Lingua semplice e temi affini al pubblico 6-12." }],
     thriller: [{ titolo: "Giallo/noir di catalogo", autore: "—", perche: "Lessico d'indagine e struttura di genere." }],
-    commercial: [
-      { titolo: "Filone feel-good commerciale", autore: "—", perche: "Leggibilità e lessico romance da largo pubblico." },
-      { titolo: "Women's fiction di catalogo", autore: "—", perche: "Dialogo brillante e hook emotivo." },
-    ],
+    commercial: [{ titolo: "Filone feel-good commerciale", autore: "—", perche: "Leggibilità e lessico romance da largo pubblico." }],
     literary: [{ titolo: "Narrativa d'autore contemporanea", autore: "—", perche: "Lessico intimista e densità della prosa." }],
     neutro: [{ titolo: "Comparabile non determinato", autore: "—", perche: "Segnali insufficienti per un accostamento affidabile." }],
   };
   return map[b];
 }
-
 function targetFor(b: Bucket): string {
   const map: Record<Bucket, string> = {
     poesia: "Lettore di poesia contemporanea (stima automatica).",
     fantasy: "Lettore di fantasy e fantastico (stima automatica).",
-    ragazzi: "Giovani lettori 6-12 anni e famiglie (stima automatica).",
-    thriller: "Lettore di giallo/noir di consumo (stima automatica).",
-    commercial: "Pubblico ampio del feel-good e del women's fiction (stima automatica).",
+    ragazzi: "Giovani lettori e famiglie (stima automatica).",
+    thriller: "Lettore di giallo/noir (stima automatica).",
+    commercial: "Pubblico ampio del feel-good (stima automatica).",
     literary: "Lettore di narrativa letteraria (stima automatica).",
     neutro: "Target non determinato automaticamente.",
   };
   return map[b];
 }
 
-export interface HeuristicImprint {
+export interface HeuristicCollana {
   nome: string;
   profilo: Profilo;
 }
-
+export interface HeuristicPublisher {
+  nome: string;
+  collane: HeuristicCollana[];
+}
 export interface HeuristicInput {
   titolo?: string;
   autore?: string;
-  imprints: HeuristicImprint[];
+  publishers: HeuristicPublisher[];
 }
 
 export function analyzeHeuristic(text: string, input: HeuristicInput): AnalysisResult {
@@ -251,12 +207,15 @@ export function analyzeHeuristic(text: string, input: HeuristicInput): AnalysisR
   const bucket = dominantBucket(s);
   const racc = raccFromVoto(voto);
 
-  const fit_collane = input.imprints.map((imp) => ({
-    collana: imp.nome,
-    score: fitFor(imp.profilo, s, voto),
-    motivazione:
-      "Stima offline dai segnali del testo (versi, dialogo, cliché, avverbi, lessico di genere): rapporto testo-collana indicativo, non inferenza editoriale.",
-  }));
+  const fit_collane = input.publishers.flatMap((p) =>
+    p.collane.map((c) => ({
+      editore: p.nome,
+      collana: c.nome,
+      score: fitFor(c.profilo, s, voto),
+      motivazione:
+        "Stima offline dai segnali del testo (versi, dialogo, lessico di genere): rapporto testo-collana indicativo, non inferenza editoriale.",
+    })),
+  );
 
   const temi: string[] = [];
   if (s.verseLike) temi.push("testo in versi");
@@ -301,7 +260,7 @@ export function analyzeHeuristic(text: string, input: HeuristicInput): AnalysisR
     criticita,
     fit_collane,
     raccomandazione: racc,
-    razionale_raccomandazione: `Stima offline: voto prosa ${voto}/10 → ${racc.replace("_", " ")}. È un'anteprima automatica pensata per provare il flusso; la valutazione reale richiede l'analisi dal vivo su Claude.`,
+    razionale_raccomandazione: `Stima offline: voto prosa ${voto}/10 → ${racc.replace("_", " ")}. Anteprima automatica per provare il flusso; la valutazione reale richiede l'analisi dal vivo su Claude.`,
     nota_metodologica:
       "Anteprima SIMULATA (offline): valutazione euristica basata su segnali testuali di superficie, non su inferenza AI. Attiva l'analisi dal vivo per la scheda reale. Supporto alla decisione, non sostituzione del giudizio editoriale.",
   };
@@ -314,7 +273,7 @@ export function analyzeHeuristic(text: string, input: HeuristicInput): AnalysisR
       parole: s.wc,
       valutato_su_estratto: false,
       parole_inviate: s.wc,
-      collane_richieste: input.imprints.map((i) => i.nome),
+      editori_richiesti: input.publishers.map((p) => p.nome),
       tempo_secondi: 1,
       fonte: "simulata",
     },

@@ -1,7 +1,7 @@
 import type { AnalysisResult } from "@/lib/schema";
 import { raccomandazioneStyle, prosaColor } from "@/lib/format";
 import RecommendationBadge from "./RecommendationBadge";
-import FitBars from "./FitBars";
+import ProposteCollana from "./ProposteCollana";
 
 function Section({
   title,
@@ -78,15 +78,16 @@ export default function SchedaView({ result }: { result: AnalysisResult }) {
         <RecommendationBadge value={scheda.raccomandazione} />
       </div>
 
-      {/* Fit di collana — il differenziale */}
+      {/* Collana suggerita per editore — il differenziale */}
       <div className="mb-2 rounded-xl border border-carta-scura bg-white/50 p-5">
         <h3 className="mb-4 font-sans text-xs font-semibold uppercase tracking-wider text-accento">
-          Fit di collana
+          Collana suggerita per editore
         </h3>
-        <FitBars fit={scheda.fit_collane} />
+        <ProposteCollana fit={scheda.fit_collane} />
         <p className="mt-4 font-sans text-xs leading-relaxed text-stone-500">
-          Lo stesso testo riceve un punteggio diverso a seconda della collana: il
-          fit misura il rapporto testo–collana, non una qualità astratta.
+          Scelta la casa editrice, Kalamos propone la collana più adatta tra
+          quelle reali di quel catalogo: il fit misura il rapporto testo–collana,
+          non una qualità astratta.
         </p>
       </div>
 

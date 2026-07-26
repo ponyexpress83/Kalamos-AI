@@ -13,6 +13,7 @@ export const comparableTitleSchema = z.object({
 });
 
 export const fitCollanaSchema = z.object({
+  editore: z.string(),
   collana: z.string(),
   score: z.number().min(0).max(1), // 0-1
   motivazione: z.string(),
@@ -57,9 +58,9 @@ export interface AnalysisMeta {
   parole: number;
   valutato_su_estratto: boolean;
   parole_inviate: number;
-  collane_richieste: string[];
+  editori_richiesti: string[];
   tempo_secondi: number;
-  fonte: "demo" | "live" | "simulata"; // cache · inferenza reale · euristica offline
+  fonte: "live" | "simulata"; // inferenza reale · euristica offline
 }
 
 export interface AnalysisResult {

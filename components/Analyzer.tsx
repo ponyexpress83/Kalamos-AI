@@ -3,12 +3,20 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { AnalysisResult } from "@/lib/schema";
-import type { ManuscriptMeta } from "@/lib/manuscripts";
 import { analyzeHeuristic } from "@/lib/heuristic";
 import SchedaView from "./SchedaView";
 import LoadingSteps from "./LoadingSteps";
-import ImprintChips, { type ImprintChip } from "./ImprintChips";
+import PublisherChips, { type PublisherOption } from "./PublisherChips";
 import PrintButton from "./PrintButton";
+
+export interface DemoManuscript {
+  id: string;
+  titolo: string;
+  autore: string;
+  genere: string;
+  parole: number;
+  text: string;
+}
 
 type View = "input" | "loading" | "result";
 
@@ -22,66 +30,55 @@ interface UploadedFile {
 const MIN_LOADING_MS = 3200;
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
 
-function delay(ms: number) {
-  return new Promise((r) => setTimeout(r, ms));
-}
+const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 function abToBase64(buf: ArrayBuffer): string {
   let binary = "";
   const bytes = new Uint8Array(buf);
   const chunk = 0x8000;
   for (let i = 0; i < bytes.length; i += chunk) {
-    binary += String.fromCharCode.apply(
-      null,
-      Array.from(bytes.subarray(i, i + chunk)),
-    );
+    binary += String.fromCharCode.apply(null, Array.from(bytes.subarray(i, i + chunk)));
   }
   return btoa(binary);
 }
 
 export default function Analyzer({
   manuscripts,
-  demoSchede,
-  imprints,
+  publishers,
 }: {
-  manuscripts: ManuscriptMeta[];
-  demoSchede: Record<string, AnalysisResult>;
-  imprints: ImprintChip[];
+  manuscripts: DemoManuscript[];
+  publishers: PublisherOption[];
 }) {
   const [view, setView] = useState<View>("input");
   const [demoId, setDemoId] = useState<string | null>(null);
   const [pasted, setPasted] = useState("");
   const [file, setFile] = useState<UploadedFile | null>(null);
   const [selected, setSelected] = useState<string[]>(() => {
-    const on = imprints.filter((i) => i.defaultOn).map((i) => i.id);
-    return on.length > 0 ? on : imprints.map((i) => i.id);
+    const on = publishers.filter((p) => p.defaultOn).map((p) => p.id);
+    return on.length > 0 ? on : publishers.slice(0, 2).map((p) => p.id);
   });
-  const [live, setLive] = useState(false);
   const [demoOffline, setDemoOffline] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
 
-  const nameById = useMemo(() => {
-    const m: Record<string, string> = {};
-    imprints.forEach((i) => (m[i.id] = i.nome));
+  const pubById = useMemo(() => {
+    const m: Record<string, PublisherOption> = {};
+    publishers.forEach((p) => (m[p.id] = p));
     return m;
-  }, [imprints]);
+  }, [publishers]);
 
-  const profiloById = useMemo(() => {
-    const m: Record<string, ImprintChip["profilo"]> = {};
-    imprints.forEach((i) => (m[i.id] = i.profilo));
+  const manuscriptById = useMemo(() => {
+    const m: Record<string, DemoManuscript> = {};
+    manuscripts.forEach((x) => (m[x.id] = x));
     return m;
-  }, [imprints]);
+  }, [manuscripts]);
 
-  const hasSource =
-    demoId !== null || pasted.trim().length > 0 || file !== null;
+  const hasSource = demoId !== null || pasted.trim().length > 0 || file !== null;
   const canAnalyze = hasSource && selected.length > 0;
 
-  function toggleImprint(id: string) {
-    setSelected((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
-    );
+  function togglePublisher(id: string) {
+    setSelected((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
   }
 
   function selectDemo(id: string) {
@@ -124,62 +121,45 @@ export default function Analyzer({
     }
   }
 
-  function cachedFor(id: string): AnalysisResult | null {
-    const base = demoSchede[id];
-    if (!base) return null;
-    const wantNames = selected.map((sid) => nameById[sid]);
-    const fit = base.scheda.fit_collane.filter((f) =>
-      wantNames.includes(f.collana),
-    );
-    return {
-      scheda: { ...base.scheda, fit_collane: fit.length ? fit : base.scheda.fit_collane },
-      meta: { ...base.meta, collane_richieste: wantNames },
-    };
-  }
-
   async function analyze() {
     if (!canAnalyze) return;
     setError(null);
     setView("loading");
 
-    // Testo disponibile lato client (paste o .txt): abilita l'euristica offline.
+    const demo = demoId ? manuscriptById[demoId] : undefined;
     const localText =
-      file?.kind === "txt"
-        ? file.text
-        : !demoId && !file
-          ? pasted
-          : undefined;
-    const localTitolo = file?.kind === "txt"
-      ? file.name.replace(/\.[^.]+$/, "")
-      : "Testo incollato";
-    const selectedImprints = selected.map((id) => ({
-      nome: nameById[id],
-      profilo: profiloById[id],
+      demo?.text ??
+      (file?.kind === "txt" ? file.text : !file && !demoId ? pasted : undefined);
+    const localTitolo = demo
+      ? demo.titolo
+      : file?.kind === "txt"
+        ? file.name.replace(/\.[^.]+$/, "")
+        : "Testo incollato";
+    const localAutore = demo?.autore;
+
+    const selectedPublishers = selected.map((id) => ({
+      nome: pubById[id].nome,
+      collane: pubById[id].collane,
     }));
 
     function heuristic(): AnalysisResult {
       return analyzeHeuristic(localText as string, {
         titolo: localTitolo,
-        imprints: selectedImprints,
+        autore: localAutore,
+        publishers: selectedPublishers,
       });
     }
 
     const work = (async (): Promise<AnalysisResult> => {
-      // Demo + collane in cache → risposta istantanea (anche in modalità offline)
-      if (demoId && (!live || demoOffline)) {
-        const cached = cachedFor(demoId);
-        if (cached) return cached;
-      }
-
-      // Modalità dimostrativa offline: nessuna API. Euristica per testo/.txt.
+      // Modalità offline: nessuna API. Euristica per qualsiasi testo disponibile.
       if (demoOffline) {
         if (localText && localText.trim()) return heuristic();
         throw new Error(
-          "L'anteprima offline non è disponibile per i PDF né per i demo senza scheda in cache. Usa un testo/.txt, oppure disattiva la modalità offline per l'analisi dal vivo.",
+          "L'anteprima offline non è disponibile per i PDF. Usa testo/.txt/un demo, oppure disattiva la modalità offline.",
         );
       }
 
-      const body: Record<string, unknown> = { imprintIds: selected };
+      const body: Record<string, unknown> = { publisherIds: selected };
       if (demoId) {
         body.manuscriptId = demoId;
       } else if (file?.kind === "pdf") {
@@ -204,18 +184,14 @@ export default function Analyzer({
           signal: ctrl.signal,
         });
       } catch {
-        // Rete/timeout: se abbiamo il testo in locale, ripieghiamo sull'euristica
-        // così la demo resta sempre provabile.
         if (localText && localText.trim()) return heuristic();
         throw new Error(
-          "L'analisi non ha risposto in tempo. Usa un manoscritto demo (istantaneo) o attiva la modalità dimostrativa offline.",
+          "L'analisi non ha risposto in tempo. Usa un manoscritto demo o attiva la modalità dimostrativa offline.",
         );
       } finally {
         clearTimeout(timer);
       }
 
-      // Un timeout della funzione serverless (es. Vercel Hobby, 10s) risponde
-      // con una pagina HTML, non JSON: gestiamolo con un fallback all'euristica.
       let data: (AnalysisResult & { error?: string }) | null = null;
       try {
         data = await res.json();
@@ -247,9 +223,7 @@ export default function Analyzer({
     setView("input");
   }
 
-  if (view === "loading") {
-    return <LoadingSteps />;
-  }
+  if (view === "loading") return <LoadingSteps />;
 
   if (view === "result" && result) {
     return (
@@ -263,11 +237,9 @@ export default function Analyzer({
           </button>
           <div className="flex items-center gap-3">
             <span className="font-sans text-xs text-stone-400">
-              {result.meta.fonte === "demo"
-                ? "scheda dimostrativa in cache"
-                : result.meta.fonte === "simulata"
-                  ? "anteprima simulata · offline"
-                  : "analisi generata dal vivo"}
+              {result.meta.fonte === "simulata"
+                ? "anteprima simulata · offline"
+                : "analisi generata dal vivo"}
             </span>
             <PrintButton />
           </div>
@@ -277,7 +249,6 @@ export default function Analyzer({
     );
   }
 
-  // ── Vista input
   return (
     <div className="space-y-10">
       {/* 1. Manoscritti demo */}
@@ -286,8 +257,7 @@ export default function Analyzer({
           Scegli un manoscritto
         </h2>
         <p className="mb-4 font-sans text-sm text-stone-500">
-          Quattro testi originali, precaricati per mostrare l'intera gamma di
-          esiti.
+          Quattro testi originali precaricati, oppure incolla/carica il tuo.
         </p>
         <div className="grid gap-3 sm:grid-cols-2">
           {manuscripts.map((m) => {
@@ -331,7 +301,7 @@ export default function Analyzer({
               }
             }}
             rows={6}
-            placeholder="Incolla qui l'incipit o l'intero manoscritto…"
+            placeholder="Incolla qui l'incipit, una poesia o l'intero manoscritto…"
             className="w-full resize-y rounded-xl border border-carta-scura bg-white/60 p-3 font-serif text-sm leading-relaxed text-inchiostro outline-none focus:border-accento"
           />
         </div>
@@ -362,24 +332,23 @@ export default function Analyzer({
               </span>
             )}
           </label>
-          {fileError && (
-            <p className="mt-2 font-sans text-xs text-accento">{fileError}</p>
-          )}
+          {fileError && <p className="mt-2 font-sans text-xs text-accento">{fileError}</p>}
         </div>
       </section>
 
-      {/* 3. Collane */}
+      {/* 3. Case editrici */}
       <section>
         <h2 className="mb-1 font-serif text-xl font-bold text-inchiostro">
-          Collane target
+          Scegli la casa editrice
         </h2>
         <p className="mb-3 font-sans text-sm text-stone-500">
-          Lo stesso testo riceve un fit-score diverso per ciascuna collana.
+          Il cliente è l'editore: Kalamos suggerisce in automatico la collana
+          più adatta tra quelle reali del suo catalogo.
         </p>
-        <ImprintChips
-          imprints={imprints}
+        <PublisherChips
+          publishers={publishers}
           selected={selected}
-          onToggle={toggleImprint}
+          onToggle={togglePublisher}
         />
       </section>
 
@@ -398,20 +367,9 @@ export default function Analyzer({
           >
             Analizza
           </button>
-          {demoId && (
-            <label className="flex items-center gap-2 font-sans text-xs text-stone-500">
-              <input
-                type="checkbox"
-                checked={live}
-                onChange={(e) => setLive(e.target.checked)}
-                className="accent-accento"
-              />
-              Ri-analizza dal vivo con l'API (anziché la scheda in cache)
-            </label>
-          )}
           {!canAnalyze && (
             <span className="font-sans text-xs text-stone-400">
-              Scegli un testo e almeno una collana.
+              Scegli un testo e almeno una casa editrice.
             </span>
           )}
         </div>
@@ -427,10 +385,9 @@ export default function Analyzer({
             <span className="font-medium text-inchiostro">
               Modalità dimostrativa offline
             </span>{" "}
-            — anteprima istantanea senza API (euristica sui segnali del testo,
-            non inferenza AI). Utile dal vivo, su qualsiasi manoscritto incollato
-            o .txt, anche senza chiave o connessione. Il risultato è etichettato
-            come simulato.
+            — anteprima istantanea senza API (euristica sui segnali del testo, non
+            inferenza AI). Funziona su qualsiasi testo o .txt, anche senza chiave o
+            connessione. Il risultato è etichettato come simulato.
           </span>
         </label>
 
@@ -438,8 +395,7 @@ export default function Analyzer({
           <Link href="/redazione" className="underline hover:text-accento">
             Vista Redazione →
           </Link>{" "}
-          tabella di tutti i manoscritti analizzati, ordinabile per fit e
-          raccomandazione.
+          tabella dei manoscritti con la collana suggerita, ordinabile.
         </p>
       </section>
     </div>

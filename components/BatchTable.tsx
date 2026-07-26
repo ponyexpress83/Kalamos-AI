@@ -10,13 +10,13 @@ export interface BatchRow {
   titolo: string;
   autore: string;
   genere: string;
-  fitCollana: string;
+  editore: string;
+  collana: string;
   fitPct: number;
   raccomandazione: Raccomandazione;
-  tempo: number;
 }
 
-type SortKey = "titolo" | "genere" | "fit" | "racc" | "tempo";
+type SortKey = "titolo" | "genere" | "fit" | "racc";
 
 const raccOrder: Record<Raccomandazione, number> = {
   prioritario: 2,
@@ -30,9 +30,8 @@ export default function BatchTable({ rows }: { rows: BatchRow[] }) {
   const [asc, setAsc] = useState(false);
 
   function sortBy(key: SortKey) {
-    if (key === sortKey) {
-      setAsc((a) => !a);
-    } else {
+    if (key === sortKey) setAsc((a) => !a);
+    else {
       setSortKey(key);
       setAsc(key === "titolo" || key === "genere");
     }
@@ -41,27 +40,15 @@ export default function BatchTable({ rows }: { rows: BatchRow[] }) {
   const sorted = [...rows].sort((a, b) => {
     let cmp = 0;
     switch (sortKey) {
-      case "titolo":
-        cmp = a.titolo.localeCompare(b.titolo, "it");
-        break;
-      case "genere":
-        cmp = a.genere.localeCompare(b.genere, "it");
-        break;
-      case "fit":
-        cmp = a.fitPct - b.fitPct;
-        break;
-      case "racc":
-        cmp = raccOrder[a.raccomandazione] - raccOrder[b.raccomandazione];
-        break;
-      case "tempo":
-        cmp = a.tempo - b.tempo;
-        break;
+      case "titolo": cmp = a.titolo.localeCompare(b.titolo, "it"); break;
+      case "genere": cmp = a.genere.localeCompare(b.genere, "it"); break;
+      case "fit": cmp = a.fitPct - b.fitPct; break;
+      case "racc": cmp = raccOrder[a.raccomandazione] - raccOrder[b.raccomandazione]; break;
     }
     return asc ? cmp : -cmp;
   });
 
-  const arrow = (key: SortKey) =>
-    sortKey === key ? (asc ? " ↑" : " ↓") : "";
+  const arrow = (key: SortKey) => (sortKey === key ? (asc ? " ↑" : " ↓") : "");
 
   const Th = ({ k, label, right }: { k: SortKey; label: string; right?: boolean }) => (
     <th
@@ -82,9 +69,8 @@ export default function BatchTable({ rows }: { rows: BatchRow[] }) {
           <tr className="border-b border-carta-scura">
             <Th k="titolo" label="Titolo" />
             <Th k="genere" label="Genere" />
-            <Th k="fit" label="Fit migliore" right />
+            <Th k="fit" label="Collana suggerita" right />
             <Th k="racc" label="Raccomandazione" />
-            <Th k="tempo" label="Tempo" right />
           </tr>
         </thead>
         <tbody>
@@ -100,22 +86,17 @@ export default function BatchTable({ rows }: { rows: BatchRow[] }) {
                 </div>
                 <div className="font-sans text-xs text-stone-500">{r.autore}</div>
               </td>
-              <td className="px-4 py-3 font-sans text-sm text-stone-600">
-                {r.genere}
-              </td>
+              <td className="px-4 py-3 font-sans text-sm text-stone-600">{r.genere}</td>
               <td className="px-4 py-3 text-right">
                 <span className="font-sans text-sm tabular-nums font-semibold text-inchiostro">
                   {r.fitPct}%
                 </span>
                 <span className="block font-sans text-xs text-stone-500">
-                  {r.fitCollana}
+                  {r.editore} · {r.collana}
                 </span>
               </td>
               <td className="px-4 py-3">
                 <RecommendationBadge value={r.raccomandazione} />
-              </td>
-              <td className="px-4 py-3 text-right font-sans text-sm tabular-nums text-stone-600">
-                {r.tempo}s
               </td>
             </tr>
           ))}
