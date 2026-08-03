@@ -137,6 +137,7 @@ export async function POST(req: Request) {
 
   try {
     let parsed;
+    let usage: { input_tokens: number; output_tokens: number } | undefined;
     let suEstratto = false;
     let paroleTotali = 0;
     let paroleInviate = 0;
@@ -166,6 +167,7 @@ export async function POST(req: Request) {
         ],
       });
       parsed = res.parsed_output;
+      usage = { input_tokens: res.usage.input_tokens, output_tokens: res.usage.output_tokens };
     } else {
       const ex = buildExcerpt(testoCompleto as string);
       suEstratto = ex.suEstratto;
@@ -181,6 +183,7 @@ export async function POST(req: Request) {
         messages: [{ role: "user", content: userPrompt }],
       });
       parsed = res.parsed_output;
+      usage = { input_tokens: res.usage.input_tokens, output_tokens: res.usage.output_tokens };
     }
 
     if (!parsed) {
@@ -201,6 +204,8 @@ export async function POST(req: Request) {
         editori_richiesti: editori,
         tempo_secondi: Math.max(1, Math.round((Date.now() - t0) / 1000)),
         fonte: "live",
+        modello: MODEL,
+        usage,
       },
     };
 

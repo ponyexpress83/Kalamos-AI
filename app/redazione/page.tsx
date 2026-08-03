@@ -1,17 +1,19 @@
 import Link from "next/link";
 import BatchTable, { type BatchRow } from "@/components/BatchTable";
 import { manuscripts } from "@/lib/manuscripts";
-import { heuristicForDemo } from "@/lib/demo";
+import { getSchedaForDemo } from "@/lib/schede";
 import { publishers, defaultPublisherIds } from "@/config/publishers";
 import { pct } from "@/lib/format";
 
 export const metadata = { title: "Redazione — Kalamos·AI" };
 
-function buildRows(): BatchRow[] {
-  return manuscripts
+function buildRows(): { rows: BatchRow[]; reali: number } {
+  let reali = 0;
+  const rows = manuscripts
     .map((m) => {
-      const r = heuristicForDemo(m.id);
+      const r = getSchedaForDemo(m.id);
       if (!r) return null;
+      if (r.meta.cache) reali++;
       const best = [...r.scheda.fit_collane].sort((a, b) => b.score - a.score)[0];
       return {
         id: m.id,
@@ -25,6 +27,7 @@ function buildRows(): BatchRow[] {
       } satisfies BatchRow;
     })
     .filter((x): x is BatchRow => x !== null);
+  return { rows, reali };
 }
 
 function Kpi({ label, value, hint }: { label: string; value: string; hint?: string }) {
@@ -38,7 +41,7 @@ function Kpi({ label, value, hint }: { label: string; value: string; hint?: stri
 }
 
 export default function RedazionePage() {
-  const rows = buildRows();
+  const { rows, reali } = buildRows();
   const caseDefault = defaultPublisherIds.length || 2;
 
   return (
@@ -63,8 +66,12 @@ export default function RedazionePage() {
       <BatchTable rows={rows} />
 
       <p className="mt-4 font-sans text-xs text-stone-400">
-        Stime offline (euristica) contro {caseDefault} case editrici di default,
-        per la vista d'insieme. La scheda reale si genera dal vivo dalla{" "}
+        {reali === rows.length && rows.length > 0
+          ? `Schede generate dal vivo su Claude contro ${caseDefault} case editrici di default, servite da cache.`
+          : reali > 0
+            ? `${reali} schede generate dal vivo (da cache), ${rows.length - reali} stime offline (euristica). Completa con scripts/generate-schede.mjs.`
+            : `Stime offline (euristica) contro ${caseDefault} case editrici di default. Per le schede reali: scripts/generate-schede.mjs (vedi README).`}{" "}
+        La scheda su un testo nuovo si genera dal vivo dalla{" "}
         <Link href="/demo" className="underline hover:text-accento">demo</Link>.
       </p>
     </div>

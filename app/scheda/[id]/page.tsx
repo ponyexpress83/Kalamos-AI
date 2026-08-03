@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import SchedaView from "@/components/SchedaView";
 import PrintButton from "@/components/PrintButton";
-import { heuristicForDemo } from "@/lib/demo";
+import { getSchedaForDemo } from "@/lib/schede";
 import { manuscripts } from "@/lib/manuscripts";
 
 export function generateStaticParams() {
@@ -10,19 +10,26 @@ export function generateStaticParams() {
 }
 
 export default function SchedaPage({ params }: { params: { id: string } }) {
-  const result = heuristicForDemo(params.id);
+  const result = getSchedaForDemo(params.id);
   if (!result) notFound();
 
   return (
     <div>
-      <div className="no-print mb-6 flex items-center justify-between">
+      <div className="no-print mb-6 flex items-center justify-between gap-3">
         <Link
           href="/redazione"
           className="font-sans text-sm text-stone-500 transition hover:text-accento"
         >
           ← Redazione
         </Link>
-        <PrintButton />
+        <div className="flex items-center gap-3">
+          <span className="font-sans text-xs text-stone-400">
+            {result.meta.cache
+              ? `scheda generata dal vivo il ${result.meta.cache.generata_il} con ${result.meta.cache.modello} · servita da cache`
+              : "stima offline (euristica) — genera le schede reali con scripts/generate-schede.mjs"}
+          </span>
+          <PrintButton />
+        </div>
       </div>
       <SchedaView result={result} />
     </div>

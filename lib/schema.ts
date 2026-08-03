@@ -61,6 +61,12 @@ export interface AnalysisMeta {
   editori_richiesti: string[];
   tempo_secondi: number;
   fonte: "live" | "simulata"; // inferenza reale · euristica offline
+  /** Modello usato per l'inferenza (solo fonte "live"). */
+  modello?: string;
+  /** Consumo token misurato dall'API (solo fonte "live"). */
+  usage?: { input_tokens: number; output_tokens: number };
+  /** Presente se la scheda è servita dalla cache pre-generata. */
+  cache?: { generata_il: string; modello: string };
 }
 
 export interface AnalysisResult {
