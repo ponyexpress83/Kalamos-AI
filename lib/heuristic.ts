@@ -121,6 +121,13 @@ function fitFor(profilo: Profilo, s: Signals, voto: number): number {
     case "narrativa_autore":
       base = 0.34 + 0.08 * s.literary + 0.05 * s.thriller + 0.6 * q - 0.06 * s.commercial - 0.25 * verse;
       break;
+    case "narrativa_commerciale":
+      base = 0.42 + 0.07 * s.commercial + 0.12 * dlg + 0.02 * s.thriller - 0.06 * s.literary - 0.3 * verse;
+      break;
+    case "saggistica":
+      // La non-fiction si riconosce soprattutto per assenza di segnali narrativi.
+      base = 0.3 + 0.2 * q - 0.12 * dlg - 0.03 * s.commercial - 0.03 * s.thriller - 0.03 * s.fantasy - 0.35 * verse;
+      break;
     case "giallo":
       base = 0.34 + 0.11 * s.thriller + 0.04 * dlg + 0.03 * s.commercial - 0.05 * s.literary - 0.3 * verse;
       break;

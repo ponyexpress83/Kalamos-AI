@@ -31,6 +31,9 @@ export default function LandingPage() {
           reale dell'editore, suggerisce automaticamente la collana più adatta.
           Non scrive il libro: lo valuta. L'editor decide.
         </p>
+        <p className="mt-3 font-sans text-sm font-medium text-accento">
+          Pensato per i flussi editoriali del Gruppo Mondadori — e per ogni editore.
+        </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <Link

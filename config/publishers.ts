@@ -23,6 +23,8 @@ export type Profilo =
   | "poesia"
   | "narrativa"
   | "narrativa_autore"
+  | "narrativa_commerciale"
+  | "saggistica"
   | "giallo"
   | "fantasy"
   | "albo"
@@ -36,10 +38,13 @@ export interface Collana {
   descrizione: string;
 }
 
+export type Gruppo = "Gruppo Mondadori" | "Indipendente" | "HarperCollins";
+
 export interface Publisher {
   id: string;
   nome: string;
   ambito: Ambito;
+  gruppo: Gruppo;
   descrizione: string;
   collane: Collana[];
   defaultOn?: boolean;
@@ -51,6 +56,7 @@ export const publishers: Publisher[] = [
     id: "ladolfi",
     nome: "Giuliano Ladolfi Editore",
     ambito: "Poesia",
+    gruppo: "Indipendente",
     descrizione:
       "Editore indipendente di Borgomanero nato dall'esperienza della rivista «Atelier». Baricentro sulla poesia contemporanea italiana, con attenzione al canone e alle nuove voci. Principio guida: «vale il testo, non il nome».",
     collane: [
@@ -65,6 +71,7 @@ export const publishers: Publisher[] = [
     id: "samuele",
     nome: "Samuele Editore",
     ambito: "Poesia",
+    gruppo: "Indipendente",
     descrizione:
       "Editore di poesia di Fanna/Pordenone, forte apertura civile e internazionale. La sua storia parte dai poeti del territorio e arriva a un catalogo di respiro nazionale ed europeo.",
     collane: [
@@ -77,6 +84,7 @@ export const publishers: Publisher[] = [
     id: "interno-poesia",
     nome: "Interno Poesia",
     ambito: "Poesia",
+    gruppo: "Indipendente",
     descrizione:
       "Progetto editoriale nato nel 2016 dal blog omonimo, dedicato alla poesia contemporanea, classica e del Novecento, italiana e straniera. Forte presenza culturale e digitale.",
     collane: [
@@ -90,9 +98,29 @@ export const publishers: Publisher[] = [
 
   // ── Narrativa ──────────────────────────────────────────────────────────
   {
+    // Divisione target del PoC (vedi 03-poc-proposal/target-division.md).
+    // Collane verificate su IBS/Feltrinelli (pagine collana dell'editore):
+    // Pandora, Saggi, Economia, Varia — fonti: ibs.it/libri/editori/sperling-&-kupfer,
+    // lafeltrinelli.it/libri/collane/pandora-p200233, it.wikipedia.org/wiki/Sperling_&_Kupfer
+    id: "sperling-kupfer",
+    nome: "Sperling & Kupfer",
+    ambito: "Narrativa",
+    gruppo: "Gruppo Mondadori",
+    defaultOn: true,
+    descrizione:
+      "Casa milanese fondata nel 1899, nel Gruppo Mondadori dagli anni Ottanta. Vocazione commerciale e mainstream: narrativa di largo pubblico (romance, thriller, feel-good), non-fiction divulgativa, self-help ed economia. Cerca leggibilità immediata, hook forte e potenziale bestseller.",
+    collane: [
+      { nome: "Pandora", profilo: "narrativa_commerciale", descrizione: "La collana storica di narrativa: fiction italiana e straniera di largo pubblico — romance, mystery e thriller, young adult. Leggibilità e presa immediata." },
+      { nome: "Saggi", profilo: "saggistica", descrizione: "Non-fiction divulgativa e self-help: crescita personale, benessere, attualità raccontata al grande pubblico." },
+      { nome: "Economia", profilo: "saggistica", descrizione: "Economia e management divulgativi: business, carriera e finanza personale per lettori non specialisti." },
+      { nome: "Varia", profilo: "saggistica", descrizione: "Biografie, salute e benessere, sport, spettacolo, lifestyle: la non-fiction di largo consumo della casa." },
+    ],
+  },
+  {
     id: "einaudi",
     nome: "Einaudi",
     ambito: "Narrativa",
+    gruppo: "Gruppo Mondadori",
     defaultOn: true,
     descrizione:
       "Casa editrice storica di prestigio, catalogo letterario di riferimento in Italia. Cerca qualità della scrittura, voce e rilevanza, dalla letteratura di punta al genere d'autore.",
@@ -106,7 +134,7 @@ export const publishers: Publisher[] = [
     id: "sellerio",
     nome: "Sellerio",
     ambito: "Narrativa",
-    defaultOn: true,
+    gruppo: "Indipendente",
     descrizione:
       "Editore indipendente di Palermo, identità fortissima (la storica «collana blu»). Narrativa e giallo d'autore, letture di qualità, catalogo mediterraneo e civile.",
     collane: [
@@ -121,6 +149,8 @@ export const publishers: Publisher[] = [
     id: "battello-a-vapore",
     nome: "Il Battello a Vapore (Piemme)",
     ambito: "Bambini e ragazzi",
+    gruppo: "Gruppo Mondadori",
+    defaultOn: true,
     descrizione:
       "Il marchio di riferimento della narrativa per bambini e ragazzi, organizzato in serie per fasce d'età e difficoltà di lettura. Storie con protagonisti in cui il giovane lettore si identifica.",
     collane: [
@@ -134,6 +164,7 @@ export const publishers: Publisher[] = [
     id: "topipittori",
     nome: "Topipittori",
     ambito: "Bambini e ragazzi",
+    gruppo: "Indipendente",
     descrizione:
       "Editore indipendente di albi illustrati di ricerca e libri per ragazzi di alta qualità estetica e testuale. Il testo dialoga con l'immagine; conta l'essenzialità e l'evocazione.",
     collane: [
@@ -149,6 +180,7 @@ export const publishers: Publisher[] = [
     id: "oscar-vault",
     nome: "Oscar Vault (Mondadori)",
     ambito: "Fantasy e fantascienza",
+    gruppo: "Gruppo Mondadori",
     descrizione:
       "L'area del fantastico degli Oscar Mondadori (la «Casa del Fantastico»): fantasy, fantascienza e speculative fiction, saghe e grandi autori internazionali. Cerca immaginario forte, world-building e tensione.",
     collane: [

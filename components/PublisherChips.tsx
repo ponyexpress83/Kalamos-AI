@@ -1,11 +1,12 @@
 "use client";
 
-import type { Ambito, Profilo } from "@/config/publishers";
+import type { Ambito, Gruppo, Profilo } from "@/config/publishers";
 
 export interface PublisherOption {
   id: string;
   nome: string;
   ambito: Ambito;
+  gruppo: Gruppo;
   defaultOn?: boolean;
   collane: { nome: string; profilo: Profilo }[];
 }
@@ -47,14 +48,25 @@ export default function PublisherChips({
                   type="button"
                   onClick={() => onToggle(p.id)}
                   aria-pressed={on}
-                  title={`${p.collane.length} collane`}
-                  className={`rounded-full border px-3.5 py-1.5 font-sans text-sm transition ${
+                  title={`${p.gruppo} · ${p.collane.length} collane`}
+                  className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 font-sans text-sm transition ${
                     on
                       ? "border-inchiostro bg-inchiostro text-carta"
                       : "border-carta-scura bg-white/60 text-stone-600 hover:border-inchiostro/40"
                   }`}
                 >
                   {p.nome}
+                  {p.gruppo === "Gruppo Mondadori" && (
+                    <span
+                      className={`rounded-full border px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${
+                        on
+                          ? "border-carta/40 text-carta/90"
+                          : "border-accento/40 text-accento"
+                      }`}
+                    >
+                      Mondadori
+                    </span>
+                  )}
                 </button>
               );
             })}

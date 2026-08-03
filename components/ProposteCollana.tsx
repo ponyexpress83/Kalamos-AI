@@ -1,5 +1,10 @@
 import type { Scheda } from "@/lib/schema";
 import { pct, fitColor } from "@/lib/format";
+import { publishers } from "@/config/publishers";
+
+const gruppoByNome: Record<string, string> = Object.fromEntries(
+  publishers.map((p) => [p.nome, p.gruppo]),
+);
 
 /**
  * Mostra, per ciascuna casa editrice selezionata, la COLLANA suggerita
@@ -30,6 +35,11 @@ export default function ProposteCollana({
             <div className="mb-2 flex items-baseline justify-between gap-3">
               <span className="font-serif text-base font-semibold text-inchiostro">
                 {editore}
+                {gruppoByNome[editore] === "Gruppo Mondadori" && (
+                  <span className="ml-2 align-middle rounded-full border border-accento/40 px-1.5 py-0.5 font-sans text-[9px] font-semibold uppercase tracking-wide text-accento">
+                    Gruppo Mondadori
+                  </span>
+                )}
               </span>
               {top && (
                 <span className="font-sans text-xs text-stone-500">

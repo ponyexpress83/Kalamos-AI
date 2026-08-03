@@ -18,6 +18,7 @@ export default function DemoPage() {
     id: p.id,
     nome: p.nome,
     ambito: p.ambito,
+    gruppo: p.gruppo,
     defaultOn: Boolean(p.defaultOn),
     collane: p.collane.map((c) => ({ nome: c.nome, profilo: c.profilo })),
   }));
