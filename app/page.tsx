@@ -72,7 +72,12 @@ export default function LandingPage() {
 
       <p className="border-t border-carta-scura pt-6 font-sans text-xs leading-relaxed text-stone-400">
         Supporto alla decisione, non sostituzione del giudizio editoriale. Il
-        manoscritto resta IP riservato e non lascia il perimetro.
+        manoscritto è trattato come IP riservato: mai usato per addestrare
+        modelli, non archiviato dalla demo —{" "}
+        <Link href="/riservatezza" className="underline hover:text-accento">
+          come trattiamo i dati
+        </Link>
+        .
       </p>
     </div>
   );

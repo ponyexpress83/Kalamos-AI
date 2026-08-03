@@ -173,8 +173,14 @@ export default function SchedaView({ result }: { result: AnalysisResult }) {
           {scheda.nota_metodologica}
         </p>
         <p className="mt-2 font-sans text-xs leading-relaxed text-stone-500">
-          Supporto alla decisione. L'editor mantiene l'ultima parola. Il
-          manoscritto resta IP riservato e non lascia il perimetro.
+          Supporto alla decisione: l'editor mantiene l'ultima parola. Il
+          manoscritto è trattato come IP riservato — inviato cifrato al solo
+          motore di analisi, mai usato per addestrare modelli, non archiviato
+          dalla demo. Dettagli in{" "}
+          <a href="/riservatezza" className="underline hover:text-accento">
+            Riservatezza e dati
+          </a>
+          ; nel PoC il deployment avviene nel perimetro concordato.
         </p>
       </div>
     </article>
