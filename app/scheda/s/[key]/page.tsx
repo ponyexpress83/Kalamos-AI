@@ -5,6 +5,7 @@ import Link from "next/link";
 import SchedaView from "@/components/SchedaView";
 import PrintButton from "@/components/PrintButton";
 import { getSessionEntry, type SessionEntry } from "@/lib/session";
+import EditorFeedback from "@/components/EditorFeedback";
 
 /**
  * Scheda di un manoscritto analizzato in questa sessione del browser
@@ -54,6 +55,7 @@ export default function SchedaSessionePage({ params }: { params: { key: string }
         </div>
       </div>
       <SchedaView result={entry.result} />
+      <EditorFeedback schedaKey={entry.key} />
     </div>
   );
 }

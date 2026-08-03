@@ -11,6 +11,7 @@ import LoadingSteps from "./LoadingSteps";
 import PublisherChips, { type PublisherOption } from "./PublisherChips";
 import PrintButton from "./PrintButton";
 import RecommendationBadge from "./RecommendationBadge";
+import EditorFeedback from "./EditorFeedback";
 
 export interface DemoManuscript {
   id: string;
@@ -68,6 +69,7 @@ export default function Analyzer({
   });
   const [demoOffline, setDemoOffline] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
+  const [resultKey, setResultKey] = useState<string | null>(null);
   const [resultNote, setResultNote] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
@@ -356,7 +358,8 @@ export default function Analyzer({
       const [r] = await Promise.all([work, delay(MIN_LOADING_MS)]);
       setResult(r);
       // I testi non-demo entrano nella coda di sessione (vista Redazione).
-      if (!demoId) saveSessionEntry(localTitolo, r);
+      const saved = !demoId ? saveSessionEntry(localTitolo, r) : null;
+      setResultKey(demoId ? `demo-${demoId}` : (saved?.key ?? null));
       setResultNote(
         demoOffline
           ? "Modalità dimostrativa offline attiva: nessuna chiamata all'API."
@@ -467,6 +470,7 @@ export default function Analyzer({
           </div>
         )}
         <SchedaView result={result} />
+        {resultKey && <EditorFeedback schedaKey={resultKey} />}
       </div>
     );
   }

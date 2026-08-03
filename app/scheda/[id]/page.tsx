@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import SchedaView from "@/components/SchedaView";
 import PrintButton from "@/components/PrintButton";
 import { getSchedaForDemo } from "@/lib/schede";
+import EditorFeedback from "@/components/EditorFeedback";
 import { manuscripts } from "@/lib/manuscripts";
 
 export function generateStaticParams() {
@@ -32,6 +33,7 @@ export default function SchedaPage({ params }: { params: { id: string } }) {
         </div>
       </div>
       <SchedaView result={result} />
+      <EditorFeedback schedaKey={`demo-${params.id}`} />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import BatchTable, { type BatchRow } from "@/components/BatchTable";
 import SessionRows from "@/components/SessionRows";
+import FeedbackCounter from "@/components/FeedbackCounter";
 import { manuscripts } from "@/lib/manuscripts";
 import { getSchedaForDemo } from "@/lib/schede";
 import { publishers, defaultPublisherIds } from "@/config/publishers";
@@ -106,6 +107,8 @@ export default function RedazionePage() {
         i valori misurati qui sopra è il cuore del caso economico: Kalamos non
         sostituisce il giudizio, elimina l'attesa.
       </p>
+
+      <FeedbackCounter />
 
       <SessionRows />
 
