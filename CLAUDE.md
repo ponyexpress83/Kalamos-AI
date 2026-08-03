@@ -252,7 +252,7 @@ Se ti distrai, ricordati che queste tre cose contano più di tutto il resto:
 | 03-poc-proposal | 🟢 design retrospettivo + divisione fissata | Claude | KPI riancorati su recall/κ; validare volumi reali in Fase 1 |
 | 04-pitch-deck | 🔴 outline solo | — | da costruire |
 | 05-financials | 🔴 da fare | Valerio | esiste in formato vecchio |
-| 06-product | 🟢 Demo cliccabile con inferenza reale | Claude+Valerio | Next.js: Analizza (demo/incolla/upload) → /api/analyze su Claude (structured output zod) → scheda + fit-score per collana; vista Redazione; schede demo in cache; no login |
+| 06-product | 🟢 Demo PLAI-ready (editore→collana reale) | Claude+Valerio | Landing + /demo: scegli l'editore (default: case Mondadori, S&K inclusa) → collana reale suggerita; batch triage; KPI misurati; feedback editor; /riservatezza; euristica offline etichettata |
 | 07-research | 🟡 parziale | Claude | competitor + market sizing OK, deep-dive Mondadori manca |
 | 08-outreach | 🔴 da fare | Valerio | identificare decision maker PLAI è prioritario |
 | 09-demo-day | 🔴 in lontananza | — | solo dopo essere stati selezionati |
@@ -266,10 +266,11 @@ Aggiorna questa tabella ogni volta che chiudi una sezione.
 - **PLAI sito**: https://www.plai-accelerator.com/call-2026/
 - **PLAI partner**: Startupbootcamp, I3P, AWS, ElevenLabs, Fastweb+Vodafone, IFAB, Multiversity, PwC, StartupItalia
 - **Aree prioritarie**: Education, Retail, New Media & Advertising, **Publishing**, Corporate
-- **Investimento iniziale**: €100K equity per startup early-stage in cambio di ~7% (storico 2025)
-- **Follow-on potenziale**: fino a €300K totali
-- **Budget PoC**: fino a €100K per progetto pilota concreto
+- **Investimento iniziale (early-stage)**: €100K equity in cambio di ~7% (comunicato 2026)
+- **Follow-on potenziale**: fino a €400K aggiuntivi per le startup meritevoli a fine percorso
+- **Pilot/PoC (growth-stage)**: €40K di compenso per progetti pilota col Gruppo o i partner
+- Fonte numeri 2026: https://www.mondadorigroup.com/media-room/news-and-press-releases/2026/plai-opens-the-2026-startup-call
 
 ---
 
-*Ultimo aggiornamento di questo file: 24 giugno 2026. Aggiornare il timestamp se modifichi il contenuto.*
+*Ultimo aggiornamento di questo file: 3 agosto 2026. Aggiornare il timestamp se modifichi il contenuto.*
