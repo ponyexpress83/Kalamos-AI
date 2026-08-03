@@ -10,7 +10,7 @@ L'idea: invece di gestire la candidatura come una serie di chat sparse, qui c'è
 
 ## Demo cliccabile (app Next.js)
 
-**Rotte:** `/` è la **landing** (logo e presentazione) da cui si entra alla **versione di test senza credenziali**; `/demo` è l'app di analisi; `/redazione` la vista d'insieme; `/scheda/[id]` la scheda dei demo.
+**Rotte:** `/` è la **landing** (logo e presentazione) da cui si entra alla **versione di test senza credenziali**; `/demo` è l'app di analisi (anche **batch**: fino a 5 `.txt` insieme); `/redazione` la vista d'insieme con KPI misurati e coda di sessione; `/scheda/[id]` la scheda dei demo; `/scheda/s/[key]` le schede analizzate in sessione; `/riservatezza` il flusso dati.
 
 La demo dimostrativa del prodotto: **Analizza** → scegli un manoscritto (4 testi originali precaricati) oppure incolla un testo o carica un `.txt`/`.pdf` → **scegli la casa editrice** (il cliente) → ottieni una **scheda di lettura strutturata** (sintesi, voto prosa, comparabili, forze/criticità, raccomandazione) in cui Kalamos **suggerisce automaticamente la collana più adatta** tra quelle **reali** del catalogo di quell'editore. La vista **Redazione** mostra una tabella ordinabile dei manoscritti con la collana suggerita.
 
@@ -56,11 +56,19 @@ In sintesi: i 4 demo in cache e la modalità offline garantiscono che la demo **
 Si seleziona la **casa editrice** (il cliente); Kalamos suggerisce la **collana** più adatta tra quelle **reali** del suo catalogo. Case e collane sono verificate — nessuna collana inventata (config `config/publishers.ts`), raggruppate per ambito:
 
 - **Poesia** — Giuliano Ladolfi Editore (Atelier poesia, Perle poesia, Zaffiro, Onice, Opale) · Samuele Editore (Scilla, La Gialla, I Poeti di Pordenone) · Interno Poesia (Interno Libri, Books, Novecento, Classici, Beta)
-- **Narrativa** — Einaudi (Supercoralli, I Coralli, Einaudi Stile Libero) · Sellerio (La memoria, Il contesto, La rosa dei venti) *(default)*
+- **Narrativa** — Sperling & Kupfer (Pandora, Saggi, Economia, Varia) *(Gruppo Mondadori, default)* · Einaudi (Supercoralli, I Coralli, Einaudi Stile Libero) *(Gruppo Mondadori, default)* · Sellerio (La memoria, Il contesto, La rosa dei venti)
 - **Bambini e ragazzi** — Il Battello a Vapore/Piemme (Serie Bianca, Azzurra, Arancio, Rossa per fasce d'età) · Topipittori (Albi, Parola magica, Gli anni in tasca, PiPPO)
 - **Fantasy e fantascienza** — Oscar Vault/Mondadori (Oscar Fantastica, Draghi, Fabula, Ink)
 
-Di default sono attive Einaudi e Sellerio (i demo sono narrativa). Un testo in versi indirizza il fit verso le case di poesia, un giallo verso *La memoria* di Sellerio, e così via — anche in modalità offline.
+Di default sono attive le **case del Gruppo Mondadori** (Sperling & Kupfer, Einaudi, Il Battello a Vapore — badge "Mondadori" nei chip): la demo parla al cliente del pitch PLAI, le indipendenti restano come prova di generalità. Un testo in versi indirizza il fit verso le case di poesia, un giallo verso *La memoria* di Sellerio, e così via — anche in modalità offline.
+
+### Schede reali in cache e KPI misurati
+
+`node scripts/generate-schede.mjs` (con il server attivo e `ANTHROPIC_API_KEY` impostata) genera le schede REALI dei 4 demo su Claude e le salva in `data/schede/`: da lì in poi `/scheda/[id]` e la Redazione servono l'analisi vera (etichettata con data e modello) invece della stima euristica, e la Redazione mostra i **KPI misurati** — tempo per scheda e costo API per scheda calcolato dai token effettivi (`lib/pricing.ts`) — accanto alla baseline di settore (€150-500 / 5-15 giorni, stima [DA VERIFICARE]).
+
+### Batch, coda di sessione e feedback
+
+Caricando più `.txt` insieme (fino a 5) la demo analizza la coda in sequenza e mostra la classifica; i risultati restano nel browser (localStorage) e compaiono in Redazione sopra i demo. Su ogni scheda l'editor può registrare **Concordo / Non concordo + nota** (il loop di calibrazione); la Redazione conta le schede validate. Il flusso dati completo è documentato in `/riservatezza`.
 
 ### Come aggiungere o modificare una casa editrice / collana
 
