@@ -248,7 +248,7 @@ export default function Analyzer({
 
   async function analyze() {
     if (!canAnalyze) return;
-    if (batchFiles.length > 1) return analyzeBatch();
+    if (batchFiles.length > 0) return analyzeBatch();
     setError(null);
     setView("loading");
 
@@ -386,7 +386,8 @@ export default function Analyzer({
       <div>
         <div className="mb-6 flex items-center justify-between gap-3">
           <h2 className="font-serif text-2xl font-bold text-inchiostro">
-            Coda analizzata — {batchDone.length} manoscritti
+            Coda analizzata — {batchDone.length}{" "}
+            {batchDone.length === 1 ? "manoscritto" : "manoscritti"}
           </h2>
           <button
             onClick={reset}
