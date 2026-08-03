@@ -10,9 +10,13 @@ L'idea: invece di gestire la candidatura come una serie di chat sparse, qui c'è
 
 ## Demo cliccabile (app Next.js)
 
+**Rotte:** `/` è la **landing** (logo e presentazione) da cui si entra alla **versione di test senza credenziali**; `/demo` è l'app di analisi; `/redazione` la vista d'insieme; `/scheda/[id]` la scheda dei demo.
+
 La demo dimostrativa del prodotto: **Analizza** → scegli un manoscritto (4 testi originali precaricati) oppure incolla un testo o carica un `.txt`/`.pdf` → **scegli la casa editrice** (il cliente) → ottieni una **scheda di lettura strutturata** (sintesi, voto prosa, comparabili, forze/criticità, raccomandazione) in cui Kalamos **suggerisce automaticamente la collana più adatta** tra quelle **reali** del catalogo di quell'editore. La vista **Redazione** mostra una tabella ordinabile dei manoscritti con la collana suggerita.
 
-L'analisi dal vivo gira su Claude (Anthropic) in una route server (`/api/analyze`) che **non espone mai la chiave al client**. Le 4 schede demo sono in cache: la demo parte istantanea anche **senza chiave e offline**; la chiave serve solo per analizzare testi nuovi (incolla/upload) o per "ri-analizzare dal vivo" un demo.
+L'analisi dal vivo gira su Claude (Anthropic) in una route server (`/api/analyze`) che **non espone mai la chiave al client**. Senza chiave la demo resta provabile: la modalità offline (euristica etichettata) e le stime della Redazione funzionano anche **offline**; la chiave serve per l'analisi dal vivo reale su testi qualsiasi.
+
+Il **logo** è un componente SVG (`components/Logo.tsx`) nei colori di brand (inchiostro `#14213d`, corallo `#cb5a3c`, carta `#f7f3ec`): per sostituirlo con l'asset ufficiale, rimpiazza quel componente.
 
 ### Setup
 
@@ -28,7 +32,7 @@ npm run build    # build di produzione
 
 Variabili d'ambiente (vedi `.env.example`):
 
-- `ANTHROPIC_API_KEY` — chiave Anthropic. **Mai hardcoded.** Senza chiave restano disponibili le 4 schede demo in cache.
+- `ANTHROPIC_API_KEY` — chiave Anthropic. **Mai hardcoded.** Senza chiave la demo resta provabile in modalità offline (euristica etichettata) e la Redazione mostra le stime.
 - `ANTHROPIC_MODEL` — opzionale, default `claude-sonnet-4-6` (rapido, rientra nei 10s delle function su Vercel Hobby). Su piano Pro puoi usare `claude-opus-4-8` per la massima qualità.
 
 ### Modalità dimostrativa offline (sempre provabile)

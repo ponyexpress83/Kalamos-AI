@@ -64,8 +64,8 @@ export default function RedazionePage() {
 
       <p className="mt-4 font-sans text-xs text-stone-400">
         Stime offline (euristica) contro {caseDefault} case editrici di default,
-        per la vista d'insieme. La scheda reale si genera dal vivo dall'
-        <Link href="/" className="underline hover:text-accento">analizzatore</Link>.
+        per la vista d'insieme. La scheda reale si genera dal vivo dalla{" "}
+        <Link href="/demo" className="underline hover:text-accento">demo</Link>.
       </p>
     </div>
   );

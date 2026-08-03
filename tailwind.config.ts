@@ -5,11 +5,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Palette di brand Kalamos
-        inchiostro: "#14213d", // blu inchiostro
-        accento: "#b3001b", // rosso editoriale
-        carta: "#fbfaf7", // bianco carta
-        "carta-scura": "#ece7dd", // bordi / superfici sommesse
+        // Palette di brand Kalamos (allineata al logo)
+        inchiostro: "#14213d", // blu inchiostro (K e wordmark)
+        accento: "#cb5a3c", // corallo/terracotta (la "AI" e la piega del libro)
+        carta: "#f7f3ec", // crema/carta (fondo del logo)
+        "carta-scura": "#e9e1d3", // bordi / superfici sommesse
       },
       fontFamily: {
         // Heading serif (editoriale), corpo sans pulito

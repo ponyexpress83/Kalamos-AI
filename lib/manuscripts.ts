@@ -6,10 +6,10 @@ import path from "path";
  *
  * I testi sono ORIGINALI (nessun copyright) e vivono in /data/manuscripts.
  * Sono scelti per coprire l'intera gamma di esiti e far divergere i fit-score:
- *  - 01 letterario forte         → prioritario, fit alto su Einaudi/Strade Blu
- *  - 02 commercial feel-good     → seconda lettura, fit alto su Sperling
+ *  - 01 letterario forte         → prioritario, fit alto sulle collane d'autore
+ *  - 02 commercial feel-good     → seconda lettura
  *  - 03 slush debole             → scarta, fit basso ovunque
- *  - 04 noir d'autore ambiguo    → spacca i fit-score tra le tre collane
+ *  - 04 noir d'autore ambiguo    → spacca i fit-score tra le collane
  *
  * I metadati qui sotto sono "client-safe" (niente testo). Il testo si legge
  * lato server con getManuscriptText().
