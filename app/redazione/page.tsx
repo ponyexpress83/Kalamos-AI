@@ -1,5 +1,6 @@
 import Link from "next/link";
 import BatchTable, { type BatchRow } from "@/components/BatchTable";
+import SessionRows from "@/components/SessionRows";
 import { manuscripts } from "@/lib/manuscripts";
 import { getSchedaForDemo } from "@/lib/schede";
 import { publishers, defaultPublisherIds } from "@/config/publishers";
@@ -106,6 +107,11 @@ export default function RedazionePage() {
         sostituisce il giudizio, elimina l'attesa.
       </p>
 
+      <SessionRows />
+
+      <h2 className="mb-3 font-serif text-lg font-semibold text-inchiostro">
+        Manoscritti demo
+      </h2>
       <BatchTable rows={rows} />
 
       <p className="mt-4 font-sans text-xs text-stone-400">

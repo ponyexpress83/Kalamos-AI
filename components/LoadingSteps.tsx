@@ -10,7 +10,7 @@ const STEPS = [
   "Composizione della scheda…",
 ];
 
-export default function LoadingSteps() {
+export default function LoadingSteps({ progress }: { progress?: string }) {
   const [i, setI] = useState(0);
 
   useEffect(() => {
@@ -25,6 +25,9 @@ export default function LoadingSteps() {
       <div className="mb-6 flex justify-center">
         <span className="inline-block h-8 w-8 animate-spin rounded-full border-2 border-carta-scura border-t-accento" />
       </div>
+      {progress && (
+        <p className="mb-4 font-sans text-sm font-medium text-inchiostro">{progress}</p>
+      )}
       <ul className="space-y-2 text-left">
         {STEPS.map((s, idx) => {
           const done = idx < i;

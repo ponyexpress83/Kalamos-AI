@@ -4,10 +4,13 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { AnalysisResult } from "@/lib/schema";
 import { analyzeHeuristic } from "@/lib/heuristic";
+import { saveSessionEntry, type SessionEntry } from "@/lib/session";
+import { pct } from "@/lib/format";
 import SchedaView from "./SchedaView";
 import LoadingSteps from "./LoadingSteps";
 import PublisherChips, { type PublisherOption } from "./PublisherChips";
 import PrintButton from "./PrintButton";
+import RecommendationBadge from "./RecommendationBadge";
 
 export interface DemoManuscript {
   id: string;
@@ -18,7 +21,7 @@ export interface DemoManuscript {
   text: string;
 }
 
-type View = "input" | "loading" | "result";
+type View = "input" | "loading" | "result" | "batch-done";
 
 interface UploadedFile {
   name: string;
@@ -27,8 +30,14 @@ interface UploadedFile {
   pdfBase64?: string;
 }
 
+interface BatchFile {
+  name: string;
+  text: string;
+}
+
 const MIN_LOADING_MS = 3200;
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
+const MAX_BATCH = 5;
 
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -62,6 +71,9 @@ export default function Analyzer({
   const [resultNote, setResultNote] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
+  const [batchFiles, setBatchFiles] = useState<BatchFile[]>([]);
+  const [batchProgress, setBatchProgress] = useState<string | null>(null);
+  const [batchDone, setBatchDone] = useState<SessionEntry[]>([]);
 
   const pubById = useMemo(() => {
     const m: Record<string, PublisherOption> = {};
@@ -75,7 +87,8 @@ export default function Analyzer({
     return m;
   }, [manuscripts]);
 
-  const hasSource = demoId !== null || pasted.trim().length > 0 || file !== null;
+  const hasSource =
+    demoId !== null || pasted.trim().length > 0 || file !== null || batchFiles.length > 0;
   const canAnalyze = hasSource && selected.length > 0;
 
   function togglePublisher(id: string) {
@@ -86,13 +99,54 @@ export default function Analyzer({
     setDemoId((prev) => (prev === id ? null : id));
     setPasted("");
     setFile(null);
+    setBatchFiles([]);
     setError(null);
   }
 
   async function onFile(e: React.ChangeEvent<HTMLInputElement>) {
     setFileError(null);
-    const f = e.target.files?.[0];
-    if (!f) return;
+    const list = Array.from(e.target.files ?? []);
+    if (list.length === 0) return;
+
+    // Più file → batch (solo .txt, fino a MAX_BATCH).
+    if (list.length > 1) {
+      if (list.length > MAX_BATCH) {
+        setFileError(`Per il batch carica al massimo ${MAX_BATCH} file .txt.`);
+        return;
+      }
+      const nonTxt = list.find(
+        (f) => !(f.type.startsWith("text/") || f.name.toLowerCase().endsWith(".txt")),
+      );
+      if (nonTxt) {
+        setFileError("Il batch accetta solo file .txt (i PDF vanno caricati uno alla volta).");
+        return;
+      }
+      if (list.some((f) => f.size > MAX_FILE_BYTES)) {
+        setFileError("Un file supera i 10 MB.");
+        return;
+      }
+      try {
+        const read: BatchFile[] = [];
+        for (const f of list) {
+          const text = await f.text();
+          if (text.trim()) read.push({ name: f.name, text });
+        }
+        if (read.length === 0) {
+          setFileError("I file sono vuoti.");
+          return;
+        }
+        setBatchFiles(read);
+        setFile(null);
+        setDemoId(null);
+        setPasted("");
+        setError(null);
+      } catch {
+        setFileError("Impossibile leggere i file.");
+      }
+      return;
+    }
+
+    const f = list[0];
     if (f.size > MAX_FILE_BYTES) {
       setFileError("File troppo grande (max 10 MB).");
       return;
@@ -114,6 +168,7 @@ export default function Analyzer({
         setFileError("Formato non supportato: carica un .txt o un .pdf.");
         return;
       }
+      setBatchFiles([]);
       setDemoId(null);
       setPasted("");
       setError(null);
@@ -122,8 +177,76 @@ export default function Analyzer({
     }
   }
 
+  /** Analizza un singolo testo (per il batch): dal vivo, o euristica se offline/errore. */
+  async function analyzeOneText(
+    text: string,
+    titolo: string,
+  ): Promise<{ result: AnalysisResult; fallback: boolean }> {
+    const selectedPublishers = selected.map((id) => ({
+      nome: pubById[id].nome,
+      collane: pubById[id].collane,
+    }));
+    const heuristic = () =>
+      analyzeHeuristic(text, { titolo, publishers: selectedPublishers });
+
+    if (demoOffline) return { result: heuristic(), fallback: false };
+
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 90_000);
+      let res: Response;
+      try {
+        res = await fetch("/api/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text, titolo, publisherIds: selected }),
+          signal: ctrl.signal,
+        });
+      } finally {
+        clearTimeout(timer);
+      }
+      const data = await res.json();
+      if (!res.ok || !data || data.error) return { result: heuristic(), fallback: true };
+      return { result: data as AnalysisResult, fallback: false };
+    } catch {
+      return { result: heuristic(), fallback: true };
+    }
+  }
+
+  /** Batch: analizza i file in sequenza e accumula la coda di sessione. */
+  async function analyzeBatch() {
+    setError(null);
+    setBatchProgress(null);
+    setView("loading");
+    const entries: SessionEntry[] = [];
+    let fallbacks = 0;
+
+    for (let i = 0; i < batchFiles.length; i++) {
+      const f = batchFiles[i];
+      const titolo = f.name.replace(/\.[^.]+$/, "");
+      setBatchProgress(`Manoscritto ${i + 1} di ${batchFiles.length}: ${titolo}`);
+      const { result: r, fallback } = await analyzeOneText(f.text, titolo);
+      if (fallback) fallbacks++;
+      const saved = saveSessionEntry(titolo, r);
+      if (saved) entries.push(saved);
+    }
+
+    setBatchDone(entries);
+    setResultNote(
+      demoOffline
+        ? "Batch in modalità dimostrativa offline: stime euristiche, nessuna chiamata all'API."
+        : fallbacks > 0
+          ? `${fallbacks} manoscritti su ${batchFiles.length} sono ripiegati sull'anteprima offline (timeout o chiave assente).`
+          : null,
+    );
+    setBatchProgress(null);
+    setBatchFiles([]);
+    setView("batch-done");
+  }
+
   async function analyze() {
     if (!canAnalyze) return;
+    if (batchFiles.length > 1) return analyzeBatch();
     setError(null);
     setView("loading");
 
@@ -232,6 +355,8 @@ export default function Analyzer({
     try {
       const [r] = await Promise.all([work, delay(MIN_LOADING_MS)]);
       setResult(r);
+      // I testi non-demo entrano nella coda di sessione (vista Redazione).
+      if (!demoId) saveSessionEntry(localTitolo, r);
       setResultNote(
         demoOffline
           ? "Modalità dimostrativa offline attiva: nessuna chiamata all'API."
@@ -247,10 +372,73 @@ export default function Analyzer({
   function reset() {
     setResult(null);
     setResultNote(null);
+    setBatchDone([]);
     setView("input");
   }
 
-  if (view === "loading") return <LoadingSteps />;
+  if (view === "loading") return <LoadingSteps progress={batchProgress ?? undefined} />;
+
+  if (view === "batch-done") {
+    return (
+      <div>
+        <div className="mb-6 flex items-center justify-between gap-3">
+          <h2 className="font-serif text-2xl font-bold text-inchiostro">
+            Coda analizzata — {batchDone.length} manoscritti
+          </h2>
+          <button
+            onClick={reset}
+            className="font-sans text-sm text-stone-500 transition hover:text-accento"
+          >
+            ← Nuova analisi
+          </button>
+        </div>
+        {resultNote && (
+          <div className="mb-5 rounded-xl border border-amber-300 bg-amber-50 p-3 font-sans text-sm text-amber-900">
+            {resultNote}
+          </div>
+        )}
+        <ul className="space-y-3">
+          {batchDone.map((e) => {
+            const best = [...e.result.scheda.fit_collane].sort(
+              (a, b) => b.score - a.score,
+            )[0];
+            return (
+              <li key={e.key}>
+                <Link
+                  href={`/scheda/s/${e.key}`}
+                  className="flex items-center justify-between gap-4 rounded-xl border border-carta-scura bg-white/50 px-5 py-4 transition hover:border-inchiostro/40"
+                >
+                  <div className="min-w-0">
+                    <div className="truncate font-serif text-base font-semibold text-inchiostro">
+                      {e.titolo}
+                    </div>
+                    {best && (
+                      <div className="mt-0.5 font-sans text-xs text-stone-500">
+                        {best.editore} → {best.collana} · {pct(best.score)}%
+                      </div>
+                    )}
+                  </div>
+                  <RecommendationBadge value={e.result.scheda.raccomandazione} />
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link
+            href="/redazione"
+            className="rounded-md bg-accento px-6 py-2.5 font-sans text-sm font-medium text-white transition hover:bg-accento/90"
+          >
+            Apri la Redazione →
+          </Link>
+        </div>
+        <p className="mt-4 font-sans text-xs text-stone-400">
+          La coda resta in questo browser (localStorage) e compare nella vista
+          Redazione: è il vostro slush pile dopo Kalamos.
+        </p>
+      </div>
+    );
+  }
 
   if (view === "result" && result) {
     return (
@@ -332,6 +520,7 @@ export default function Analyzer({
               if (e.target.value) {
                 setDemoId(null);
                 setFile(null);
+                setBatchFiles([]);
               }
             }}
             rows={6}
@@ -346,11 +535,24 @@ export default function Analyzer({
           <label className="flex h-[152px] cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-carta-scura bg-white/40 p-4 text-center transition hover:border-accento">
             <input
               type="file"
+              multiple
               accept=".txt,.pdf,text/plain,application/pdf"
               onChange={onFile}
               className="hidden"
             />
-            {file ? (
+            {batchFiles.length > 0 ? (
+              <span className="font-sans text-sm text-inchiostro">
+                <span className="font-semibold">
+                  {batchFiles.length} manoscritti pronti per il batch
+                </span>
+                <span className="mt-1 block max-w-[240px] truncate text-xs text-stone-500">
+                  {batchFiles.map((f) => f.name).join(" · ")}
+                </span>
+                <span className="mt-1 block text-xs text-stone-400">
+                  clicca per cambiare
+                </span>
+              </span>
+            ) : file ? (
               <span className="font-sans text-sm text-inchiostro">
                 <span className="font-semibold">{file.name}</span>
                 <span className="mt-1 block text-xs text-stone-500">
@@ -359,9 +561,9 @@ export default function Analyzer({
               </span>
             ) : (
               <span className="font-sans text-sm text-stone-500">
-                Trascina o seleziona un file
+                Trascina o seleziona uno o più file
                 <span className="mt-1 block text-xs text-stone-400">
-                  .txt o .pdf · max 10 MB
+                  .txt o .pdf · fino a {MAX_BATCH} .txt in batch · max 10 MB
                 </span>
               </span>
             )}
@@ -400,7 +602,7 @@ export default function Analyzer({
             disabled={!canAnalyze}
             className="rounded-md bg-accento px-6 py-2.5 font-sans text-sm font-medium text-white transition hover:bg-accento/90 disabled:cursor-not-allowed disabled:bg-stone-300"
           >
-            Analizza
+            {batchFiles.length > 1 ? `Analizza la coda (${batchFiles.length})` : "Analizza"}
           </button>
           {!canAnalyze && (
             <span className="font-sans text-xs text-stone-400">

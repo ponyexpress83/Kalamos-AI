@@ -14,6 +14,8 @@ export interface BatchRow {
   collana: string;
   fitPct: number;
   raccomandazione: Raccomandazione;
+  /** Destinazione al click; default /scheda/<id>. */
+  href?: string;
 }
 
 type SortKey = "titolo" | "genere" | "fit" | "racc";
@@ -77,7 +79,7 @@ export default function BatchTable({ rows }: { rows: BatchRow[] }) {
           {sorted.map((r) => (
             <tr
               key={r.id}
-              onClick={() => router.push(`/scheda/${r.id}`)}
+              onClick={() => router.push(r.href ?? `/scheda/${r.id}`)}
               className="cursor-pointer border-b border-carta-scura/60 transition last:border-0 hover:bg-carta-scura/40"
             >
               <td className="px-4 py-3">
