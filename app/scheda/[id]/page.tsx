@@ -27,7 +27,7 @@ export default function SchedaPage({ params }: { params: { id: string } }) {
           <span className="font-sans text-xs text-stone-400">
             {result.meta.cache
               ? `scheda generata dal vivo il ${result.meta.cache.generata_il} con ${result.meta.cache.modello} · servita da cache`
-              : "stima offline (euristica) — genera le schede reali con scripts/generate-schede.mjs"}
+              : "stima offline etichettata · analisi reale disponibile dalla demo"}
           </span>
           <PrintButton />
         </div>

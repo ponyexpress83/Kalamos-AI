@@ -15,7 +15,7 @@ function Section({
       <h3 className="mb-2 font-sans text-xs font-semibold uppercase tracking-wider text-accento">
         {title}
       </h3>
-      <div className="font-serif text-[15px] leading-relaxed text-inchiostro">
+      <div className="font-serif text-[17px] leading-relaxed text-inchiostro">
         {children}
       </div>
     </section>
@@ -56,7 +56,7 @@ export default function SchedaView({ result }: { result: AnalysisResult }) {
           <div className="font-sans text-xs font-semibold uppercase tracking-wide text-amber-800">
             Anteprima simulata · offline
           </div>
-          <p className="mt-1 font-sans text-[13px] leading-relaxed text-amber-900">
+          <p className="mt-1 font-sans text-[14px] leading-relaxed text-amber-900">
             Valutazione euristica basata sui segnali del testo (lunghezza,
             dialogo, cliché, lessico), <strong>non</strong> inferenza AI. Serve a
             provare il flusso su qualsiasi manoscritto. Per la scheda reale,
@@ -84,7 +84,7 @@ export default function SchedaView({ result }: { result: AnalysisResult }) {
           Collana suggerita per editore
         </h3>
         <ProposteCollana fit={scheda.fit_collane} />
-        <p className="mt-4 font-sans text-xs leading-relaxed text-stone-500">
+        <p className="mt-4 font-sans text-[13px] leading-relaxed text-stone-500">
           Scelta la casa editrice, Kalamos propone la collana più adatta tra
           quelle reali di quel catalogo: il fit misura il rapporto testo–collana,
           non una qualità astratta.
@@ -109,7 +109,7 @@ export default function SchedaView({ result }: { result: AnalysisResult }) {
           {scheda.temi.map((t, i) => (
             <span
               key={i}
-              className="rounded-full bg-carta-scura px-3 py-1 font-sans text-xs text-stone-700"
+              className="rounded-full bg-carta-scura px-3 py-1 font-sans text-[13px] text-stone-700"
             >
               {t}
             </span>
@@ -127,7 +127,7 @@ export default function SchedaView({ result }: { result: AnalysisResult }) {
               {c.autore && c.autore !== "—" && (
                 <span className="text-stone-500"> — {c.autore}</span>
               )}
-              <span className="block font-sans text-[13px] text-stone-600">
+              <span className="block font-sans text-[14px] text-stone-600">
                 {c.perche}
               </span>
             </li>
@@ -169,10 +169,10 @@ export default function SchedaView({ result }: { result: AnalysisResult }) {
         <div className="mb-1 font-sans text-xs font-semibold uppercase tracking-wide text-accento">
           Nota metodologica
         </div>
-        <p className="font-serif text-[14px] leading-relaxed text-inchiostro">
+        <p className="font-serif text-[15px] leading-relaxed text-inchiostro">
           {scheda.nota_metodologica}
         </p>
-        <p className="mt-2 font-sans text-xs leading-relaxed text-stone-500">
+        <p className="mt-2 font-sans text-[13px] leading-relaxed text-stone-500">
           Supporto alla decisione: l'editor mantiene l'ultima parola. Il
           manoscritto è trattato come IP riservato — inviato cifrato al solo
           motore di analisi, mai usato per addestrare modelli, non archiviato

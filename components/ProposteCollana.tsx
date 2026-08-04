@@ -36,7 +36,7 @@ export default function ProposteCollana({
               <span className="font-serif text-base font-semibold text-inchiostro">
                 {editore}
                 {gruppoByNome[editore] === "Gruppo Mondadori" && (
-                  <span className="ml-2 align-middle rounded-full border border-accento/40 px-1.5 py-0.5 font-sans text-[9px] font-semibold uppercase tracking-wide text-accento">
+                  <span className="ml-2 align-middle rounded-full border border-accento/40 px-1.5 py-0.5 font-sans text-[10px] font-semibold uppercase tracking-wide text-accento">
                     Gruppo Mondadori
                   </span>
                 )}
@@ -65,7 +65,7 @@ export default function ProposteCollana({
                     style={{ width: `${pct(top.score)}%` }}
                   />
                 </div>
-                <p className="mt-1.5 font-sans text-xs leading-relaxed text-stone-600">
+                <p className="mt-1.5 font-sans text-[13px] leading-relaxed text-stone-600">
                   {top.motivazione}
                 </p>
               </div>
@@ -76,7 +76,7 @@ export default function ProposteCollana({
                 {altre.map((f) => (
                   <div
                     key={f.collana}
-                    className="flex items-center gap-3 font-sans text-xs text-stone-500"
+                    className="flex items-center gap-3 font-sans text-[13px] text-stone-500"
                   >
                     <span className="w-32 shrink-0 truncate">{f.collana}</span>
                     <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-carta-scura">

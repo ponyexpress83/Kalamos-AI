@@ -2,6 +2,7 @@ import Link from "next/link";
 import BatchTable, { type BatchRow } from "@/components/BatchTable";
 import SessionRows from "@/components/SessionRows";
 import FeedbackCounter from "@/components/FeedbackCounter";
+import KpiRedazione from "@/components/KpiRedazione";
 import { manuscripts } from "@/lib/manuscripts";
 import { getSchedaForDemo } from "@/lib/schede";
 import { publishers, defaultPublisherIds } from "@/config/publishers";
@@ -38,30 +39,9 @@ function buildRows(): { rows: BatchRow[]; reali: number; metas: AnalysisMeta[] }
   return { rows, reali, metas };
 }
 
-function Kpi({ label, value, hint }: { label: string; value: string; hint?: string }) {
-  return (
-    <div className="rounded-xl border border-carta-scura bg-white/50 px-5 py-4">
-      <div className="font-serif text-3xl font-bold text-inchiostro">{value}</div>
-      <div className="mt-0.5 font-sans text-xs uppercase tracking-wide text-stone-500">{label}</div>
-      {hint && <div className="mt-1 font-sans text-xs text-stone-400">{hint}</div>}
-    </div>
-  );
-}
-
 export default function RedazionePage() {
   const { rows, reali, metas } = buildRows();
   const caseDefault = defaultPublisherIds.length || 2;
-
-  // KPI MISURATI dalle schede reali in cache (tempo e token effettivi).
-  const tempoMedio =
-    metas.length > 0
-      ? Math.round(metas.reduce((s, m) => s + m.tempo_secondi, 0) / metas.length)
-      : null;
-  const costi = metas
-    .map((m) => costoSchedaUSD(m.modello, m.usage))
-    .filter((c): c is number => c !== null);
-  const costoMedio =
-    costi.length > 0 ? costi.reduce((s, c) => s + c, 0) / costi.length : null;
 
   return (
     <div>
@@ -73,39 +53,19 @@ export default function RedazionePage() {
         </p>
       </div>
 
-      <div className="mb-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <Kpi
-          label="Tempo per scheda"
-          value={tempoMedio !== null ? `${tempoMedio}s` : "—"}
-          hint={
-            tempoMedio !== null
-              ? "misurato sulle schede reali"
-              : "genera le schede reali (script)"
-          }
-        />
-        <Kpi
-          label="Costo API per scheda"
-          value={costoMedio !== null ? `~$${costoMedio.toFixed(2)}` : "—"}
-          hint={
-            costoMedio !== null
-              ? "misurato: token effettivi × listino modello"
-              : "genera le schede reali (script)"
-          }
-        />
-        <Kpi label="Manoscritti in coda" value={`${rows.length}`} />
-        <Kpi
-          label="Case / collane"
-          value={`${publishers.length} / ${publishers.reduce((n, p) => n + p.collane.length, 0)}`}
-          hint="catalogo reale coperto"
-        />
-      </div>
+      <KpiRedazione
+        metasCache={metas}
+        demoCount={rows.length}
+        caseTotali={publishers.length}
+        collaneTotali={publishers.reduce((n, p) => n + p.collane.length, 0)}
+      />
 
-      <p className="mb-8 rounded-lg border border-carta-scura bg-white/40 p-3 font-sans text-xs leading-relaxed text-stone-600">
-        Baseline di settore per una scheda di lettura professionale:{" "}
-        <strong>€150–500 e 5–15 giorni</strong> — stima di settore{" "}
-        <span className="text-stone-400">[DA VERIFICARE]</span>. Il confronto con
-        i valori misurati qui sopra è il cuore del caso economico: Kalamos non
-        sostituisce il giudizio, elimina l'attesa.
+      <p className="mb-8 rounded-lg border border-carta-scura bg-white/40 p-3 font-sans text-[13px] leading-relaxed text-stone-600">
+        Riferimento di settore per una scheda di lettura professionale:{" "}
+        <strong>€150–500 e 5–15 giorni</strong> — stima da validare sui dati
+        reali dell'editore nella prima fase del PoC. Il confronto con i valori
+        misurati qui sopra è il cuore del caso economico: Kalamos non sostituisce
+        il giudizio, elimina l'attesa.
       </p>
 
       <FeedbackCounter />
@@ -119,11 +79,11 @@ export default function RedazionePage() {
 
       <p className="mt-4 font-sans text-xs text-stone-400">
         {reali === rows.length && rows.length > 0
-          ? `Schede generate dal vivo su Claude contro ${caseDefault} case editrici di default, servite da cache.`
+          ? `Schede generate dal vivo su Claude contro ${caseDefault} case editrici del Gruppo, servite da cache.`
           : reali > 0
-            ? `${reali} schede generate dal vivo (da cache), ${rows.length - reali} stime offline (euristica). Completa con scripts/generate-schede.mjs.`
-            : `Stime offline (euristica) contro ${caseDefault} case editrici di default. Per le schede reali: scripts/generate-schede.mjs (vedi README).`}{" "}
-        La scheda su un testo nuovo si genera dal vivo dalla{" "}
+            ? `${reali} schede generate dal vivo, le altre sono stime offline etichettate.`
+            : `I manoscritti demo mostrano stime offline etichettate; l'analisi reale si genera dalla demo.`}{" "}
+        Per analizzare un testo nuovo apri la{" "}
         <Link href="/demo" className="underline hover:text-accento">demo</Link>.
       </p>
     </div>
