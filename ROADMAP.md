@@ -103,6 +103,7 @@
 2026-05-26 | 06-product| MVP cliccabile (Next.js): login redazione → coda manoscritti → scheda con fit-score per collana e verdetto. Dati di esempio (incl. schede Salgari/Svevo). Build verde, deployabile su Vercel. Risolve il 404 (il repo non era un'app web)
 2026-06-24 | 06-product| Demo cliccabile con INFERENZA REALE: flusso Analizza (4 manoscritti demo originali / incolla / upload .txt-.pdf) → /api/analyze su Claude (structured output validato con zod, schema scheda completo) → scheda di lettura con fit-score per collana. Vista Redazione (tabella ordinabile + KPI). Schede demo in cache (parte offline). Rimosso il login. Brand allineato (inchiostro #14213d / accento #b3001b / carta #fbfaf7). Build verde
 2026-08-03 | 06-product| Upgrade PLAI-ready della demo: Mondadori-first (S&K reintegrata con collane reali verificate — Pandora/Saggi/Economia/Varia; default solo case del Gruppo; badge), numeri call 2026 corretti nei documenti (€100K~7% + follow-on €400K; €40K PoC growth), schede reali in cache via script, KPI misurati, batch triage multiplo, feedback editor, pagina /riservatezza
+2026-08-03 | 06-product| Integrate proposte collaboratore: roadmap "calibrazione sul catalogo" (successi+flop, riservata) e "AI-check di provenienza" (segnale con confidenza, mai verdetto) in mvp-scope; trend Kobo 45% (verificato, fonti LH/ActuaLitté) in industry-trends; menzione potenziale europeo in landing
 ```
 
 ---

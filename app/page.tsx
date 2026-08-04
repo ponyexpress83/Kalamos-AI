@@ -34,6 +34,10 @@ export default function LandingPage() {
         <p className="mt-3 font-sans text-sm font-medium text-accento">
           Pensato per i flussi editoriali del Gruppo Mondadori — e per ogni editore.
         </p>
+        <p className="mt-1.5 font-sans text-xs text-stone-500">
+          Nato per l'editoria italiana, progettato per scalare sui mercati
+          europei: i profili di collana sono configurabili in ogni lingua.
+        </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <Link
