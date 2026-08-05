@@ -252,7 +252,7 @@ Se ti distrai, ricordati che queste tre cose contano più di tutto il resto:
 | 03-poc-proposal | 🟢 design retrospettivo + divisione fissata | Claude | KPI riancorati su recall/κ; validare volumi reali in Fase 1 |
 | 04-pitch-deck | 🔴 outline solo | — | da costruire |
 | 05-financials | 🔴 da fare | Valerio | esiste in formato vecchio |
-| 06-product | 🟢 Demo PLAI-ready (editore→collana reale) | Claude+Valerio | Landing + /demo: scegli l'editore (default: case Mondadori, S&K inclusa) → collana reale suggerita; batch triage; KPI misurati; feedback editor; /riservatezza; euristica offline etichettata |
+| 06-product | 🟢 Demo PLAI-ready, editore-first | Claude+Valerio | Landing → /redazione: si entra in una redazione (default: case Mondadori, S&K inclusa) e si vede la coda dei manoscritti in arrivo con la collana reale suggerita; /demo aggiunge un manoscritto alla coda; raccomandazione contestuale (prosa × fit di catalogo); batch triage; KPI misurati; feedback editor; /riservatezza; euristica offline etichettata |
 | 07-research | 🟡 parziale | Claude | competitor + market sizing OK, deep-dive Mondadori manca |
 | 08-outreach | 🔴 da fare | Valerio | identificare decision maker PLAI è prioritario |
 | 09-demo-day | 🔴 in lontananza | — | solo dopo essere stati selezionati |
@@ -273,4 +273,4 @@ Aggiorna questa tabella ogni volta che chiudi una sezione.
 
 ---
 
-*Ultimo aggiornamento di questo file: 3 agosto 2026. Aggiornare il timestamp se modifichi il contenuto.*
+*Ultimo aggiornamento di questo file: 5 agosto 2026. Aggiornare il timestamp se modifichi il contenuto.*
