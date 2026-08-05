@@ -8,10 +8,12 @@
 ## 0. Da fare stasera (15 minuti, in quest'ordine)
 
 - [ ] **Genera le schede reali.** Con il server attivo e `ANTHROPIC_API_KEY` impostata: `node scripts/generate-schede.mjs`. Senza questo passaggio la coda in redazione mostra **stime euristiche offline etichettate**, non inferenza vera. Se un panelist chiede "questa è AI?" la risposta onesta oggi è "questa coda no, è una stima di superficie; l'AI la vedi ora" — recuperabile, ma è meglio non doverla dare.
-- [ ] Verifica che `ANTHROPIC_API_KEY` sia impostata su Vercel e che il piano sia **Pro** (su Hobby il limite di 10 secondi per funzione taglia l'analisi a metà).
+- [ ] **Svuota la sessione del browser.** In Redazione, sezione "Analizzati in questa sessione", clicca **svuota**. Le analisi di prova restano in `localStorage` e fanno dire alla card KPI un numero diverso dall'intestazione della pagina: sul proiettore è un invito a chiedere "quindi quanti sono?". Dopo, ricarica e controlla che la card dica **4**.
 - [ ] Apri `kalamos-ai.vercel.app`, entra in **Sperling & Kupfer**, lascia il tab aperto.
 - [ ] Secondo tab su `kalamos-ai.vercel.app/redazione?casa=einaudi` — è il tuo colpo, non cercarlo dal vivo.
-- [ ] Un `.txt` di prova sul desktop, per l'analisi dal vivo.
+- [ ] Un `.txt` di prova sul desktop — **non un PDF**: sui PDF il controllo della citazione non può confermare nulla (vedi Momento 3).
+- [ ] Un `Ctrl+P` su una scheda, solo per guardare l'impaginazione del PDF esportato.
+- [ ] Apri la coda dal telefono e fai gli screenshot: coda Sperling, coda Einaudi, una scheda.
 - [ ] Hotspot del telefono pronto.
 
 ---
@@ -58,6 +60,8 @@ Due dettagli da far notare, se c'è spazio:
 ### Momento 3 — Il giudizio verificabile (90 secondi)
 Apri una scheda. Scorri fino a **Passaggio a sostegno**.
 
+> ⚠️ **Usa un testo incollato o un `.txt`, mai un PDF.** Sui PDF l'applicazione non estrae il testo (lo legge il modello direttamente), quindi la citazione non è confrontabile e a schermo compare un messaggio che lo dice — non la conferma. Se pronunci "il sistema controlla che quella frase esista" mentre lo schermo dice il contrario, perdi il momento migliore che hai.
+
 > "Ogni giudizio è ancorato a una citazione letterale del manoscritto, e il sistema controlla che quella frase esista davvero nel testo caricato. E la collana proposta viene verificata contro il catalogo reale dell'editore: se il modello ne inventa una, il codice la scarta prima che arrivi all'editor.
 >
 > Questo pezzo l'abbiamo costruito dopo un errore vero: in una versione precedente il modello aveva attribuito a un editore una collana che non esiste. In redazione basta quello per chiudere la conversazione."
@@ -65,7 +69,9 @@ Apri una scheda. Scorri fino a **Passaggio a sostegno**.
 **Questo è il momento che ti distingue dalle altre application.** Non stai dicendo "la nostra AI è brava". Stai dicendo "so dove sbaglia e l'ho messa in gabbia".
 
 ### Chiusura (30 secondi)
-Aggiungi un manoscritto alla coda dal vivo, se la rete regge. Se non regge, non insistere: hai già mostrato tutto.
+Aggiungi **un** manoscritto alla coda dal vivo, se la rete regge: circa trenta secondi. Se non regge, non insistere: hai già mostrato tutto.
+
+**Non fare il batch dal vivo**: i file girano in sequenza, tre `.txt` sono un minuto e quarantadue secondi di schermo fermo. Se vuoi mostrarlo, caricalo prima della call e apri la Redazione a cose fatte.
 
 ---
 
@@ -73,10 +79,11 @@ Aggiungi un manoscritto alla coda dal vivo, se la rete regge. Se non regge, non 
 
 | Cosa | Numero | Come è ottenuto |
 |---|---|---|
-| Case editrici / collane nella demo | **9 / 36** | Reali, verificate sui cataloghi pubblici |
-| Costo API per scheda | **€0,03–0,06** | Calcolato sui prompt reali, listino pubblico Anthropic |
-| Costo senza tetto sull'estratto | ~€0,39 | Stessa base — il tetto vale ~7× |
-| Tempo per scheda | **~35 secondi** | Misurato in locale (19s senza output vincolato) |
+| Case editrici / collane nella demo | **9 / 35** | Reali, verificate sui cataloghi pubblici |
+| Costo API per scheda | **$0,03–0,06** (dollari: il listino è in USD e la demo stampa `~$0.06`) | Calcolato sui prompt reali, listino pubblico Anthropic |
+| Costo senza tetto sull'estratto | ~$0,39 | Stessa base — il tetto vale ~7× |
+| Tempo per scheda | **~30 secondi** (media misurata oggi: **28s**) | Misurato in produzione su 6 analisi: 24-30s |
+| Modello in produzione | `claude-opus-4-8` | Se te lo chiedono: il modello sta dietro una variabile d'ambiente, cambiarlo è una riga |
 | Riferimento di settore per una scheda | €150–500 e 5–15 giorni | **Stima di settore, da validare in Fase 1 del PoC** |
 | Piloti in corso / ricavi | **zero** | Detto per primo, non per ultimo |
 | PoC proposto | 90 giorni, Sperling & Kupfer, ~300 manoscritti retrospettivi + 30-50 live | `03-poc-proposal/90-day-plan.md` |
@@ -138,7 +145,7 @@ Le altre venticinque sono in `q-and-a-prep.md`.
 | Se… | Fai così |
 |---|---|
 | La rete cade | Passi agli screenshot nel telefono. Li hai preparati stasera. |
-| L'analisi dal vivo va in timeout | *"È il limite di dieci secondi del piano gratuito di hosting, non del motore. La scheda in cache che vedete è generata dallo stesso flusso."* |
+| L'analisi dal vivo va in timeout | *"Ci sta mettendo troppo, la rete non aiuta — la scheda che vedete è generata dallo stesso flusso, andiamo avanti."* Non dare spiegazioni tecniche che non puoi verificare: oggi in produzione le analisi tornano in 24-30 secondi, quindi la scusa del "limite del piano gratuito" sarebbe falsa. |
 | Ti chiedono un numero che non hai | *"Non ce l'ho e non voglio inventarlo. Te lo mando entro domani."* Poi mandalo davvero. |
 | Ti contestano un dato | Non difenderlo. *"Può essere, verifico e ti faccio sapere."* Vale più di una discussione vinta. |
 | Vai lungo | Salta il Momento 3 e vai alla chiusura. Il ribaltamento della coda è la cosa che devono ricordare. |

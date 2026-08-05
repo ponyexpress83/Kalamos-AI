@@ -241,7 +241,13 @@ export default function Analyzer({
       setBatchProgress(`Manoscritto ${i + 1} di ${batchFiles.length}: ${titolo}`);
       const { result: r, fallback } = await analyzeOneText(f.text, titolo);
       if (fallback) fallbacks++;
-      const saved = saveSessionEntry(titolo, r);
+      // In elenco si legge il titolo dedotto dal testo, non il nome del file:
+      // su un proiettore "il-cane-del-custode.txt" non è un titolo.
+      const dedotto = r.scheda.titolo_presunto?.trim();
+      const saved = saveSessionEntry(
+        dedotto && dedotto.length > 2 ? dedotto : titolo,
+        r,
+      );
       if (saved) entries.push(saved);
     }
 

@@ -51,7 +51,7 @@ Non è un modello per-seat: il valore percepito è la *capacità di processament
 
 | Voce | Costo | Base |
 |---|---|---|
-| Token API (Claude Sonnet, triage su estratto rappresentativo) | **€0,03–0,06** | Calcolato sui prompt reali della demo, listino pubblico agosto 2026 |
+| Token API (Claude Sonnet, triage su estratto rappresentativo) | **$0,03–0,06** | Calcolato sui prompt reali della demo, listino pubblico agosto 2026 |
 | Vector storage + retrieval | €0,10 | Stima: l'indice di collana si calcola una volta, non per manoscritto |
 | Compute orchestration | €0,10 | Stima |
 | Buffer & contingency | €0,25 | Copre i casi che richiedono il testo integrale |

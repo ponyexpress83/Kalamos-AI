@@ -64,7 +64,7 @@ passo successivo. **[progettato]**
 Oggi ogni collana è descritta da una scheda editoriale strutturata — profilo,
 descrizione, catalogo di riferimento — e il set completo delle collane candidate
 viene passato al modello insieme al testo. Nella demo sono **9 case editrici e
-36 collane reali**, verificate una a una sui cataloghi pubblici, con la fonte
+35 collane reali**, verificate una a una sui cataloghi pubblici, con la fonte
 citata nel codice. Nessuna collana inventata: è la condizione minima perché un
 editor prenda sul serio l'output. **[costruito]**
 
@@ -161,7 +161,7 @@ restituito dall'API e mostra il costo reale in redazione non appena si genera un
 scheda dal vivo.
 
 **Latenza misurata** in sessione di test locale sui manoscritti demo: ~19
-secondi con JSON libero, ~35 secondi con output vincolato allo schema. Abbiamo
+secondi con JSON libero, ~35 con output vincolato allo schema; in produzione, sui testi brevi della demo, la media misurata è di 28 secondi (24-30). Abbiamo
 tenuto l'output vincolato: senza, il modello deriva sulla forma della risposta —
 chiave radice rinominata, JSON avvolto in un blocco di codice — e la scheda va
 gestita a mano invece che validata. Su piano Vercel gratuito il limite di 10
@@ -179,7 +179,7 @@ davvero. Ottenerlo è precisamente lo scopo del PoC di 90 giorni.
 
 Ciò che è verificato oggi:
 
-- **Copertura del catalogo**: 9 case editrici e 36 collane reali, verificate sui
+- **Copertura del catalogo**: 9 case editrici e 35 collane reali, verificate sui
   cataloghi pubblici — narrativa (Sperling & Kupfer, Einaudi, Sellerio), poesia
   (Ladolfi, Samuele, Interno Poesia), ragazzi e albi (Il Battello a Vapore,
   Topipittori), fantasy (Oscar Vault). Tre appartengono al Gruppo Mondadori.

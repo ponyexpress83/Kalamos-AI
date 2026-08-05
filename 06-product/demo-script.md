@@ -11,7 +11,9 @@
 - [ ] `node scripts/generate-schede.mjs` eseguito (server attivo + `ANTHROPIC_API_KEY`): senza, la coda mostra stime euristiche etichettate, non inferenza reale.
 - [ ] Tab 1 aperto su `kalamos-ai.vercel.app/redazione?casa=sperling-kupfer`
 - [ ] Tab 2 aperto su `kalamos-ai.vercel.app/redazione?casa=einaudi` — il cambio di redazione è il momento decisivo, non cercarlo dal vivo
-- [ ] Un `.txt` sul desktop per l'analisi in diretta
+- [ ] Un `.txt` sul desktop per l'analisi in diretta — **non un PDF** (vedi sotto)
+- [ ] Sessione del browser svuotata (link "svuota" in Redazione), così la card KPI dice 4 e non un numero gonfiato dalle prove
+- [ ] Se mostri il batch, i file devono avere nomi leggibili: il titolo dedotto compare nelle schede, ma la barra di avanzamento mostra il nome del file
 - [ ] Screenshot delle tre schermate nel telefono, come rete di sicurezza
 
 ---
@@ -62,11 +64,15 @@
 
 *(scorri fino a **Passaggio a sostegno**)*
 
+> ⚠️ **Solo su testo incollato o `.txt`.** Sui PDF l'app non estrae il testo — lo legge il modello — quindi il controllo non può confermare la citazione e a schermo compare un messaggio che lo spiega, non la conferma verde. Se dici "il sistema verifica" mentre lo schermo dice altro, perdi il momento migliore.
+
 > "E qui c'è la parte a cui tengo di più. Ogni giudizio è ancorato a una citazione **letterale** del manoscritto, e il sistema verifica che quella frase esista davvero nel testo caricato. La collana proposta viene confrontata con il catalogo reale dell'editore: se il modello se ne inventa una, il codice la scarta prima che arrivi all'editor.
 >
 > Questo pezzo l'abbiamo costruito dopo un errore vero: in una versione precedente il modello aveva attribuito a un editore una collana che non esiste. In redazione basta quello per chiudere la conversazione. Nessun prompt lo impedisce in modo affidabile — una lista di controllo sì."
 
 ### [3:45–4:30] Analisi dal vivo (se la rete regge)
+
+> Un solo manoscritto, circa trenta secondi. **Mai il batch dal vivo**: i file girano in sequenza e tre `.txt` sono 1'42" di schermo fermo.
 
 *(torna in redazione → "+ Aggiungi manoscritto" → carica il `.txt`)*
 
@@ -106,6 +112,7 @@ Il ribaltamento della coda è l'unica cosa che devono ricordare. Tutto il resto 
 | *Sette giorni a Portofino* — feel-good | **73% Seconda lettura** (Pandora) | 35% Seconda lettura (Supercoralli) | 44% Seconda lettura (Azzurra) | 8% Scarta |
 | *Le ombre del passato* — giallo con cliché | 42% Scarta | 32% Scarta | 22% Scarta | 8% Scarta |
 
+> Verificati il 5 agosto 2026 sulla demo online: 16 celle su 16 coincidono.
 > Valori della modalità offline etichettata (senza chiave API). Con le schede reali generate, i numeri cambiano: **rileggi la tabella dopo aver lanciato `generate-schede.mjs`** e non citare a memoria quelli vecchi.
 
 Nota per te: su Sperling tutti e quattro finiscono su *Pandora*, perché le altre collane sono Saggi, Economia e Varia. Non è un difetto — su Sperling il segnale è la percentuale, non la varietà di collana. La varietà si vede su Einaudi e sul Battello.
@@ -119,6 +126,7 @@ Nota per te: su Sperling tutti e quattro finiscono su *Pandora*, perché le altr
 - ❌ Scorrere veloce: due secondi fermi su ogni vista che conta
 - ❌ Aprire più di due schede di lettura (una fatta bene basta)
 - ❌ Chiamare "clienti" gli editori nel selettore: sono cataloghi pubblici modellati, non partner
+- ❌ Mostrare Ladolfi come momento: sono quattro "Scarta" su quattro, tutti sulla stessa collana. Vale due secondi come controprova ("un testo in prosa non è per una casa di poesia"), non di più
 - ❌ Presentare le stime offline come inferenza AI: sono etichettate, e l'etichetta è un punto a favore, non da nascondere
 
 ---

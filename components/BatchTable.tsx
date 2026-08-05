@@ -52,12 +52,22 @@ export default function BatchTable({ rows }: { rows: BatchRow[] }) {
 
   const arrow = (key: SortKey) => (sortKey === key ? (asc ? " ↑" : " ↓") : "");
 
-  const Th = ({ k, label, right }: { k: SortKey; label: string; right?: boolean }) => (
+  const Th = ({
+    k,
+    label,
+    right,
+    soloDesktop,
+  }: {
+    k: SortKey;
+    label: string;
+    right?: boolean;
+    soloDesktop?: boolean;
+  }) => (
     <th
       onClick={() => sortBy(k)}
-      className={`cursor-pointer select-none px-4 py-3 font-sans text-xs font-semibold uppercase tracking-wide text-stone-500 transition hover:text-accento ${
+      className={`cursor-pointer select-none px-3 py-3 font-sans text-xs font-semibold uppercase tracking-wide text-stone-500 transition hover:text-accento sm:px-4 ${
         right ? "text-right" : "text-left"
-      }`}
+      } ${soloDesktop ? "hidden sm:table-cell" : ""}`}
     >
       {label}
       {arrow(k)}
@@ -70,7 +80,7 @@ export default function BatchTable({ rows }: { rows: BatchRow[] }) {
         <thead>
           <tr className="border-b border-carta-scura">
             <Th k="titolo" label="Titolo" />
-            <Th k="genere" label="Genere" />
+            <Th k="genere" label="Genere" soloDesktop />
             <Th k="fit" label="Collana suggerita" right />
             <Th k="racc" label="Raccomandazione" />
           </tr>
@@ -82,14 +92,19 @@ export default function BatchTable({ rows }: { rows: BatchRow[] }) {
               onClick={() => router.push(r.href ?? `/scheda/${r.id}`)}
               className="cursor-pointer border-b border-carta-scura/60 transition last:border-0 hover:bg-carta-scura/40"
             >
-              <td className="px-4 py-3">
+              <td className="px-3 py-3 sm:px-4">
                 <div className="font-serif text-[15px] font-semibold text-inchiostro">
                   {r.titolo}
                 </div>
                 <div className="font-sans text-xs text-stone-500">{r.autore}</div>
+                {/* Su telefono il genere sta qui: la colonna dedicata sparisce
+                    per lasciare spazio a fit e raccomandazione. */}
+                <div className="font-sans text-xs text-stone-600 sm:hidden">{r.genere}</div>
               </td>
-              <td className="px-4 py-3 font-sans text-sm text-stone-600">{r.genere}</td>
-              <td className="px-4 py-3 text-right">
+              <td className="hidden px-4 py-3 font-sans text-sm text-stone-600 sm:table-cell">
+                {r.genere}
+              </td>
+              <td className="px-3 py-3 text-right sm:px-4">
                 <span className="font-sans text-sm tabular-nums font-semibold text-inchiostro">
                   {r.fitPct}%
                 </span>
@@ -97,7 +112,7 @@ export default function BatchTable({ rows }: { rows: BatchRow[] }) {
                   {r.editore} · {r.collana}
                 </span>
               </td>
-              <td className="px-4 py-3">
+              <td className="px-3 py-3 sm:px-4">
                 <RecommendationBadge value={r.raccomandazione} />
               </td>
             </tr>

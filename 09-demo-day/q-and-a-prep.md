@@ -131,7 +131,7 @@
 ## DOMANDE NATE DALLA DEMO (le più probabili in call)
 
 ### 29. "Perché non usate un database vettoriale? Sarebbe l'approccio standard."
-> Perché non l'ho ancora costruito, e preferisco dirvelo che farvelo scoprire. Oggi il catalogo è descritto in modo strutturato — nove case, trentasei collane reali — e passato al modello insieme al testo. Il retrieval vettoriale serve a due cose precise: restringere il campo, così il modello confronta il manoscritto con le due o tre collane più vicine invece che con tutte, e rendere il fit più difendibile, perché l'editor vede *contro quali passaggi di catalogo* il testo è stato confrontato. È il primo lavoro tecnico del PoC, e ha senso farlo su un catalogo vero, non sui nove che ho modellato per la demo.
+> Perché non l'ho ancora costruito, e preferisco dirvelo che farvelo scoprire. Oggi il catalogo è descritto in modo strutturato — nove case, trentacinque collane reali — e passato al modello insieme al testo. Il retrieval vettoriale serve a due cose precise: restringere il campo, così il modello confronta il manoscritto con le due o tre collane più vicine invece che con tutte, e rendere il fit più difendibile, perché l'editor vede *contro quali passaggi di catalogo* il testo è stato confrontato. È il primo lavoro tecnico del PoC, e ha senso farlo su un catalogo vero, non sui nove che ho modellato per la demo.
 
 ### 30. "Come impedite al modello di inventare una collana che non esiste?"
 > Con del codice, non con un prompt. La collana che il modello propone viene confrontata con il catalogo reale di quell'editore: se non c'è, viene scartata prima che la scheda arrivi all'editor. Stessa cosa per la citazione: deve comparire nel testo caricato, altrimenti la scheda lo segnala. L'abbiamo costruito dopo un errore vero — in una versione precedente il modello aveva attribuito a un editore una collana inesistente. In redazione basta quello per chiudere la conversazione, e nessun prompt lo impedisce in modo affidabile.
@@ -154,7 +154,13 @@
 ### 36. "Funziona solo in italiano?"
 > Oggi è costruito e provato sull'editoria italiana, che è il mercato dove abbiamo l'autorità per parlare. La struttura però non è italiana: i profili di collana sono descrizioni configurabili in qualunque lingua, e il problema — troppi manoscritti, troppo poco tempo di lettura senior — è identico in Francia, Spagna e Germania. La presenza europea del Gruppo è la via naturale di espansione dopo il primo caso d'uso validato, non un'ambizione da slide.
 
-### 37. "Quanto ci vuole a metterlo dentro il nostro flusso?"
+### 37. "La citazione la confrontate parola per parola? È un match esatto?"
+> È un match letterale ancorato all'inizio della citazione, con tolleranza sui troncamenti. Se il modello cita una frase lunga e la tronca con i puntini, il controllo accetta la corrispondenza sull'incipit invece di bocciarla: verifica che la frase *cominci* dove dice, non che sia identica fino all'ultima parola. È una tolleranza voluta — un controllo troppo rigido segnalerebbe come sospette citazioni corrette, e un allarme che grida sempre non lo guarda più nessuno.
+
+### 38. "E se il modello sbaglia tutte le collane insieme? Cosa vede l'editor?"
+> Vede una stima etichettata come offline, non un giudizio AI spacciato per tale. Se nessuna delle collane proposte esiste nel catalogo, la scheda non passa il controllo e il sistema ripiega sulla valutazione euristica, che porta in cima un banner che dice cos'è. Il sistema degrada, ma non mente mai sulla natura di ciò che mostra: è il comportamento che voglio, perché l'errore che non posso permettermi non è "oggi la qualità è più bassa", è "vi ho dato per buono qualcosa che non lo era".
+
+### 39. "Quanto ci vuole a metterlo dentro il nostro flusso?"
 > Per il PoC, niente integrazione: lavoriamo sull'archivio e su una coda separata, così non tocchiamo i vostri sistemi mentre state ancora decidendo se vi serve. L'integrazione — casella di posta dedicata, export nel vostro formato di scheda — è la fase successiva ed è deliberatamente fuori dai novanta giorni. Chiedere a una redazione di cambiare workflow prima di aver visto i risultati è il modo più sicuro di far fallire un pilota.
 
 ---

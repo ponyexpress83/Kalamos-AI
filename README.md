@@ -35,11 +35,11 @@ npm run build    # build di produzione
 Variabili d'ambiente (vedi `.env.example`):
 
 - `ANTHROPIC_API_KEY` — chiave Anthropic. **Mai hardcoded.** Senza chiave la demo resta provabile in modalità offline (euristica etichettata) e la Redazione mostra le stime.
-- `ANTHROPIC_MODEL` — opzionale, default `claude-sonnet-4-6` (rapido, rientra nei 10s delle function su Vercel Hobby). Su piano Pro puoi usare `claude-opus-4-8` per la massima qualità.
+- `ANTHROPIC_MODEL` — opzionale, default `claude-sonnet-4-6` (il più rapido). Il deployment pubblico usa `claude-opus-4-8`: le analisi tornano in 24-41s misurati, quindi serve un piano con `maxDuration` oltre i 10s (la route dichiara 60).
 
 ### Modalità dimostrativa offline (sempre provabile)
 
-L'analisi dal vivo su Claude produce una scheda ricca ma richiede ~20–40s: **non rientra nei 10s delle function del piano Vercel Hobby**. Per rendere la demo provabile **con qualsiasi manoscritto**, in qualunque contesto (dal palco, su Hobby, offline, o senza chiave), c'è una **modalità dimostrativa offline** (checkbox sotto "Analizza"):
+L'analisi dal vivo su Claude produce una scheda ricca ma richiede ~24–41s misurati: **serve un piano il cui limite per function superi i 10s** (la route dichiara `maxDuration = 60`). Per rendere la demo provabile **con qualsiasi manoscritto**, in qualunque contesto (dal palco, su Hobby, offline, o senza chiave), c'è una **modalità dimostrativa offline** (checkbox sotto "Analizza"):
 
 - Genera una scheda **istantanea** da un'euristica sui segnali del testo (versi, dialogo, cliché, avverbi, lessico di genere) e suggerisce comunque una **collana reale per editore** (poesia in versi → case di poesia; giallo → *La memoria* di Sellerio; slush → scarta).
 - È **chiaramente etichettata come "anteprima simulata"** — non è inferenza AI. Serve a provare il flusso, non a sostituire la valutazione reale.

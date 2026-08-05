@@ -68,7 +68,7 @@ export default function LandingPage() {
           Scelto l'editore, Kalamos indirizza il testo alla collana più adatta
           del suo catalogo reale: lo stesso testo va a collane diverse.
         </Feature>
-        <Feature title="Triage 10×">
+        <Feature title="Coda ordinata">
           La vista Redazione ordina i manoscritti per fit e raccomandazione:
           riduce il backlog di lettura senza sostituire il giudizio editoriale.
         </Feature>

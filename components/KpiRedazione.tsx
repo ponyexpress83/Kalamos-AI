@@ -77,17 +77,27 @@ export default function KpiRedazione({
         hint={misurateSu}
       />
       <Kpi
-        label="Costo API per scheda"
+        label="Costo API per scheda (USD)"
         value={
           costoMedio !== null
             ? costoMedio < 0.01
-              ? "< $0,01"
+              ? "< $0.01"
               : `~$${costoMedio.toFixed(2)}`
             : "—"
         }
-        hint={costoMedio !== null ? "token effettivi × listino" : misurateSu}
+        hint={costoMedio !== null ? "token effettivi × listino Anthropic" : misurateSu}
       />
-      <Kpi label="Manoscritti in coda" value={`${inCoda}`} />
+      {/* Il numero deve coincidere con l'intestazione della pagina: la coda in
+          arrivo è una cosa, le analisi fatte in sessione sono un'altra. */}
+      <Kpi
+        label="Manoscritti in arrivo"
+        value={`${demoCount}`}
+        hint={
+          inCoda > demoCount
+            ? `+${inCoda - demoCount} analizzati in sessione`
+            : undefined
+        }
+      />
       <Kpi
         label={labelCase}
         value={

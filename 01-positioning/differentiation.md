@@ -17,8 +17,8 @@
 
 | Dimensione | Status quo (umano) | ChatGPT generico | Tool internazionali | Sviluppo interno Mondadori | **Kalamos AI** |
 |------------|---------------------|------------------|---------------------|------------------------------|----------------|
-| **Velocità per manoscritto** | 5-15 giorni [DA VERIFICARE] | 1-3 ore (con prompt continuo) | 30-60 min con setup | Variabile | **~35 secondi su estratto rappresentativo** (misurato); <30 min sul testo integrale |
-| **Costo per scheda** | €150-500 [DA VERIFICARE] | €0.50-3 in API + tempo editor | €20-100/mese flat | Alto setup + manutenzione | **€0,03-0,06 di API per scheda** (calcolato sui prompt reali della demo, mostrato in app); prezzo all-in per l'editore secondo il tier |
+| **Velocità per manoscritto** | 5-15 giorni [DA VERIFICARE] | 1-3 ore (con prompt continuo) | 30-60 min con setup | Variabile | **~30 secondi su estratto rappresentativo** (media misurata 28s); <30 min sul testo integrale |
+| **Costo per scheda** | €150-500 [DA VERIFICARE] | €0.50-3 in API + tempo editor | €20-100/mese flat | Alto setup + manutenzione | **$0,03-0,06 di API per scheda** (calcolato sui prompt reali della demo, mostrato in app); prezzo all-in per l'editore secondo il tier |
 | **Qualità della valutazione** | Alta se buon lettore | Media-bassa, generica | Bassa (orientata autori indie) | Variabile, dipende dal team | **Alta, validata da expert editoriali** |
 | **Fit con identità di collana** | Sì (se lettore esperto del genere) | No | No | Possibile ma costoso | **Sì, scoring per collana specifica** |
 | **Comparable analysis** | Sì (manuale, lenta) | Generica, spesso datata | Limitata al mercato US | Possibile | **Sì, mercato italiano + internazionale** |

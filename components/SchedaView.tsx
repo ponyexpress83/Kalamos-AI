@@ -113,7 +113,9 @@ export default function SchedaView({ result }: { result: AnalysisResult }) {
               ? "Citazione ritrovata nel testo caricato (controllo automatico): il giudizio è verificabile alla fonte."
               : meta.controlli?.citazione_verificata === false
                 ? "Attenzione: il controllo automatico non ha ritrovato questa citazione nel testo caricato. Verificala prima di usarla."
-                : "Il giudizio è ancorato al testo: l'editor può risalire al punto esatto invece di fidarsi."}
+                : meta.controlli
+                  ? "Documento PDF: il testo viene letto dal modello ma non estratto dall'applicazione, quindi il controllo automatico non può confermare la citazione. Confrontala con il manoscritto. Su testo incollato e file .txt la verifica è automatica."
+                  : "Il giudizio è ancorato al testo: l'editor può risalire al punto esatto invece di fidarsi."}
           </p>
         </Section>
       )}
