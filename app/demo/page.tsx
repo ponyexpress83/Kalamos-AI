@@ -2,7 +2,7 @@ import Analyzer, { type DemoManuscript } from "@/components/Analyzer";
 import { manuscripts, getManuscriptText } from "@/lib/manuscripts";
 import { publishers } from "@/config/publishers";
 
-export const metadata = { title: "Demo — Kalamos·AI" };
+export const metadata = { title: "Aggiungi manoscritto — Kalamos·AI" };
 
 export default function DemoPage() {
   const demoManuscripts: DemoManuscript[] = manuscripts.map((m) => ({
@@ -26,15 +26,19 @@ export default function DemoPage() {
   return (
     <div>
       <section className="mb-8 border-b border-carta-scura pb-6">
-        <p className="font-sans text-xs font-semibold uppercase tracking-widest text-accento">
-          Versione test · senza registrazione
-        </p>
-        <h1 className="mt-2 max-w-2xl font-serif text-3xl font-bold leading-tight text-inchiostro">
-          Analizza un manoscritto
+        <a
+          href="/redazione"
+          className="font-sans text-sm text-stone-500 transition hover:text-accento"
+        >
+          ← Redazione
+        </a>
+        <h1 className="mt-3 max-w-2xl font-serif text-3xl font-bold leading-tight text-inchiostro">
+          Aggiungi un manoscritto alla coda
         </h1>
         <p className="mt-2 max-w-2xl font-serif text-base leading-relaxed text-inchiostro/75">
-          Scegli un testo e la casa editrice: Kalamos restituisce la scheda di
-          lettura e suggerisce la collana più adatta del suo catalogo reale.
+          Un testo arrivato per email, dal portale proposte o da un'agenzia:
+          Kalamos lo legge e restituisce la scheda con la collana suggerita.
+          Puoi caricarne fino a 5 insieme.
         </p>
       </section>
 

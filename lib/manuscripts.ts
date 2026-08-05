@@ -22,6 +22,10 @@ export interface ManuscriptMeta {
   autore: string;
   genere: string;
   parole: number; // conteggio reale dell'estratto demo
+  /** Provenienza simulata: rappresenta come il manoscritto è arrivato in redazione. */
+  provenienza: string;
+  /** Giorno di arrivo (simulato) per l'ordine della coda. */
+  arrivato: string;
 }
 
 export const manuscripts: ManuscriptMeta[] = [
@@ -32,6 +36,8 @@ export const manuscripts: ManuscriptMeta[] = [
     autore: "Marta Bevilacqua",
     genere: "Narrativa letteraria",
     parole: 662,
+    provenienza: "email · manoscritti@",
+    arrivato: "lun 3 ago",
   },
   {
     id: "02_sette-giorni-a-portofino",
@@ -40,6 +46,8 @@ export const manuscripts: ManuscriptMeta[] = [
     autore: "Carla Montersino",
     genere: "Commercial / feel-good",
     parole: 586,
+    provenienza: "email · manoscritti@",
+    arrivato: "lun 3 ago",
   },
   {
     id: "03_le-ombre-del-passato",
@@ -48,6 +56,8 @@ export const manuscripts: ManuscriptMeta[] = [
     autore: "R. Vinci",
     genere: "Thriller / giallo",
     parole: 501,
+    provenienza: "portale proposte",
+    arrivato: "dom 2 ago",
   },
   {
     id: "04_la-stagione-delle-locuste",
@@ -56,6 +66,8 @@ export const manuscripts: ManuscriptMeta[] = [
     autore: "Nuccio Carbè",
     genere: "Noir / narrativa civile",
     parole: 562,
+    provenienza: "agenzia letteraria",
+    arrivato: "sab 1 ago",
   },
 ];
 

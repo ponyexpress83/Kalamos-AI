@@ -154,9 +154,16 @@ function fitFor(profilo: Profilo, s: Signals, voto: number): number {
   return clamp(Number(base.toFixed(2)), 0.08, 0.95);
 }
 
-function raccFromVoto(voto: number): Raccomandazione {
-  if (voto < 4.5) return "scarta";
-  if (voto >= 7) return "prioritario";
+/**
+ * La raccomandazione è CONTESTUALE alla casa: un testo di qualità ma lontano
+ * dal catalogo non è "prioritario" per quella redazione. Combina qualità della
+ * prosa e miglior fit tra le collane richieste.
+ */
+function raccContestuale(voto: number, bestFit: number): Raccomandazione {
+  if (voto < 4.5) return "scarta"; // prosa debole: scarta ovunque
+  if (bestFit < 0.35) return "scarta"; // fuori catalogo per questa casa
+  if (voto >= 7 && bestFit >= 0.55) return "prioritario";
+  if (bestFit >= 0.75 && voto >= 6) return "prioritario";
   return "seconda_lettura";
 }
 
@@ -212,7 +219,6 @@ export function analyzeHeuristic(text: string, input: HeuristicInput): AnalysisR
   const s = analyzeSignals(text);
   const voto = prosaVoto(s);
   const bucket = dominantBucket(s);
-  const racc = raccFromVoto(voto);
 
   const fit_collane = input.publishers.flatMap((p) =>
     p.collane.map((c) => ({
@@ -223,6 +229,11 @@ export function analyzeHeuristic(text: string, input: HeuristicInput): AnalysisR
         "Stima offline dai segnali del testo (versi, dialogo, lessico di genere): rapporto testo-collana indicativo, non inferenza editoriale.",
     })),
   );
+
+  const bestFit = fit_collane.reduce((max, f) => Math.max(max, f.score), 0);
+  const racc = raccContestuale(voto, bestFit);
+  // Caso tipico e prezioso: testo valido ma lontano dal catalogo della casa.
+  const fuoriCatalogo = voto >= 6 && bestFit < 0.35;
 
   const temi: string[] = [];
   if (s.verseLike) temi.push("testo in versi");
@@ -267,7 +278,9 @@ export function analyzeHeuristic(text: string, input: HeuristicInput): AnalysisR
     criticita,
     fit_collane,
     raccomandazione: racc,
-    razionale_raccomandazione: `Stima offline: voto prosa ${voto}/10 → ${racc.replace("_", " ")}. Anteprima automatica per provare il flusso; la valutazione reale richiede l'analisi dal vivo su Claude.`,
+    razionale_raccomandazione: fuoriCatalogo
+      ? `Stima offline: la qualità della scrittura c'è (prosa ${voto}/10), ma il fit con il catalogo di ${input.publishers[0]?.nome ?? "questa casa"} è basso (${Math.round(bestFit * 100)}%): non è un testo per questa lista, non è un testo debole. Segnalarlo a chi in gruppo pubblica questo genere è spesso la decisione giusta.`
+      : `Stima offline: prosa ${voto}/10 e miglior fit ${Math.round(bestFit * 100)}% → ${racc.replace("_", " ")}. Anteprima automatica per provare il flusso; la valutazione reale richiede l'analisi dal vivo su Claude.`,
     nota_metodologica:
       "Anteprima SIMULATA (offline): valutazione euristica basata su segnali testuali di superficie, non su inferenza AI. Attiva l'analisi dal vivo per la scheda reale. Supporto alla decisione, non sostituzione del giudizio editoriale.",
   };

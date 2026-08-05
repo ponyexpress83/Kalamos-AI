@@ -23,13 +23,28 @@ function defaultHeuristicPublishers(): HeuristicPublisher[] {
     }));
 }
 
-export function heuristicForDemo(id: string): AnalysisResult | undefined {
+export function heuristicForDemo(
+  id: string,
+  publisherId?: string,
+): AnalysisResult | undefined {
   const meta = getManuscriptMeta(id);
   const text = getManuscriptText(id);
   if (!meta || !text) return undefined;
+
+  // Se è indicata una redazione, il fit si calcola sul suo catalogo.
+  const scelta = publisherId ? getPublisher(publisherId) : undefined;
+  const target: HeuristicPublisher[] = scelta
+    ? [
+        {
+          nome: scelta.nome,
+          collane: scelta.collane.map((c) => ({ nome: c.nome, profilo: c.profilo })),
+        },
+      ]
+    : defaultHeuristicPublishers();
+
   return analyzeHeuristic(text, {
     titolo: meta.titolo,
     autore: meta.autore,
-    publishers: defaultHeuristicPublishers(),
+    publishers: target,
   });
 }

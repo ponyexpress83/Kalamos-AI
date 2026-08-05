@@ -31,11 +31,13 @@ export default function KpiRedazione({
   demoCount,
   caseTotali,
   collaneTotali,
+  labelCase = "Case / collane",
 }: {
   metasCache: AnalysisMeta[];
   demoCount: number;
   caseTotali: number;
   collaneTotali: number;
+  labelCase?: string;
 }) {
   const [metas, setMetas] = useState<AnalysisMeta[]>(metasCache);
   const [inCoda, setInCoda] = useState<number>(demoCount);
@@ -87,9 +89,13 @@ export default function KpiRedazione({
       />
       <Kpi label="Manoscritti in coda" value={`${inCoda}`} />
       <Kpi
-        label="Case / collane"
-        value={`${caseTotali} / ${collaneTotali}`}
-        hint="catalogo reale coperto"
+        label={labelCase}
+        value={
+          caseTotali === collaneTotali
+            ? `${collaneTotali}`
+            : `${caseTotali} / ${collaneTotali}`
+        }
+        hint="catalogo reale"
       />
     </div>
   );

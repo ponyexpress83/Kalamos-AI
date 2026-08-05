@@ -9,11 +9,11 @@ export default function Header() {
           <Logo height={30} />
         </Link>
         <nav className="flex items-center gap-5 font-sans text-sm">
-          <Link href="/demo" className="text-stone-600 transition hover:text-accento">
-            Demo
-          </Link>
           <Link href="/redazione" className="text-stone-600 transition hover:text-accento">
             Redazione
+          </Link>
+          <Link href="/demo" className="text-stone-600 transition hover:text-accento">
+            Aggiungi manoscritto
           </Link>
         </nav>
       </div>

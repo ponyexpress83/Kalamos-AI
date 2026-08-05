@@ -41,16 +41,16 @@ export default function LandingPage() {
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <Link
-            href="/demo"
+            href="/redazione"
             className="rounded-md bg-accento px-7 py-3 font-sans text-sm font-semibold text-white transition hover:bg-accento/90"
           >
-            Prova la demo →
+            Entra nella redazione →
           </Link>
           <Link
-            href="/redazione"
+            href="/demo"
             className="rounded-md border border-carta-scura px-7 py-3 font-sans text-sm font-medium text-inchiostro transition hover:border-inchiostro/40"
           >
-            Vista Redazione
+            Analizza un manoscritto
           </Link>
         </div>
         <p className="mt-4 font-sans text-xs text-stone-400">

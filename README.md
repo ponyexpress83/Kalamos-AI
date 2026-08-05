@@ -10,9 +10,11 @@ L'idea: invece di gestire la candidatura come una serie di chat sparse, qui c'è
 
 ## Demo cliccabile (app Next.js)
 
-**Rotte:** `/` è la **landing** (logo e presentazione) da cui si entra alla **versione di test senza credenziali**; `/demo` è l'app di analisi (anche **batch**: fino a 5 `.txt` insieme); `/redazione` la vista d'insieme con KPI misurati e coda di sessione; `/scheda/[id]` la scheda dei demo; `/scheda/s/[key]` le schede analizzate in sessione; `/riservatezza` il flusso dati.
+**Rotte:** `/` è la **landing** (logo e presentazione); `/redazione` è la **scrivania dell'editor** — schermata principale: si sceglie la redazione in cui entrare e si vede la coda dei manoscritti in arrivo con la collana suggerita (link diretto: `/redazione?casa=sperling-kupfer`); `/demo` è **"Aggiungi manoscritto alla coda"** (anche batch, fino a 5 `.txt`); `/scheda/[id]` e `/scheda/s/[key]` le schede; `/riservatezza` il flusso dati.
 
-La demo dimostrativa del prodotto: **Analizza** → scegli un manoscritto (4 testi originali precaricati) oppure incolla un testo o carica un `.txt`/`.pdf` → **scegli la casa editrice** (il cliente) → ottieni una **scheda di lettura strutturata** (sintesi, voto prosa, comparabili, forze/criticità, raccomandazione) in cui Kalamos **suggerisce automaticamente la collana più adatta** tra quelle **reali** del catalogo di quell'editore. La vista **Redazione** mostra una tabella ordinabile dei manoscritti con la collana suggerita.
+**Il cliente è l'editore, e la demo lo mette al centro.** Si entra scegliendo la **redazione** (nessuna credenziale: è una scelta di contesto dichiarata, non un login) e si arriva sulla scrivania dell'editor: la coda dei manoscritti in arrivo — con provenienza simulata (email, portale proposte, agenzia) — già letti da Kalamos, ognuno con la **collana suggerita del catalogo reale di quella casa** e la raccomandazione. Da lì si apre la scheda completa (sintesi, voto prosa, comparabili, forze/criticità) o si aggiunge un manoscritto alla coda.
+
+La raccomandazione è **contestuale alla redazione**: lo stesso testo che da Einaudi è *prioritario* può essere *scarta* da Sperling & Kupfer — non perché sia debole, ma perché è di un'altra lista. È la dimostrazione che regge il pitch: entra da Sperling e il feel-good è in testa; entra da Einaudi e la coda si ribalta sul noir d'autore.
 
 L'analisi dal vivo gira su Claude (Anthropic) in una route server (`/api/analyze`) che **non espone mai la chiave al client**. Senza chiave la demo resta provabile: la modalità offline (euristica etichettata) e le stime della Redazione funzionano anche **offline**; la chiave serve per l'analisi dal vivo reale su testi qualsiasi.
 

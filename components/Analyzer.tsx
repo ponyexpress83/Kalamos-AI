@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { AnalysisResult } from "@/lib/schema";
 import { analyzeHeuristic } from "@/lib/heuristic";
+import { getRedazione } from "@/lib/redazione";
 import { saveSessionEntry, type SessionEntry } from "@/lib/session";
 import { pct } from "@/lib/format";
 import SchedaView from "./SchedaView";
@@ -67,6 +68,17 @@ export default function Analyzer({
     const on = publishers.filter((p) => p.defaultOn).map((p) => p.id);
     return on.length > 0 ? on : publishers.slice(0, 2).map((p) => p.id);
   });
+  // La redazione attiva definisce il contesto: si valuta per la sua casa.
+  const [redazioneId, setRedazioneId] = useState<string | null>(null);
+  const [altreCase, setAltreCase] = useState(false);
+
+  useEffect(() => {
+    const id = getRedazione();
+    if (id && publishers.some((p) => p.id === id)) {
+      setRedazioneId(id);
+      setSelected([id]);
+    }
+  }, [publishers]);
   const [demoOffline, setDemoOffline] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [resultKey, setResultKey] = useState<string | null>(null);
@@ -577,21 +589,49 @@ export default function Analyzer({
         </div>
       </section>
 
-      {/* 3. Case editrici */}
+      {/* 3. Contesto editoriale */}
       <section>
-        <h2 className="mb-1 font-serif text-xl font-bold text-inchiostro">
-          Scegli la casa editrice
-        </h2>
-        <p className="mb-3 font-sans text-sm text-stone-500">
-          Il cliente è l'editore: Kalamos suggerisce in automatico la collana
-          più adatta tra quelle reali del suo catalogo. Per l'analisi dal vivo
-          bastano 1-2 case editrici — sceglierne molte la rende più lenta.
-        </p>
-        <PublisherChips
-          publishers={publishers}
-          selected={selected}
-          onToggle={togglePublisher}
-        />
+        {redazioneId ? (
+          <>
+            <h2 className="mb-1 font-serif text-xl font-bold text-inchiostro">
+              Valutazione per {pubById[redazioneId]?.nome}
+            </h2>
+            <p className="mb-3 font-sans text-sm text-stone-500">
+              Kalamos valuta il manoscritto per la tua redazione e propone la
+              collana più adatta del suo catalogo.{" "}
+              <button
+                type="button"
+                onClick={() => setAltreCase((v) => !v)}
+                className="underline transition hover:text-accento"
+              >
+                {altreCase ? "nascondi le altre case" : "confronta con altre case editrici"}
+              </button>
+            </p>
+            {altreCase && (
+              <PublisherChips
+                publishers={publishers}
+                selected={selected}
+                onToggle={togglePublisher}
+              />
+            )}
+          </>
+        ) : (
+          <>
+            <h2 className="mb-1 font-serif text-xl font-bold text-inchiostro">
+              Scegli la casa editrice
+            </h2>
+            <p className="mb-3 font-sans text-sm text-stone-500">
+              Il cliente è l'editore: Kalamos suggerisce in automatico la collana
+              più adatta tra quelle reali del suo catalogo. Per l'analisi dal vivo
+              bastano 1-2 case editrici — sceglierne molte la rende più lenta.
+            </p>
+            <PublisherChips
+              publishers={publishers}
+              selected={selected}
+              onToggle={togglePublisher}
+            />
+          </>
+        )}
       </section>
 
       {/* 4. Azione */}
