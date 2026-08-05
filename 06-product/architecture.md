@@ -125,7 +125,7 @@ Kalamos non addestra un modello linguistico da zero: costruisce un sistema di va
 
 ## Differenziatori tecnici (vs tool generici)
 
-1. **Fit-scoring per collana**: vector profile costruito su corpus pubblicato della collana, non solo prompt engineering.
+1. **Fit-scoring per collana**: oggi il catalogo è modellato collana per collana e confrontato col testo; il profilo vettoriale costruito sul corpus pubblicato è il passo successivo *(progettato)*. In entrambi i casi il punto è che l'identità della collana è un asset del prodotto, non un prompt riscritto ogni volta.
 2. **Loop di calibrazione**: feedback editor → tuning continuo dei pesi del fit-score (RLHF leggero).
 3. **Output strutturato**: schema JSON validato, non testo libero. Integrabile in CMS editoriali esistenti.
 4. **Privacy by design**: manoscritti mai usati per training del modello base, isolamento per tenant.

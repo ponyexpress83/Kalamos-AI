@@ -6,7 +6,7 @@
 
 ## Versione 30 secondi (≈70 parole)
 
-> Kalamos AI è l'infrastruttura di intelligenza editoriale per i grandi publisher. Risolviamo un problema noto: troppi manoscritti, troppo poco tempo per valutarli, troppi talenti che si perdono. Il nostro modello legge un manoscritto in minuti e produce una scheda di valutazione paragonabile a quella di un lettore senior, calibrata sull'identità della collana specifica. Team: 8 anni di AI engineering + una poetessa pubblicata co-founder. Cerchiamo Mondadori come primo partner editoriale serio.
+> Kalamos AI è l'infrastruttura di intelligenza editoriale per i grandi publisher. Risolviamo un problema noto: troppi manoscritti, troppo poco tempo per valutarli, troppi talenti che si perdono. Legge un manoscritto in meno di un minuto e produce una scheda di lettura strutturata, con la collana del catalogo dell'editore a cui il testo somiglia di più e un passaggio citato a sostegno del giudizio. Team: otto anni di sviluppo software e una laurea in filologia, più una poetessa pubblicata co-founder. Cerchiamo Mondadori come primo partner editoriale serio.
 
 **Quando usarla**: prima introduzione a un network event, su LinkedIn, in un cold email opener.
 
@@ -16,9 +16,9 @@
 
 > Kalamos AI nasce da una constatazione semplice. I grandi publisher italiani ricevono migliaia di manoscritti l'anno e possono leggerli davvero solo aumentando lo staff editoriale, cosa che nessuno può permettersi. Il risultato: il 95% dei manoscritti viene rifiutato senza essere letto in profondità, e quelli accolti hanno time-to-market di mesi.
 >
-> Noi costruiamo un'infrastruttura AI verticale per editoria che produce schede di lettura strutturate in 15 minuti invece che in 10 giorni, con scoring di fit per la collana specifica e analisi di comparable sul mercato italiano e internazionale.
+> Noi costruiamo un'infrastruttura AI verticale per editoria che produce schede di lettura strutturate in meno di un minuto invece che in giorni, con fit-score sulla collana specifica e comparabili sul mercato italiano e internazionale.
 >
-> Differenza chiave: non è ChatGPT con un prompt diverso. È un sistema costruito da chi conosce l'editoria — la mia co-founder è una poetessa pubblicata da Pequod — su misura per i workflow trade.
+> Differenza chiave: non è ChatGPT con un prompt diverso. Ogni giudizio cita un passaggio letterale del manoscritto, e la collana proposta viene verificata contro il catalogo reale dell'editore: se il modello se ne inventa una, il sistema la scarta prima che arrivi all'editor. È un sistema costruito da chi conosce l'editoria — la mia co-founder è una poetessa pubblicata da Pequod — su misura per i workflow trade.
 >
 > Cerchiamo Mondadori per un PoC di 90 giorni su Sperling & Kupfer, validato sull'archivio di manoscritti che la divisione ha già giudicato.
 
@@ -34,7 +34,7 @@
 >
 > Fate il calcolo: anche un publisher grande non può permettersi di produrre schede per più di qualche centinaio di manoscritti l'anno. Il resto viene rifiutato senza essere letto davvero — sulla base di sinossi, lettere di accompagnamento, o intuizione veloce. Statisticamente, una parte di valore reale si perde in questo filtro.
 >
-> **La nostra risposta.** Kalamos AI è un SaaS che produce schede di lettura strutturate in 15-30 minuti, con un livello di qualità che il nostro target di clienti — direttori editoriali di publisher trade — possa accettare nel proprio workflow. La differenza tecnica chiave rispetto a un ChatGPT generico è il **fit scoring per collana**: lo stesso manoscritto riceve una valutazione diversa se chiediamo "è giusto per Strade Blu?" o "è giusto per Einaudi Stile Libero?". Questo richiede modellare l'identità editoriale di ciascuna collana, cosa che richiede vera competenza editoriale, non solo prompt engineering.
+> **La nostra risposta.** Kalamos AI è un SaaS che produce schede di lettura strutturate in meno di un minuto, con un livello di qualità che il nostro target di clienti — direttori editoriali di publisher trade — possa accettare nel proprio workflow. La differenza tecnica chiave rispetto a un ChatGPT generico è il **fit scoring per collana**: lo stesso manoscritto riceve una valutazione diversa a seconda del catalogo con cui lo confrontiamo. Nella demo si vede in modo netto — un romanzo letterario che da Sperling & Kupfer è al 27% e viene scartato, da Einaudi è al 90% e diventa prioritario su Stile Libero. Il fit non misura se un libro è bello: misura il rapporto fra quel testo e quel catalogo. Modellare l'identità editoriale di una collana richiede competenza editoriale vera, non solo prompt engineering.
 >
 > Il PoC che proponiamo: 90 giorni su Sperling & Kupfer. Kalamos rivaluta alla cieca circa 300 manoscritti che la divisione ha già giudicato negli ultimi due anni — le loro decisioni sono il nostro metro di verità. La domanda a cui rispondiamo è semplice: dei testi che avete acquisito, quanti Kalamos vi avrebbe segnalato? Affianchiamo un pilot live su 30-50 manoscritti per misurare tempi e integrazione nel workflow reale.
 >
