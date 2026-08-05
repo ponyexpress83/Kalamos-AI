@@ -68,6 +68,16 @@ Di default sono attive le **case del Gruppo Mondadori** (Sperling & Kupfer, Eina
 
 `node scripts/generate-schede.mjs` (con il server attivo e `ANTHROPIC_API_KEY` impostata) genera le schede REALI dei 4 demo su Claude e le salva in `data/schede/`: da lì in poi `/scheda/[id]` e la Redazione servono l'analisi vera (etichettata con data e modello) invece della stima euristica, e la Redazione mostra i **KPI misurati** — tempo per scheda e costo API per scheda calcolato dai token effettivi (`lib/pricing.ts`) — accanto alla baseline di settore (€150-500 / 5-15 giorni, stima [DA VERIFICARE]).
 
+### Controlli contro le allucinazioni
+
+Tre livelli, nessuno dei quali chiede a un secondo modello di controllare il primo:
+
+1. **Output vincolato allo schema** — la risposta è generata dentro lo schema zod (`lib/schema.ts`): fuori formato viene scartata, non arriva all'editor.
+2. **Obbligo di citazione** — il prompt impone un passaggio **letterale** del manoscritto a sostegno del giudizio (`passaggio_a_sostegno`), mostrato nella scheda: un giudizio che l'editor non può verificare sul testo non vale nulla.
+3. **Controlli deterministici a valle** (`lib/verifica.ts`) — codice, non modelli: la collana proposta deve esistere nel catalogo di quell'editore, altrimenti viene **scartata** prima di arrivare all'editor (se nessuna è valida si ripiega sull'euristica etichettata); la citazione deve comparire nel testo inviato, altrimenti la scheda lo segnala.
+
+Il terzo livello nasce da un errore vero: una versione precedente attribuì a Ladolfi una collana inesistente. Nessun prompt lo impedisce in modo affidabile — una whitelist sì.
+
 ### Batch, coda di sessione e feedback
 
 Caricando più `.txt` insieme (fino a 5) la demo analizza la coda in sequenza e mostra la classifica; i risultati restano nel browser (localStorage) e compaiono in Redazione sopra i demo. Su ogni scheda l'editor può registrare **Concordo / Non concordo + nota** (il loop di calibrazione); la Redazione conta le schede validate. Il flusso dati completo è documentato in `/riservatezza`.

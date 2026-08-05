@@ -77,6 +77,30 @@ Tempo target end-to-end: **<30 minuti per manoscritto medio (80K parole)**.
 
 ---
 
+## Controllo del costo per analisi
+
+Il vincolo dominante sono i documenti lunghi: passare un romanzo intero al modello è costoso e lento. Tre leve, in ordine di impatto.
+
+1. **Tetto sull'estratto rappresentativo** *(già in demo)*. In fase di scrematura il modello riceve incipit, campione centrale e finale entro un budget di 12.000 token, con i tagli su confini di paragrafo o di frase — troncare a metà scena rende inaffidabile qualunque giudizio su voce e struttura. La scheda dichiara sempre "valutato su estratto". Sul calcolo dei prompt reali questo tiene il costo per scheda intorno ai **€0,03-0,06** invece dei ~€0,35 del testo integrale: circa **7×**. Sintesi progressiva sui blocchi solo quando serve il quadro completo (editing strutturale), non per il triage.
+
+2. **Routing fra modelli a due passaggi** *(progettato, non ancora in demo)*. Un modello economico per la prima scrematura, uno più capace solo sui testi che la superano. La maggioranza dei manoscritti si esclude con poco e non ha senso pagare il modello migliore per dire di no. Da attivare quando l'eval harness può misurare quanto recall costa la scrematura economica: senza quella misura è un risparmio cieco.
+
+3. **Embedding del catalogo calcolati una volta sola** *(con il RAG, non ancora in demo)*. Il profilo vettoriale di una collana cambia quando cambia il catalogo, non a ogni manoscritto: il costo ricorrente resta solo quello del testo in arrivo.
+
+---
+
+## Contenimento delle allucinazioni
+
+Tre livelli, nessuno dei quali chiede a un secondo modello di controllare il primo.
+
+1. **Output vincolato allo schema** *(già in demo)*. La risposta è generata dentro uno schema fisso e validata con zod: una risposta fuori formato viene scartata e rigenerata invece di arrivare all'editor.
+
+2. **Obbligo di citazione** *(già in demo)*. Il prompt impone di riportare un passaggio **letterale** del manoscritto a sostegno del giudizio. Un giudizio che l'editor non può verificare sul testo non vale nulla.
+
+3. **Controlli deterministici a valle** *(già in demo)*. Codice, non modelli: il punteggio deve stare nell'intervallo previsto; la collana proposta deve esistere davvero nel catalogo di quell'editore, altrimenti viene scartata prima di arrivare all'editor; la citazione deve comparire nel testo caricato, altrimenti la scheda lo segnala. Sono controlli banali che intercettano la maggior parte degli errori a costo zero — ed è esattamente la classe di errore che in redazione distrugge la fiducia (una collana inventata basta a chiudere la conversazione).
+
+---
+
 ## Addestramento e calibrazione del modello
 
 Kalamos non addestra un modello linguistico da zero: costruisce un sistema di valutazione sopra un LLM di frontiera (Claude). "Addestrare Kalamos" significa cinque cose, in ordine di peso reale.

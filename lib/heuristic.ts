@@ -33,6 +33,42 @@ interface Signals {
   children: number; verseLike: boolean; simple: boolean; firstSentence: string;
 }
 
+/** Quota di maiuscole sulle lettere: alta = titolo o intestazione, non prosa. */
+function quotaMaiuscole(riga: string): number {
+  const lettere = riga.replace(/[^a-zA-ZàèéìòùÀÈÉÌÒÙ]/g, "").length;
+  if (lettere === 0) return 0;
+  return riga.replace(/[^A-ZÀÈÉÌÒÙ]/g, "").length / lettere;
+}
+
+/**
+ * Corpo del testo, saltate le righe d'intestazione con cui i manoscritti
+ * aprono quasi sempre il file (titolo, autore, "capitolo primo"). Serve a
+ * citare prosa vera, non il frontespizio.
+ */
+function corpoNarrativo(raw: string): string {
+  const righe = raw.split("\n").map((l) => l.trim());
+  let i = 0;
+  while (i < righe.length) {
+    const l = righe[i];
+    if (l.length === 0 || quotaMaiuscole(l) > 0.3) {
+      i++;
+      continue;
+    }
+    const parole = l.split(/\s+/).length;
+    // Riga di prosa: lunga, oppure chiusa da punteggiatura forte e non brevissima.
+    // "di R. Vinci" ha un punto ma non è prosa; "(estratto — capitolo primo)" nemmeno.
+    if (parole >= 10 || (parole >= 6 && /[.!?…»]\s*$/.test(l))) break;
+    i++;
+  }
+  return righe.slice(i).join("\n").trim() || raw;
+}
+
+/** Prima frase davvero citabile: prosa, abbastanza lunga da dire qualcosa. */
+function primaFraseUtile(candidate: string[], fallback: string): string {
+  const buona = candidate.find((s) => s.trim().split(/\s+/).length >= 8);
+  return (buona ?? candidate[0] ?? fallback).trim().slice(0, 180);
+}
+
 function analyzeSignals(text: string): Signals {
   const raw = text.replace(/\r/g, "");
   const clean = raw.replace(/\s+/g, " ").trim();
@@ -47,6 +83,7 @@ function analyzeSignals(text: string): Signals {
   const cliches = CLICHES.reduce((n, c) => (lower.includes(c) ? n + 1 : n), 0);
   const countKw = (kws: string[]) => kws.reduce((n, k) => (lower.includes(k) ? n + 1 : n), 0);
 
+  const corpo = corpoNarrativo(raw);
   const lines = raw.split("\n");
   const nonEmpty = lines.filter((l) => l.trim().length > 0);
   const shortLines = nonEmpty.filter((l) => l.trim().length <= 60).length;
@@ -70,7 +107,12 @@ function analyzeSignals(text: string): Signals {
     fantasy: countKw(KW_FANTASY),
     children: countKw(KW_CHILDREN),
     verseLike, simple,
-    firstSentence: (verseLike ? nonEmpty[0] : sentenceParts[0] ?? clean).slice(0, 180),
+    firstSentence: primaFraseUtile(
+      verseLike
+        ? corpo.split("\n").map((l) => l.trim()).filter(Boolean)
+        : corpo.split(/(?<=[.!?…])\s+/).map((s) => s.trim()).filter(Boolean),
+      clean,
+    ),
   };
 }
 
@@ -272,6 +314,8 @@ export function analyzeHeuristic(text: string, input: HeuristicInput): AnalysisR
       voto_su_10: voto,
       note: `Stima da segnali: lunghezza media periodo ~${s.avgLen.toFixed(0)} parole, avverbi ~${s.adverbsPer1000.toFixed(0)}/1000, cliché ${s.cliches}${s.verseLike ? ", testo in versi" : ""}. Non è un giudizio editoriale.`,
     },
+    // Citazione letterale: è la prima frase del testo, quindi sempre verificabile.
+    passaggio_a_sostegno: s.firstSentence,
     target_lettore: targetFor(bucket),
     comparable_titles: comparablesFor(bucket),
     punti_di_forza: forza,

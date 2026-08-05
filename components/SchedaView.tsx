@@ -103,6 +103,37 @@ export default function SchedaView({ result }: { result: AnalysisResult }) {
         <p className="mt-2">{scheda.qualita_prosa.note}</p>
       </Section>
 
+      {scheda.passaggio_a_sostegno && (
+        <Section title="Passaggio a sostegno">
+          <blockquote className="border-l-2 border-accento/50 pl-4 italic text-inchiostro/85">
+            «{scheda.passaggio_a_sostegno.replace(/^[«"“]|[»"”]$/g, "")}»
+          </blockquote>
+          <p className="mt-2 font-sans text-[13px] leading-relaxed text-stone-500">
+            {meta.controlli?.citazione_verificata === true
+              ? "Citazione ritrovata nel testo caricato (controllo automatico): il giudizio è verificabile alla fonte."
+              : meta.controlli?.citazione_verificata === false
+                ? "Attenzione: il controllo automatico non ha ritrovato questa citazione nel testo caricato. Verificala prima di usarla."
+                : "Il giudizio è ancorato al testo: l'editor può risalire al punto esatto invece di fidarsi."}
+          </p>
+        </Section>
+      )}
+
+      {meta.controlli && meta.controlli.collane_scartate.length > 0 && (
+        <div className="mt-4 rounded-xl border border-amber-300 bg-amber-50 p-4">
+          <div className="font-sans text-xs font-semibold uppercase tracking-wide text-amber-800">
+            Controllo catalogo
+          </div>
+          <p className="mt-1 font-sans text-[14px] leading-relaxed text-amber-900">
+            {meta.controlli.collane_scartate.length} propost
+            {meta.controlli.collane_scartate.length === 1 ? "a" : "e"} scartat
+            {meta.controlli.collane_scartate.length === 1 ? "a" : "e"} perché la
+            collana non esiste nel catalogo dell'editore:{" "}
+            {meta.controlli.collane_scartate.join("; ")}. Il controllo è
+            deterministico e avviene prima che la scheda arrivi all'editor.
+          </p>
+        </div>
+      )}
+
       <Section title="Genere e temi">
         <p className="mb-3">{scheda.genere}</p>
         <div className="flex flex-wrap gap-2">

@@ -6,6 +6,7 @@ import { publishers, getPublisher } from "@/config/publishers";
 import { getManuscriptText, getManuscriptMeta } from "@/lib/manuscripts";
 import { buildExcerpt } from "@/lib/extract";
 import { analyzeHeuristic, type HeuristicPublisher } from "@/lib/heuristic";
+import { verificaScheda, type CollanaAmmessa } from "@/lib/verifica";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -31,6 +32,7 @@ function publishersBlock(ids: string[]): {
   editori: string[];
   testo: string;
   heur: HeuristicPublisher[];
+  ammesse: CollanaAmmessa[];
 } {
   const scelti = ids
     .map((id) => getPublisher(id))
@@ -50,6 +52,10 @@ function publishersBlock(ids: string[]): {
       nome: p.nome,
       collane: p.collane.map((c) => ({ nome: c.nome, profilo: c.profilo })),
     })),
+    // Whitelist per il controllo deterministico: solo queste collane esistono.
+    ammesse: scelti.flatMap((p) =>
+      p.collane.map((c) => ({ editore: p.nome, collana: c.nome })),
+    ),
   };
 }
 
@@ -62,6 +68,8 @@ ${caseEditrici}
 Per ciascuna casa editrice individua la collana con il fit migliore. Popola "fit_collane" così: per OGNI casa includi la collana suggerita e AL MASSIMO 2 collane alternative della stessa casa (le più rilevanti) — quindi al massimo 3 voci per casa, non tutte le collane. Per ogni voce indica "editore" e "collana" con i nomi ESATTI qui sopra, uno "score" da 0 a 1 e una "motivazione": 1 frase per la collana suggerita, molto breve (max 10 parole) per le alternative. Lo stesso testo può avere score molto diversi tra collane e tra case: il fit misura il rapporto testo-collana.
 
 Compila tutti gli altri campi dello schema. La sintesi sia di 4-6 frasi (trama/impianto, struttura, voce). Indica 2-3 comparable con il motivo del paragone. Sii concreto, sintetico e mai compiacente.
+
+In "passaggio_a_sostegno" riporta UNA citazione LETTERALE del manoscritto (una o due frasi, copiate esattamente come sono nel testo, senza riscriverle) che sostiene il tuo giudizio sulla prosa e sul fit. L'editor deve poterla ritrovare nel testo: se non copi alla lettera, la scheda viene scartata.
 
 === TESTO DEL MANOSCRITTO ===
 ${testo}
@@ -112,7 +120,7 @@ export async function POST(req: Request) {
     );
   }
 
-  const { editori, testo: caseEditrici, heur } = publishersBlock(validIds);
+  const { editori, testo: caseEditrici, heur, ammesse } = publishersBlock(validIds);
 
   // Chiave API. Senza chiave, se abbiamo il testo ripieghiamo sull'euristica
   // offline (fonte "simulata"). Per i soli PDF (niente testo estratto qui) serve la chiave.
@@ -141,6 +149,8 @@ export async function POST(req: Request) {
     let suEstratto = false;
     let paroleTotali = 0;
     let paroleInviate = 0;
+    // Testo effettivamente passato al modello: serve a verificare la citazione.
+    let testoInviato: string | undefined;
 
     if (body.pdfBase64) {
       const userPrompt = buildUserPrompt(
@@ -173,6 +183,7 @@ export async function POST(req: Request) {
       suEstratto = ex.suEstratto;
       paroleTotali = ex.paroleTotali;
       paroleInviate = ex.paroleInviate;
+      testoInviato = ex.testo;
       const userPrompt = buildUserPrompt(ex.testo, caseEditrici);
       const res = await client.messages.parse({
         model: MODEL,
@@ -193,10 +204,18 @@ export async function POST(req: Request) {
       );
     }
 
+    // Controlli deterministici: la collana deve esistere davvero nel catalogo,
+    // la citazione deve trovarsi nel testo caricato. Se il modello ha inventato
+    // tutte le collane, l'errore risale al catch e si ripiega sull'euristica.
+    const { scheda, controlli } = verificaScheda(parsed, {
+      collaneAmmesse: ammesse,
+      testoInviato,
+    });
+
     const result: AnalysisResult = {
-      scheda: parsed,
+      scheda,
       meta: {
-        titolo_input: titoloInput || parsed.titolo_presunto,
+        titolo_input: titoloInput || scheda.titolo_presunto,
         autore,
         parole: paroleTotali,
         valutato_su_estratto: suEstratto,
@@ -206,6 +225,7 @@ export async function POST(req: Request) {
         fonte: "live",
         modello: MODEL,
         usage,
+        controlli,
       },
     };
 
