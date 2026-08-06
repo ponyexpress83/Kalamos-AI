@@ -32,7 +32,7 @@ export default function LandingPage() {
           Non scrive il libro: lo valuta. L'editor decide.
         </p>
         <p className="mt-3 font-sans text-sm font-medium text-accento">
-          Pensato per i flussi editoriali del Gruppo Mondadori — e per ogni editore.
+          Pensato per i flussi editoriali delle case editrici e dei gruppi editoriali.
         </p>
         <p className="mt-1.5 font-sans text-xs text-stone-500">
           Nato per l'editoria italiana, progettato per scalare sui mercati
