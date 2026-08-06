@@ -201,8 +201,8 @@ export const defaultPublisherIds = publishers
   .map((p) => p.id);
 
 export const ambiti: Ambito[] = [
-  "Poesia",
   "Narrativa",
   "Bambini e ragazzi",
   "Fantasy e fantascienza",
+  "Poesia",
 ];

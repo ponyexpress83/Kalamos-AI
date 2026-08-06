@@ -45,8 +45,26 @@ function quotaMaiuscole(riga: string): number {
  * aprono quasi sempre il file (titolo, autore, "capitolo primo"). Serve a
  * citare prosa vera, non il frontespizio.
  */
+/** Righe di colophon: non sono il testo dell'autore e non vanno mai citate. */
+const COLOPHON = [
+  "diritti riservati", "utilizzo della presente opera", "proprietà letteraria",
+  "isbn", "copyright", "©", "prima edizione", "ristampa", "printed in",
+  "riproduzione", "è vietato", "e' vietato", "in copertina", "progetto grafico",
+  "traduzione di", "titolo originale", "finito di stampare", "editore",
+];
+
+const isColophon = (riga: string) => {
+  const b = riga.toLowerCase();
+  return COLOPHON.some((m) => b.includes(m)) || /\b97[89][\d\s-]{10,}/.test(b);
+};
+
 function corpoNarrativo(raw: string): string {
-  const righe = raw.split("\n").map((l) => l.trim());
+  // Le righe di colophon si tolgono ovunque compaiano nel frontespizio, non
+  // solo in testa: un ISBN in mezzo al blocco legale spezzava la scrematura.
+  const righe = raw
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l, idx) => idx > 60 || !isColophon(l));
   let i = 0;
   while (i < righe.length) {
     const l = righe[i];
@@ -67,6 +85,26 @@ function corpoNarrativo(raw: string): string {
 function primaFraseUtile(candidate: string[], fallback: string): string {
   const buona = candidate.find((s) => s.trim().split(/\s+/).length >= 8);
   return (buona ?? candidate[0] ?? fallback).trim().slice(0, 180);
+}
+
+/**
+ * Prosa con gli a-capo forzati (testo "wrappato" a larghezza fissa, tipico dei
+ * .txt esportati da Word o dai lettori ebook): righe corte come in poesia, ma
+ * tutte della STESSA lunghezza, addossate al margine di wrap.
+ *
+ * È la distinzione che conta: i versi hanno lunghezze molto variabili — è il
+ * loro modo di respirare — mentre il wrap automatico produce righe uniformi.
+ * Senza questo controllo un romanzo esportato con a-capo fissi veniva letto
+ * come raccolta di poesie, e il fit finiva sulle collane sbagliate.
+ */
+function proseAcapoForzati(nonEmpty: string[]): boolean {
+  if (nonEmpty.length < 20) return false; // campione troppo corto per dire nulla
+  const len = nonEmpty.map((l) => l.trim().length);
+  const media = len.reduce((s, n) => s + n, 0) / len.length;
+  if (media < 35) return false; // righe davvero brevi: è verso, non wrap
+  const varianza = len.reduce((s, n) => s + (n - media) ** 2, 0) / len.length;
+  const cv = Math.sqrt(varianza) / media; // coefficiente di variazione
+  return cv < 0.4;
 }
 
 function analyzeSignals(text: string): Signals {
@@ -90,7 +128,8 @@ function analyzeSignals(text: string): Signals {
   const avgLineWords = wc / Math.max(1, nonEmpty.length);
   const verseLike =
     nonEmpty.length >= 4 && shortLines / nonEmpty.length > 0.6 &&
-    avgLineWords < 9 && nonEmpty.length / sentences > 1.2;
+    avgLineWords < 9 && nonEmpty.length / sentences > 1.2 &&
+    !proseAcapoForzati(nonEmpty);
 
   const avgWordLen = wc > 0 ? charTotal / wc : 0;
   const avgLen = wc / sentences;

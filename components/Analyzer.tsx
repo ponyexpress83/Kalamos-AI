@@ -660,6 +660,20 @@ export default function Analyzer({
               Scegli un testo e almeno una casa editrice.
             </span>
           )}
+          {/* Con la modalità offline attiva NON si chiama l'AI: va detto qui,
+              accanto al pulsante, non solo nella checkbox più sotto. */}
+          {demoOffline && (
+            <span className="inline-flex items-center gap-2 rounded-full border border-amber-400 bg-amber-50 px-3 py-1 font-sans text-xs font-medium text-amber-900">
+              Modalità offline attiva — nessuna analisi AI
+              <button
+                type="button"
+                onClick={() => setDemoOffline(false)}
+                className="underline underline-offset-2 hover:text-amber-700"
+              >
+                disattiva
+              </button>
+            </span>
+          )}
         </div>
 
         <label className="mt-4 flex items-start gap-2 font-sans text-xs text-stone-500">

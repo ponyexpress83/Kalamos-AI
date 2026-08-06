@@ -12,10 +12,10 @@ export interface PublisherOption {
 }
 
 const ORDER: Ambito[] = [
-  "Poesia",
   "Narrativa",
   "Bambini e ragazzi",
   "Fantasy e fantascienza",
+  "Poesia",
 ];
 
 export default function PublisherChips({
