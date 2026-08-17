@@ -34,7 +34,8 @@ for (const id of ids) {
   try {
     const res = await fetch(`${BASE_URL}/api/analyze`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json",
+        ...(process.env.KALAMOS_API_TOKEN ? { "x-kalamos-token": process.env.KALAMOS_API_TOKEN } : {}) },
       // publisherIds omesso → il server usa le case di default (Mondadori)
       body: JSON.stringify({ manuscriptId: id }),
     });

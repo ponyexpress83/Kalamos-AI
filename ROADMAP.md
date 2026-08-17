@@ -24,7 +24,7 @@ Riscrittura di `CLAUDE.md` sul posizionamento nuovo, sullo stato reale del prodo
 perimetro autore, sul fuori scopo, sul divieto di claim non misurati e su Storywise.
 Verifica del conteggio catalogo. Allineamento di questa roadmap.
 
-### Fase 1 — il fusibile 🔴
+### Fase 1 — il fusibile ✅
 `app/api/analyze/route.ts` è un POST aperto: nessuna autenticazione, nessun rate limit,
 nessun tetto sulla dimensione dell'input. Servono: rate limit per IP a finestra
 scorrevole, tetti su testo e PDF con 413, token condiviso opzionale via variabile
@@ -94,7 +94,7 @@ portali autore e qualunque funzione rivolta all'autore.
 | La validazione retrospettiva non trova abbastanza decisioni usabili | Alta | Alto | Validazione incrociata invece della partizione semplice (fase 6) |
 | Mondadori conferma che il triage non è un loro dolore | Media | Medio | Il cliente iniziale sono gli indipendenti; la risposta sulla contrattualistica apre un secondo fronte |
 | Un solo sviluppatore: l'infrastruttura cresce oltre il mantenibile | Media | Alto | Preferire sempre meno pezzi da mantenere, anche a costo di qualche funzione in meno |
-| Chiave API bruciata da un endpoint aperto | **In corso** | Alto | Fase 1, urgente |
+| Chiave API bruciata da un endpoint aperto | Contenuto | Alto | Fase 1 chiusa: rate limit, tetti di dimensione e di spesa, token condiviso. Il conteggio è per istanza serverless, vedi `06-product/limiti-e-costi.md` |
 
 ---
 
@@ -117,6 +117,7 @@ portali autore e qualunque funzione rivolta all'autore.
 2026-08-03 | 06-product| Upgrade PLAI-ready della demo: Mondadori-first (S&K reintegrata con collane reali verificate — Pandora/Saggi/Economia/Varia; default solo case del Gruppo; badge), numeri call 2026 corretti nei documenti (€100K~7% + follow-on €400K; €40K PoC growth), schede reali in cache via script, KPI misurati, batch triage multiplo, feedback editor, pagina /riservatezza
 2026-08-03 | 06-product| Integrate proposte collaboratore: roadmap "calibrazione sul catalogo" (successi+flop, riservata) e "AI-check di provenienza" (segnale con confidenza, mai verdetto) in mvp-scope; trend Kobo 45% (verificato, fonti LH/ActuaLitté) in industry-trends; menzione potenziale europeo in landing
 2026-08-05 | 06-product| Test finale QA esterno (Cowork): nessun blocker. Corretti i 3 rilievi minori — KPI ora misurati anche dalle analisi di sessione (non solo dalla cache), testo di servizio riscritto senza gergo di sviluppo, contatore schede unificato
+2026-08-06 | fase 1    | Fusibili su /api/analyze: rate limit a doppia finestra (5/min, 40/ora) per chiamante, tetti di dimensione (1.200.000 caratteri, 6 MB di PDF) con 413, token condiviso opzionale via KALAMOS_API_TOKEN + filtro d'origine, tetto di spesa stimato PRIMA della chiamata all'API (default $1,00, pagine del PDF contate dai marcatori con ripiego sulla dimensione). Il conto dei valori e i limiti noti in 06-product/limiti-e-costi.md. Verificato con richieste reali: 413, 429 con retry-after, 401 senza token
 2026-08-06 | fase 0    | CLAUDE.md riscritto: posizionamento nuovo (intelligenza e memoria sopra la decisione editoriale, non filtro della posta), stato reale del prodotto al posto di "pre-product", perimetro autore come vincolo permanente, elenco fuori scopo, divieto di claim numerici non misurati (rimosso "riduce il backlog del 70-90%"), Storywise come concorrente diretto, elenco dei file del motore da non toccare. Conteggio catalogo verificato con due metodi: 9 case, 35 collane. ROADMAP allineata alle 7 fasi
 2026-08-06 | strategia | Call PLAI: programma cambiato (investimento ibrido fino a €300K, equity + collaborazione, startup più mature). Mondadori Libri chiuso sul "prodotto" (autore, bozze), aperto sui processi interni. Il dolore che dichiarano è la parte CONTRATTUALE con l'autore, non il triage; per una casa grande la slush pile conta poco. Compito assegnato: validare su editori indipendenti e tornare a settembre con uso reale misurato. Piano operativo in 06-product/da-demo-a-prodotto.md
 2026-08-05 | 06-product| Correzioni dal test esterno pre-call: titolo "Triage 10×" (moltiplicatore mai misurato) → "Coda ordinata"; card KPI "manoscritti in coda" non contraddice più l'intestazione; costo etichettato in USD come lo stampa; sui PDF la scheda spiega perché la citazione non è confermabile invece di mostrare un messaggio neutro; nel batch si legge il titolo dedotto e non il nome del file; coda leggibile su telefono (colonna genere nascosta sotto sm)

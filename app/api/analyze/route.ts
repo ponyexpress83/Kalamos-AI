@@ -7,6 +7,15 @@ import { getManuscriptText, getManuscriptMeta } from "@/lib/manuscripts";
 import { buildExcerpt } from "@/lib/extract";
 import { analyzeHeuristic, type HeuristicPublisher } from "@/lib/heuristic";
 import { verificaScheda, type CollanaAmmessa } from "@/lib/verifica";
+import { consumaQuota, chiaveChiamante } from "@/lib/rate-limit";
+import {
+  MAX_TEXT_CHARS,
+  MAX_PDF_BYTES,
+  MAX_COSTO_USD,
+  stimaCostoTesto,
+  stimaCostoPdf,
+  formattaUSD,
+} from "@/lib/limiti";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -76,12 +85,94 @@ ${testo}
 === FINE TESTO ===`;
 }
 
+/**
+ * Token condiviso. Se `KALAMOS_API_TOKEN` è impostata, ogni richiesta deve
+ * portarla. Se non è impostata, l'endpoint resta aperto com'è oggi, così il
+ * deploy pubblico non si rompe.
+ *
+ * Nota di onestà: quando l'applicazione chiama sé stessa dal browser il token
+ * viaggia nel bundle (`NEXT_PUBLIC_KALAMOS_API_TOKEN`), quindi non è un
+ * segreto. Ferma l'uso da script esterni e il ciclo accidentale; non ferma chi
+ * apre gli strumenti di sviluppo. Il segreto vero resta la chiave Anthropic,
+ * che non lascia mai il server.
+ */
+function tokenValido(req: Request): boolean {
+  const atteso = process.env.KALAMOS_API_TOKEN;
+  if (!atteso) return true;
+  const header = req.headers.get("x-kalamos-token");
+  const bearer = req.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
+  return header === atteso || bearer === atteso;
+}
+
+/** Se `KALAMOS_ALLOWED_ORIGIN` è impostata, filtra le richieste di altra origine. */
+function origineAmmessa(req: Request): boolean {
+  const ammessa = process.env.KALAMOS_ALLOWED_ORIGIN;
+  if (!ammessa) return true;
+  const origin = req.headers.get("origin") ?? req.headers.get("referer") ?? "";
+  if (!origin) return false;
+  try {
+    return new URL(origin).host === new URL(ammessa).host;
+  } catch {
+    return false;
+  }
+}
+
 export async function POST(req: Request) {
+  // 1. Token condiviso, se configurato.
+  if (!tokenValido(req)) {
+    return NextResponse.json(
+      { error: "Accesso non autorizzato: token mancante o errato." },
+      { status: 401 },
+    );
+  }
+  if (!origineAmmessa(req)) {
+    return NextResponse.json(
+      { error: "Richiesta rifiutata: origine non ammessa." },
+      { status: 403 },
+    );
+  }
+
+  // 2. Rate limit per chiamante, a finestra scorrevole.
+  const quota = consumaQuota(chiaveChiamante(req));
+  if (!quota.ammessa) {
+    return NextResponse.json(
+      {
+        error: `Troppe analisi in poco tempo. Riprova fra ${quota.riprovaFraSecondi} secondi.`,
+      },
+      {
+        status: 429,
+        headers: { "retry-after": String(quota.riprovaFraSecondi ?? 60) },
+      },
+    );
+  }
+
   let body: AnalyzeBody;
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "Richiesta non valida." }, { status: 400 });
+  }
+
+  // 3. Tetti di dimensione, prima di qualunque elaborazione.
+  if (body.text && body.text.length > MAX_TEXT_CHARS) {
+    return NextResponse.json(
+      {
+        error: `Testo troppo lungo: ${body.text.length.toLocaleString("it-IT")} caratteri, il limite è ${MAX_TEXT_CHARS.toLocaleString("it-IT")}. Invia il manoscritto in più parti o carica un file.`,
+      },
+      { status: 413 },
+    );
+  }
+  let pdfBuffer: Buffer | undefined;
+  if (body.pdfBase64) {
+    pdfBuffer = Buffer.from(body.pdfBase64, "base64");
+    if (pdfBuffer.length > MAX_PDF_BYTES) {
+      return NextResponse.json(
+        {
+          error: `PDF troppo grande: ${(pdfBuffer.length / 1024 / 1024).toFixed(1)} MB, il limite è ${(MAX_PDF_BYTES / 1024 / 1024).toFixed(0)} MB. Esporta il testo in .txt oppure invia una porzione.`,
+        },
+        { status: 413 },
+      );
+    }
   }
 
   const publisherIds =
@@ -121,6 +212,26 @@ export async function POST(req: Request) {
   }
 
   const { editori, testo: caseEditrici, heur, ammesse } = publishersBlock(validIds);
+
+  // 4. Tetto di spesa: la stima si fa PRIMA di chiamare l'API, non dopo.
+  //    Sul testo il costo è già limitato dall'estratto; sui PDF no, perché il
+  //    documento viene passato intero al modello: è lì che sta il rischio.
+  const stima = pdfBuffer
+    ? stimaCostoPdf(pdfBuffer, MODEL)
+    : stimaCostoTesto((testoCompleto ?? "").length, MODEL);
+  if (stima.costoUSD > MAX_COSTO_USD) {
+    const dettaglio = stima.pagine
+      ? ` Il documento risulta di circa ${stima.pagine} pagine (stima da ${stima.metodo === "marcatori" ? "struttura del PDF" : "dimensione del file"}).`
+      : "";
+    return NextResponse.json(
+      {
+        error: `Analisi troppo costosa: stimati ${formattaUSD(stima.costoUSD)} contro un tetto di ${formattaUSD(MAX_COSTO_USD)}.${dettaglio} Carica il testo in .txt — viene valutato su estratto e costa una frazione — oppure alza il tetto in configurazione.`,
+        stima: { tokenInput: stima.tokenInput, costoUSD: Number(stima.costoUSD.toFixed(4)) },
+      },
+      { status: 413 },
+    );
+  }
+
 
   // Chiave API. Senza chiave, se abbiamo il testo ripieghiamo sull'euristica
   // offline (fonte "simulata"). Per i soli PDF (niente testo estratto qui) serve la chiave.

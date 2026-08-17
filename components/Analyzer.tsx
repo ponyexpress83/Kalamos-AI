@@ -14,6 +14,18 @@ import PrintButton from "./PrintButton";
 import RecommendationBadge from "./RecommendationBadge";
 import EditorFeedback from "./EditorFeedback";
 
+/**
+ * Intestazioni della chiamata di analisi. Il token c'è solo se configurato:
+ * viaggia nel bundle, quindi ferma gli script esterni, non chi apre gli
+ * strumenti di sviluppo. Vedi il commento in app/api/analyze/route.ts.
+ */
+function intestazioni(): Record<string, string> {
+  const h: Record<string, string> = { "Content-Type": "application/json" };
+  const token = process.env.NEXT_PUBLIC_KALAMOS_API_TOKEN;
+  if (token) h["x-kalamos-token"] = token;
+  return h;
+}
+
 export interface DemoManuscript {
   id: string;
   titolo: string;
@@ -212,7 +224,7 @@ export default function Analyzer({
       try {
         res = await fetch("/api/analyze", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: intestazioni(),
           body: JSON.stringify({ text, titolo, publisherIds: selected }),
           signal: ctrl.signal,
         });
@@ -327,7 +339,7 @@ export default function Analyzer({
       try {
         res = await fetch("/api/analyze", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: intestazioni(),
           body: JSON.stringify(body),
           signal: ctrl.signal,
         });

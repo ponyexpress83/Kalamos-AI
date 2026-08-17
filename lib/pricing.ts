@@ -11,6 +11,20 @@ const PREZZI_USD_PER_MTOK: Record<string, { input: number; output: number }> = {
   "claude-haiku-4-5": { input: 1, output: 5 },
 };
 
+/**
+ * Prezzo del modello. Se il modello non è in listino si usa il più caro fra
+ * quelli noti: una stima di spesa deve sbagliare per eccesso, non per difetto.
+ */
+export function prezzoModello(modello: string): { input: number; output: number } {
+  const noto = PREZZI_USD_PER_MTOK[modello];
+  if (noto) return noto;
+  const tutti = Object.values(PREZZI_USD_PER_MTOK);
+  return {
+    input: Math.max(...tutti.map((p) => p.input)),
+    output: Math.max(...tutti.map((p) => p.output)),
+  };
+}
+
 export function costoSchedaUSD(
   modello: string | undefined,
   usage: { input_tokens: number; output_tokens: number } | undefined,
