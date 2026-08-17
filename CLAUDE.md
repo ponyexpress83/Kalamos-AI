@@ -1,276 +1,238 @@
-# CLAUDE.md — Progetto Kalamos AI × PLAI 2026
+# CLAUDE.md — Progetto Kalamos AI
 
 Questo file è la **memoria persistente del progetto** per ogni sessione di Claude Code. Leggilo per intero all'inizio di ogni sessione. Non riassumerlo, non saltarlo.
 
----
-
-## 0. Obiettivo del progetto
-
-**Vincere la Call PLAI 2026 con Kalamos AI** ottenendo:
-1. Ingresso al programma di accelerazione
-2. €100K iniziali in equity + fino a €300K totali (follow-on)
-3. Fino a €100K aggiuntivi per un PoC reale con una divisione del Gruppo Mondadori
-4. Accesso a mentorship, network corporate, casi d'uso interni
-
-PLAI è una **rolling call always-on per tutto il 2026**: ogni candidatura viene valutata progressivamente. Non c'è una scadenza unica → la qualità della prima impressione è tutto, e si può iterare la candidatura.
-
-**Link ufficiale**: https://www.plai-accelerator.com/call-2026/
+*Ultima riscrittura: 6 agosto 2026, dopo la call PLAI che ha cambiato il posizionamento.*
 
 ---
 
-## 1. Chi è il founder (contesto operativo)
+## 0. Che cos'è Kalamos, in una riga
 
-**Valerio Gestri** — imprenditore italiano basato a Grosseto, Toscana. Opera attraverso PONYX (AI startup studio). Kalamos AI è una delle sue venture.
+> Kalamos è il livello di **intelligenza e memoria** sopra la decisione editoriale.
+> Non è un filtro per la posta in arrivo e non è un gestionale.
 
-- 8+ anni di esperienza mobile dev (iOS Swift/SwiftUI, Android Kotlin/Compose, React Native)
-- Background in Lettere e Filologia Moderna (Laurea) → ponte naturale tra mondo editoriale e tech
-- Co-founder con **Ilaria Cesarini** (compagna, insegnante e poetessa pubblicata da Pequod) → competenza editoriale autentica nel team
-- Sta uscendo da Smart Content Srls (vendita in corso) e ricostituendo una nuova SRL innovativa come holding
+Questa riga ha sostituito il posizionamento precedente ("filtriamo i manoscritti non sollecitati"), che è stato messo in discussione da chi ci valuta: nelle case editrici grandi lo screening degli sconosciuti è già banale, e il dolore che gli editor citano è un altro. Ogni scelta di prodotto va misurata su questa riga.
 
-**Importante**: il team è ridotto ma verticalmente competente. Non vendere "fuffa team" — vendi la rara combinazione **tech + editoria reale**.
+Tre conseguenze operative, che il prodotto deve rendere vere:
 
----
-
-## 2. Cos'è Kalamos AI
-
-**Tagline**: *L'Editorial Intelligence Engine per editori, agenzie letterarie e aggregatori di contenuti.*
-
-**Stato attuale**: pre-product. Concept maturo, business plan esistente, deck parziale. **Da costruire ancora** il MVP. Questo è OK per PLAI (accetta pre-incorporated/pre-money).
-
-### Cosa fa concretamente Kalamos AI
-
-Un SaaS B2B che porta intelligenza editoriale nei workflow di chi pubblica:
-
-1. **Manuscript triage & evaluation**: AI che valuta manoscritti in arrivo (sintesi, qualità prosa, fit editoriale, target demografico, comparabili di mercato) → riduce il backlog dei lettori interni del 70-90%.
-2. **Editorial fit scoring**: matching tra un manoscritto e l'identità editoriale di una divisione/collana (es. Sperling vs Einaudi Stile Libero vs Mondadori Strade Blu).
-3. **Comparable analysis**: dato un testo, identifica titoli comparabili sul mercato italiano + internazionale e ne valuta performance commerciale.
-4. **Editorial workflow augmentation**: aiuto su scheda di lettura, editing strutturale, rilevazione coerenza interna, suggerimenti di cut.
-
-### Cosa NON è Kalamos AI
-
-- Non è un generatore di contenuti (no "scrivi il libro per me")
-- Non è un tool di marketing/distribuzione
-- Non è un correttore grammaticale evoluto
-- Non sostituisce l'editor — **lo potenzia**
-
-Questa distinzione è critica: in ogni materiale per PLAI, ribadiscila. Il rischio è essere confusi con ChatGPT-wrappers per editor.
+1. **La fonte non è più lo slush pile.** Un'opportunità editoriale entra da più canali — proposta non sollecitata, agenzia letteraria, scout, diritti esteri, autore già in catalogo, progetto commissionato, premio o concorso — e il sistema li tratta tutti allo stesso modo. Il prodotto oggi assume implicitamente un solo canale: va reso esplicito e multiplo.
+2. **Il sistema deve ricordare *perché*.** Non basta registrare che un testo è stato scartato: serve la ragione, in forma strutturata. È ciò che nel tempo distingue Kalamos da un modello generico, ed è anche lo strumento con cui misuriamo noi stessi.
+3. **Non sostituiamo il gestionale.** Esistono sistemi consolidati per contratti, royalty, ONIX, ordini (Klopotek, Ingenta, Firebrand, Consonance, Schilling). Non li rifacciamo. Kalamos sta sopra o accanto.
 
 ---
 
-## 3. Perché Kalamos AI può vincere PLAI (la tesi strategica)
+## 1. Stato reale del prodotto
 
-### Fit verticale perfetto
-Mondadori = primo editore italiano. **Publishing** è una delle 5 aree prioritarie PLAI. Più di 350 case editrici nel gruppo. Migliaia di manoscritti gestiti all'anno. Il dolore è reale, misurabile, costoso.
+**La demo è online e funzionante**: `kalamos-ai.vercel.app`, Next.js su Vercel, inferenza reale su Claude (in produzione `claude-opus-4-8`, dietro la variabile `ANTHROPIC_MODEL`).
 
-### Differenziazione vs concorrenti generici
-La maggior parte delle 500+ application sarà di:
-- Tool AI generici "per content creation"
-- Wrapper ChatGPT con UI nuova
-- Soluzioni martech/adtech generaliste
+Che cosa fa oggi, verificato:
 
-Kalamos è **verticale, profondo, costruito da chi conosce davvero il mondo editoriale**. Questo è il nostro vantaggio difendibile.
+- Si entra scegliendo una **redazione** (nessuna credenziale: è una scelta di contesto dichiarata) e si vede la coda dei manoscritti in arrivo con la collana suggerita del catalogo di quella casa.
+- **9 case editrici e 35 collane reali**, verificate una a una sui cataloghi pubblici, con la fonte citata in `config/publishers.ts`.
+- Scheda di lettura strutturata: sintesi, voce, voto di prosa, target, comparabili, forze e criticità, fit per collana.
+- **Tre controlli deterministici** (codice, non un secondo modello): output vincolato a schema zod; citazione letterale obbligatoria, verificata nel testo caricato; collana proposta confrontata con il catalogo reale e scartata se inventata.
+- Raccomandazione **contestuale alla casa**: lo stesso testo che da Einaudi è prioritario può essere da scartare da Sperling & Kupfer.
+- Batch fino a 5 `.txt`, feedback dell'editor (oggi solo concordo/non concordo), pagina `/riservatezza`, euristica offline etichettata come fallback.
 
-### PoC immediato e misurabile
-Possiamo proporre subito un PoC concreto:
-- **90 giorni**, **Sperling & Kupfer**, **braccio retrospettivo** su ~300 manoscritti già valutati dall'archivio (decisioni storiche = ground truth) + **pilot live** su 30-50 manoscritti, **KPI quantitativi** con north-star sul recall dei titoli acquisiti.
+Che cosa **non** c'è:
 
-Questo trasforma la candidatura da "speranza" a "proposta operativa pronta".
-
-### Team con autenticità editoriale
-Il combo Valerio (tech + filologia) + Ilaria (poetessa pubblicata) è raro. Non siamo "ingegneri che hanno letto un libro": abbiamo radici nell'editoria.
+- Nessun database: tutto vive in `localStorage` (coda, redazione scelta, feedback). Due editor della stessa redazione non vedono la stessa coda.
+- Nessuna autenticazione, nessun rate limit sull'endpoint di analisi.
+- Nessun retrieval vettoriale, nessuna composizione ad agenti: è una singola chiamata con schema vincolato, e il catalogo è descritto nel prompt.
+- **Nessun pilota in corso, nessun ricavo, nessuna misura di concordanza con un editor reale.**
 
 ---
 
-## 4. Mappa del progetto (struttura cartelle)
+## 2. Il perimetro — la riga che non si attraversa
 
-```
-kalamos-ai-plai/
-├── CLAUDE.md                   # Questo file (memoria progetto)
-├── README.md                   # Guida d'uso umana
-├── ROADMAP.md                  # Piano settimanale fino al pitch
-│
-├── .claude/commands/           # Slash commands Claude Code custom
-│   ├── pressure-test.md
-│   ├── rewrite-tight.md
-│   ├── translate-en.md
-│   └── plai-fit-check.md
-│
-├── 00-context/                 # Conoscenza di base (immutabile)
-│   ├── plai-call-2026.md       # Tutto su PLAI 2026
-│   ├── mondadori-ecosystem.md  # Brand, divisioni, decision makers
-│   ├── previous-batches.md     # Chi ha vinto prima, pattern di selezione
-│   ├── kalamos-current-state.md
-│   └── team-bios.md
-│
-├── 01-positioning/             # Il nostro messaggio
-│   ├── core-message.md         # Il pitch in una pagina
-│   ├── differentiation.md      # Tabella vs concorrenti
-│   ├── elevator-pitches.md     # 30s / 60s / 3min
-│   └── narrative-arc.md
-│
-├── 02-application/             # Form PLAI compilato
-│   ├── form-master.md          # Tutte le risposte del form
-│   ├── company-description.md
-│   ├── problem-solution.md
-│   ├── traction-validation.md
-│   └── ask-and-use-of-funds.md
-│
-├── 03-poc-proposal/            # Il PoC concreto da proporre
-│   ├── 90-day-plan.md          # Cuore strategico
-│   ├── target-division.md      # Sperling vs Einaudi SL vs altre
-│   ├── kpis-success-criteria.md
-│   ├── budget-100k.md
-│   └── poc-onepager.pdf        # Output finale
-│
-├── 04-pitch-deck/              # Deck per Demo Day / colloqui
-│   ├── outline.md              # Struttura 12 slide
-│   ├── speaker-notes.md
-│   ├── slides/                 # Una cartella per slide
-│   └── deck-final.pptx         # Output finale
-│
-├── 05-financials/              # Numeri
-│   ├── business-model.md
-│   ├── unit-economics.md
-│   ├── projections-3y.xlsx
-│   └── cap-table-current.md
-│
-├── 06-product/                 # Prodotto e tech
-│   ├── architecture.md
-│   ├── mvp-scope.md
-│   ├── demo-script.md
-│   └── mockups/
-│
-├── 07-research/                # Intelligence di mercato e competitor
-│   ├── market-sizing.md
-│   ├── competitors.md
-│   ├── mondadori-deep-dive.md
-│   └── industry-trends.md
-│
-├── 08-outreach/                # Strategia contatto pre/post application
-│   ├── plai-decision-makers.md
-│   ├── warm-intros.md
-│   ├── outreach-templates.md
-│   └── follow-up-cadence.md
-│
-├── 09-demo-day/                # Preparazione finale
-│   ├── q-and-a-prep.md         # 50+ domande possibili e risposte
-│   ├── objection-handling.md
-│   └── rehearsal-log.md
-│
-├── prompts/                    # Prompt riusabili
-│   ├── investor-tone.md
-│   ├── editorial-tone.md
-│   └── critique-mode.md
-│
-├── scripts/                    # Automazioni
-│   ├── build-deck.py
-│   └── word-count.sh
-│
-└── assets/                     # Loghi, immagini, dati grezzi
-```
+**Kalamos è un back-office per la redazione. Chi apre l'applicazione è un dipendente della casa editrice.**
+
+Non si costruiscono, mai, senza una decisione esplicita di Valerio:
+
+- portali autore o account per gli autori;
+- aree in cui l'autore segue lo stato della sua proposta;
+- messaggistica verso l'autore;
+- piattaforme per visionare le bozze.
+
+Motivo, appreso in call: Mondadori Libri è chiuso su tutto ciò che tocca il "prodotto" — interazione con l'autore, bozze — e aperto sui **processi interni**. In più, una piattaforma a due lati apre il problema del marketplace (servono contemporaneamente editori e autori) che oggi non possiamo permetterci.
+
+Se una funzione sembra richiedere di attraversare questa riga: **fermati e chiedi**.
 
 ---
 
-## 5. Convenzioni di scrittura (LEGGI PRIMA DI SCRIVERE)
+## 3. Fuori scopo — non iniziarli nemmeno
+
+- **Analisi ed estrazione di contratti, confronto clausole, royalty.** Sappiamo che la contrattualistica è un dolore dichiarato da Mondadori, ma non sappiamo *quale* dei tre problemi sia (amministrazione dei diritti, stesura, rendicontazione). La domanda è stata posta ed è in attesa di risposta. Costruire adesso significherebbe ripetere l'errore che ci ha portati qui.
+- Versioni del manoscritto, confronto V1/V2/V3, richieste editoriali.
+- Fine-tuning di qualunque modello.
+- Blockchain, notarizzazione, smart contract.
+- ERP, ONIX, distribuzione, magazzino, contabilità.
+
+---
+
+## 4. Il motore di giudizio resta fermo
+
+Nelle prossime settimane facciamo una **validazione retrospettiva** su manoscritti già giudicati da editori reali. Perché quella misura valga, il motore deve restare quello di oggi.
+
+**Non modificare:**
+
+| File | Cosa contiene |
+|---|---|
+| `app/api/analyze/route.ts` | `SYSTEM_PROMPT` e `buildUserPrompt` |
+| `lib/schema.ts` | lo schema della scheda |
+| `lib/verifica.ts` | i controlli deterministici |
+| `config/publishers.ts` | il catalogo (migrabile su database, ma i **contenuti** non si toccano) |
+| `lib/heuristic.ts` | l'euristica offline |
+
+L'unica eccezione prevista è l'analisi per capitoli, che aggiunge una **modalità nuova** lasciando intatta quella esistente. Se pensi che uno di questi file vada cambiato, scrivilo in un file di note e vai avanti con il resto.
+
+---
+
+## 5. Il concorrente diretto: Storywise
+
+**storywisepublishers.com** — dati verificati sul loro sito ad agosto 2026.
+
+Cosa hanno: collegamento all'inbox delle submission, report card, comparabili, rilevazione di testo generato da AI, workflow. Il profilo di gusto si imposta dichiarando «genres, themes, keywords, style preferences» e affermano che «gets sharper the more you use it». Dichiarano «20K+ manuscripts processed», clienti nominati (Bloodhound Books, Collective Ink) e partnership con Bowker, IBPA e IPG.
+
+Sono **più avanti di noi**. Va quindi abbandonata la formula «loro usano un profilo dichiarato, noi impariamo»: rivendicano anche loro un apprendimento.
+
+Le tre differenze che reggono alla verifica, da tenere presenti in ogni scelta di prodotto:
+
+1. **L'unità di misura.** Il loro profilo è per account, costruito su generi e parole chiave. Il nostro è la **collana nominata di un catalogo reale**, e lo stesso testo prende punteggi diversi su collane diverse dello stesso gruppo.
+2. **L'ancoraggio.** Ogni nostro giudizio porta una citazione letterale ricercata nel testo, e la collana proposta è verificata contro il catalogo: sono controlli deterministici, non promesse.
+3. **La misurabilità dell'apprendimento.** «Migliora con l'uso» è un'affermazione che loro non accompagnano con un metodo pubblico. Noi dobbiamo poter mostrare *di quanto* migliora, su quale archivio e con quale protocollo.
+
+Il mercato italiano e francese, con i suoi cataloghi e la sua lingua, resta scoperto: il loro è anglofono.
+
+---
+
+## 6. Divieto di claim numerici non misurati
+
+**Nessun numero di efficacia entra in un materiale se non è stato misurato da noi, su dati reali, con un metodo dichiarato.**
+
+Non esistono più, e non vanno reintrodotti in nessuna forma: «riduce il backlog del 70-90%», «triage 10×», «99% di riduzione dei tempi». Erano formule, non misure.
+
+Le regole pratiche:
+
+- I numeri **calcolati** (per esempio il costo per scheda dai token e dal listino) si dichiarano come calcolati.
+- I numeri **misurati** (tempo per scheda) si dichiarano con quante misure li compongono.
+- Le **stime di settore** (€150-500 e 5-15 giorni per una scheda professionale) restano marcate `[DA VERIFICARE]` finché non le confermiamo sui dati di un editore.
+- Se non puoi verificare, scrivi «non verificato» e spiega perché.
+
+---
+
+## 7. Chi è il founder (contesto operativo)
+
+**Valerio Gestri** — imprenditore italiano basato a Grosseto. Opera attraverso PONYX (AI startup studio). Kalamos AI è una delle sue venture.
+
+- 8+ anni di sviluppo mobile (iOS Swift/SwiftUI, Android Kotlin/Compose, React Native); sviluppa da solo tutto il prodotto.
+- Laurea in Lettere e Filologia Moderna → ponte fra mondo editoriale e tecnologia.
+- **Ilaria Cesarini**, co-founder: insegnante e poetessa pubblicata da Pequod.
+- **Philippe**, entrato nel 2026: oltre dieci anni nell'editoria francese e italiana, autore pubblicato, è stato nel team fondatore di GetFluence.
+
+Il team è piccolo ma verticalmente competente. Non vendere "fuffa team": vendi la combinazione rara **tecnologia + editoria vera**.
+
+**Conseguenza operativa da ricordare sempre**: c'è un solo sviluppatore. Meno infrastruttura da mantenere vale molto. Ogni scelta tecnica va pesata anche sul costo di manutenzione.
+
+---
+
+## 8. PLAI e Mondadori — dove siamo
+
+PLAI è l'acceleratore del Gruppo Mondadori. **Il programma è cambiato** rispetto ai materiali precedenti: non più €100K per ~7% dentro un batch, ma un **investimento ibrido fino a €300K** — equity più una collaborazione operativa vera — su startup un po' più mature, con un percorso molto più distribuito e su misura della corporate.
+
+Dalla call del 6 agosto 2026:
+
+- Mondadori Libri è **chiuso sul prodotto** (autore, bozze) e **aperto sui processi interni**. La linea «interveniamo sui processi, non sul prodotto editoriale» è stata accolta bene e va tenuta in ogni materiale.
+- Il dolore che Mondadori dichiara **non è il nostro**: è la parte contrattuale con l'autore. E per una casa grande la slush pile conta poco, perché gli autori arrivano già validati da editori più piccoli.
+- Il compito assegnato è **validare su editori indipendenti e medi** e tornare con uso reale misurato. Risposta attesa a **settembre 2026**.
+
+Conseguenza: **il cliente iniziale sono gli editori indipendenti e medi, non il primo gruppo italiano.** Mondadori è il secondo passo, e ci si arriva con i numeri dei primi utenti in mano.
+
+Link: [PLAI call 2026](https://www.plai-accelerator.com/call-2026/) · [comunicato apertura](https://www.mondadorigroup.com/media-room/news-and-press-releases/2026/plai-opens-the-2026-startup-call)
+
+---
+
+## 9. Convenzioni di scrittura (leggi prima di scrivere)
 
 ### Lingua
-- **Italiano** per tutti i deliverable destinati a PLAI (il bando è italiano, i decision maker sono italiani, l'autenticità linguistica conta).
-- **Inglese** solo per la versione internazionale del deck (se richiesta) o per termini tecnici universali.
-- Se Claude scrive in inglese per default, **tradurre subito in italiano** — non chiedere conferma.
+Italiano per tutto ciò che è destinato a un lettore umano: documenti, commenti nel codice, messaggi di commit. Codice e identificatori in inglese, come già sono. Se scrivi in inglese per abitudine, traduci subito senza chiedere conferma.
 
 ### Tono
-- **Editoriale, non da SaaS generico**. Pensa al tono di una proposta a Feltrinelli o Adelphi, non a un pitch di Y Combinator tradotto male.
-- Evita: "rivoluzionare", "disrupt", "leverage", "synergie", "AI-powered" (overused), "game-changer".
-- Usa: verbi concreti ("ridurre", "automatizzare", "validare"), numeri reali, riferimenti specifici a opere/autori/case editrici.
-- **Mai vendere fumo**. Se non sappiamo qualcosa, dirlo. PLAI valuta startup serie, non TED talk.
+Editoriale, non da SaaS generico. Pensa a una proposta per Adelphi, non a un pitch di Y Combinator tradotto male.
+
+- Evita: "rivoluzionare", "disrupt", "leverage", "sinergie", "AI-powered", "game-changer".
+- Usa: verbi concreti (ridurre, automatizzare, validare), numeri reali, riferimenti specifici a opere, autori, collane.
+- **Mai vendere fumo.** Se non sappiamo una cosa, si dice.
 
 ### Densità
-- **Una frase = un'idea**. Niente paragrafi-fiume.
-- Bullet point solo quando l'informazione è davvero elencabile (3+ item paralleli). Altrimenti prosa.
-- Numero massimo di parole per ogni risposta del form: rispettare i limiti del form quando noti, altrimenti **≤150 parole per "executive answer"**, **≤400 per descrizioni estese**.
+Una frase, un'idea. Bullet point solo quando l'informazione è davvero elencabile (3+ voci parallele), altrimenti prosa. Massimo 150 parole per una risposta esecutiva, 400 per una descrizione estesa, salvo limiti diversi imposti da un form.
 
 ### Formattazione
-- Markdown sempre.
-- Headings H2 e H3, mai H1 dentro file (l'H1 è il titolo file).
-- Tabelle quando confronti opzioni.
-- Quote (`>`) solo per citazioni reali (testimonianze, articoli, dati).
+Markdown. Heading da H2 in giù (l'H1 è il titolo del file). Tabelle per i confronti. Le citazioni (`>`) solo per citazioni reali.
 
 ---
 
-## 6. Workflow tipo di una sessione Claude Code
+## 10. Regole di sessione
 
-Quando Valerio apre una sessione, di solito chiede una di queste cose:
-
-1. **"Lavoriamo su [sezione X]"** → vai in `0X-folder/`, leggi cosa c'è già, identifica i gap, proponi i prossimi 1-3 task concreti, esegui.
-2. **"Rivedi [file]"** → modalità critica costruttiva. Usa lo slash command `/pressure-test`.
-3. **"Genera il deck"** → leggi `04-pitch-deck/outline.md`, genera markdown slide per slide, poi usa `scripts/build-deck.py` per produrre il pptx.
-4. **"Cosa manca per essere pronti?"** → leggi `ROADMAP.md`, fai gap analysis, restituisci una lista prioritizzata.
-5. **"Pressure-test il PoC"** → modalità diavolo: fai 10 obiezioni tecniche/strategiche al PoC come se fossi il selection panel PLAI.
-
-### Regole di sessione
-- **Sempre** leggere `CLAUDE.md` (questo file) all'inizio di ogni nuova sessione.
-- **Sempre** leggere `ROADMAP.md` per capire dove siamo nel piano.
+- **Sempre** leggere questo file e `ROADMAP.md` all'inizio di una sessione.
 - **Mai** inventare numeri, partnership, traction. Se non c'è, scrivere `[DA VERIFICARE]` o `[DA OTTENERE]`.
-- **Sempre** chiedere prima di sovrascrivere file in `01-positioning/` e `03-poc-proposal/` (sono i due asset più strategici).
-- Quando completi un task significativo, aggiungi una riga al log in `ROADMAP.md` con data e descrizione.
+- **Sempre** chiedere prima di sovrascrivere `01-positioning/` e `03-poc-proposal/`.
+- Un commit per unità di lavoro coerente. Niente chiavi API nei commit: le variabili nuove vanno in `.env.example` con valori fittizi.
+- Se qualcosa non funziona: **cosa hai fatto, cosa ti aspettavi, cosa è successo**. Mai «non va».
+- **Non aggiustare mai il codice o i dati per far tornare un risultato.**
+- Ogni fase di lavoro finisce con: cosa hai cambiato, cosa hai verificato e come, cosa resta aperto.
+- Quando chiudi un task significativo, aggiungi una riga al log in `ROADMAP.md`.
 
 ---
 
-## 7. Tre cose che valgono il 70% del successo
+## 11. Mappa del progetto
 
-Se ti distrai, ricordati che queste tre cose contano più di tutto il resto:
-
-1. **Il PoC proposal di 90 giorni** (`03-poc-proposal/90-day-plan.md`)
-   PLAI ha €100K specifici per PoC. Se il nostro è già chiavi-in-mano, partiamo con un vantaggio enorme. Deve essere così concreto che il selection panel possa immaginarsi di firmare il contratto domani.
-
-2. **La differenziazione vs tool generici** (`01-positioning/differentiation.md`)
-   Se PLAI ci vede come "un altro wrapper AI per editor", siamo morti. Dobbiamo dimostrare verticalità tecnica e autorità editoriale in ogni materiale.
-
-3. **Il fit con UNA divisione specifica Mondadori** (`03-poc-proposal/target-division.md`)
-   Non parlare di "Mondadori" come monolite. Identifica UNA divisione, UN problema preciso, UN responsabile reale che potrebbe sponsorizzare il PoC. Cita brand, collane, processi specifici.
+```
+Kalamos-AI/
+├── CLAUDE.md               # questo file
+├── README.md               # guida d'uso
+├── ROADMAP.md              # fasi di lavoro e log dei progressi
+│
+├── app/                    # applicazione Next.js (App Router)
+│   ├── page.tsx            # landing
+│   ├── redazione/          # la scrivania: coda dei manoscritti
+│   ├── demo/               # aggiungi un manoscritto alla coda
+│   ├── scheda/             # schede di lettura
+│   ├── riservatezza/       # flusso dati dichiarato
+│   └── api/analyze/        # il motore (NON MODIFICARE, vedi §4)
+├── components/             # interfaccia
+├── lib/                    # schema, verifica, euristica, estratto, sessione
+├── config/publishers.ts    # catalogo: 9 case, 35 collane reali
+├── data/                   # manoscritti demo e schede generate
+├── scripts/                # generazione schede, build deck
+│
+├── 00-context/             # PLAI, ecosistema Mondadori, batch precedenti
+├── 01-positioning/         # core message, differenziazione, elevator pitch
+├── 02-application/         # risposte al form
+├── 03-poc-proposal/        # il PoC di 90 giorni
+├── 04-pitch-deck/          # outline e speaker notes
+├── 05-financials/          # business model, unit economics
+├── 06-product/             # architettura, scope, script demo, piani
+├── 07-research/            # mercato, competitor, trend
+├── 08-outreach/            # decision maker, warm intro
+└── 09-demo-day/            # briefing, Q&A, obiezioni
+```
 
 ---
 
-## 8. Cose da NON fare mai
+## 12. Stato per sezione
 
-- ❌ Non citare Mondadori in modo generico ("il grande gruppo editoriale"). Sii specifico: brand, collane, persone.
-- ❌ Non promettere AGI o "intelligenza editoriale generale". Promettiamo cose misurabili.
-- ❌ Non scrivere come ChatGPT scrive di default (frasi compiacenti, "in conclusione", "esploriamo insieme"). Scrivi come un caporedattore.
-- ❌ Non includere altre venture di Valerio (PONYX, ProntoSito, Helianta) nel materiale PLAI tranne dove serve come prova di esperienza. PLAI investe in **Kalamos AI**, non in un portfolio.
-- ❌ Non inserire frasi che presuppongono il dialogo con un modello AI ("certo, posso aiutarti...", "ottima domanda..."). Tutto il materiale è destinato a esseri umani.
-- ❌ Non promettere il PoC su tutto il gruppo Mondadori al day 1. Una divisione, un caso d'uso, poi scaling.
-
----
-
-## 9. Stato di avanzamento (aggiornare quando cambia)
-
-| Sezione | Stato | Owner | Note |
-|---------|-------|-------|------|
-| 00-context | 🟢 base esistente | Claude | da arricchire con ricerca aggiornata Mondadori |
-| 01-positioning | 🟢 allineato alla demo | Valerio+Claude | differentiation: calibrazione su catalogo (successi+flop) e AI-check come asset che si accumulano; tempi e costi riallineati ai valori misurati |
-| 02-application | 🔴 da fare | — | partire dopo positioning chiuso |
-| 03-poc-proposal | 🟢 design retrospettivo + divisione fissata | Claude | KPI riancorati su recall/κ; validare volumi reali in Fase 1 |
-| 04-pitch-deck | 🔴 outline solo | — | da costruire |
-| 05-financials | 🔴 da fare | Valerio | esiste in formato vecchio |
-| 06-product | 🟢 Demo PLAI-ready, editore-first | Claude+Valerio | Landing → /redazione: si entra in una redazione (default: case Mondadori, S&K inclusa) e si vede la coda dei manoscritti in arrivo con la collana reale suggerita; /demo aggiunge un manoscritto alla coda; raccomandazione contestuale (prosa × fit di catalogo); batch triage; KPI misurati; feedback editor; /riservatezza; euristica offline etichettata |
-| 07-research | 🟡 parziale | Claude | competitor + market sizing OK, deep-dive Mondadori manca |
-| 08-outreach | 🔴 da fare | Valerio | identificare decision maker PLAI è prioritario |
-| 09-demo-day | 🟢 pronto per la call | Claude | briefing-call.md = documento unico da leggere prima; Q&A allineato alla demo reale; objection-handling ripulito dai claim non costruiti |
+| Sezione | Stato | Note |
+|---|---|---|
+| 00-context | 🟢 | numeri PLAI da aggiornare col nuovo modello ibrido fino a €300K |
+| 01-positioning | 🟡 | da riallineare al posizionamento nuovo (memoria, non filtro) |
+| 02-application | 🔴 | fermo, e va ripensato dopo il cambio di posizionamento |
+| 03-poc-proposal | 🟡 | il PoC su Sperling resta valido come proposta, ma non è più il primo passo |
+| 04-pitch-deck | 🔴 | solo outline, con claim superati |
+| 05-financials | 🟡 | unit economics corrette (costo marginale reale), proiezioni da rifare |
+| 06-product | 🟢 | demo online; `da-demo-a-prodotto.md` è il piano corrente |
+| 07-research | 🟡 | manca la scheda su Storywise |
+| 08-outreach | 🔴 | da fare |
+| 09-demo-day | 🟢 | briefing e Q&A allineati alla demo reale |
 
 Aggiorna questa tabella ogni volta che chiudi una sezione.
-
----
-
-## 10. Riferimenti rapidi
-
-- **PLAI sito**: https://www.plai-accelerator.com/call-2026/
-- **PLAI partner**: Startupbootcamp, I3P, AWS, ElevenLabs, Fastweb+Vodafone, IFAB, Multiversity, PwC, StartupItalia
-- **Aree prioritarie**: Education, Retail, New Media & Advertising, **Publishing**, Corporate
-- **Investimento iniziale (early-stage)**: €100K equity in cambio di ~7% (comunicato 2026)
-- **Follow-on potenziale**: fino a €400K aggiuntivi per le startup meritevoli a fine percorso
-- **Pilot/PoC (growth-stage)**: €40K di compenso per progetti pilota col Gruppo o i partner
-- Fonte numeri 2026: https://www.mondadorigroup.com/media-room/news-and-press-releases/2026/plai-opens-the-2026-startup-call
-
----
-
-*Ultimo aggiornamento di questo file: 5 agosto 2026. Aggiornare il timestamp se modifichi il contenuto.*

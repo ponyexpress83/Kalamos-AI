@@ -30,7 +30,7 @@
 ## DOMANDE BUSINESS
 
 ### 6. "Avete traction reale?"
-> No, e lo dico per primo. Nessun pilota, nessun ricavo, nessuna misura di concordanza con un editor reale. Quello che abbiamo è una demo pubblica funzionante con inferenza vera, nove cataloghi editoriali modellati, e un PoC disegnato fino ai KPI. È esattamente il buco che il PoC deve chiudere — ed è il motivo per cui siamo qui invece che a chiedere un round a un fondo.
+> No, e lo dico per primo. Nessun pilota, nessun ricavo, nessuna misura di concordanza con un editor reale. Quello che abbiamo è una demo pubblica funzionante con inferenza vera, nove cataloghi editoriali modellati per un totale di trentacinque collane reali, e un PoC disegnato fino ai KPI. È esattamente il buco che il PoC deve chiudere — ed è il motivo per cui siamo qui invece che a chiedere un round a un fondo.
 >
 > ⚠️ Se hai conversazioni qualificate o LOI reali al momento della call, aggiungile qui con nome e data. Se non ce le hai, la risposta sopra è più forte di una vaga: un panel che riceve mille candidature riconosce il vago al primo colpo.
 
