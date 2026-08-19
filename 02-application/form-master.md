@@ -44,7 +44,7 @@ New Media & Advertising, Education
 
 ### 2.1 Problema (300-500 parole)
 
-I grandi publisher trade italiani ricevono tra 5.000 e 20.000 manoscritti all'anno, tra sottomissioni dirette, agenzie letterarie e scouting. Il processo standard di valutazione prevede che ogni manoscritto significativo venga sottoposto a una "scheda di lettura" — un documento strutturato di 2-5 pagine che sintetizza la trama, valuta la qualità della prosa, identifica il target demografico, propone titoli comparabili e raccomanda un'azione editoriale.
+I publisher trade italiani ricevono ogni anno molte più proposte di quante possano approfondire, fra sottomissioni dirette, agenzie letterarie e scouting. Il processo standard di valutazione prevede che ogni manoscritto significativo venga sottoposto a una "scheda di lettura" — un documento strutturato di 2-5 pagine che sintetizza la trama, valuta la qualità della prosa, identifica il target demografico, propone titoli comparabili e raccomanda un'azione editoriale.
 
 Una scheda di lettura fatta bene richiede 5-15 giorni di lavoro da parte di un lettore esperto e costa al publisher tra 150 e 500 euro tra retribuzione e overhead organizzativo. Anche un grande publisher può permettersi di produrre schede formali solo per una frazione dei manoscritti ricevuti — il resto viene rifiutato sulla base di sinossi, lettere di accompagnamento, o intuizione veloce di una segreteria editoriale.
 

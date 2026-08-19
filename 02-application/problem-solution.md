@@ -9,7 +9,7 @@
 
 I grandi editori trade italiani sono strutturalmente sotto-capacità nella valutazione dei manoscritti in entrata. Tre dati delineano il problema:
 
-1. **Volume**: 8.000–15.000 manoscritti/anno per un major. Capacità di valutazione effettiva: meno del 15% del flusso.
+1. **Volume**: più proposte di quante la redazione possa approfondire leggendole. Il rapporto esatto fra ricevuto e approfondito è il primo dato che il PoC misura sull'editore [DA VERIFICARE].
 2. **Tempo**: una scheda di lettura completa richiede 5–15 giorni di lavoro a un lettore senior. Il backlog cresce più velocemente di quanto si possa smaltire.
 3. **Costo**: €150–500 a scheda completa, prevalentemente in lavoro umano qualificato non scalabile.
 

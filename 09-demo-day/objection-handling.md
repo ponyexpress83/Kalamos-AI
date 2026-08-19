@@ -30,7 +30,7 @@
 ## Obiezione 3: "Sono i lettori esterni che gli editori non vogliono pagare di più. Voi siete un costo aggiuntivo, non un risparmio"
 
 **Risposta**:
-> "Vero che i lettori esterni sono già un costo basso unitario. Ma il problema non è la spesa: è la capacità. Un editore che oggi ne valuta 1.500/anno potrebbe valutarne 8.000 con Kalamos — lo stesso budget assoluto, dieci volte la copertura. Stiamo vendendo accesso a un pool di manoscritti che oggi viene chiuso senza essere letto. Quello sì che vale il prezzo."
+> "Vero che i lettori esterni sono già un costo basso unitario. Ma il problema non è la spesa: è la capacità. Un editore che oggi ne approfondisce una parte può portare il triage su tutto il flusso, a parità di budget. Di quanto, esattamente, è quello che il PoC deve misurare da voi: non ho un moltiplicatore da darvi oggi e non voglio inventarlo. Stiamo vendendo accesso a un pool di manoscritti che oggi viene chiuso senza essere letto. Quello sì che vale il prezzo."
 
 ---
 

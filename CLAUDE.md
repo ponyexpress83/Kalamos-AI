@@ -17,7 +17,7 @@ Tre conseguenze operative, che il prodotto deve rendere vere:
 
 1. **La fonte non è più lo slush pile.** Un'opportunità editoriale entra da più canali — proposta non sollecitata, agenzia letteraria, scout, diritti esteri, autore già in catalogo, progetto commissionato, premio o concorso — e il sistema li tratta tutti allo stesso modo. Il prodotto oggi assume implicitamente un solo canale: va reso esplicito e multiplo.
 2. **Il sistema deve ricordare *perché*.** Non basta registrare che un testo è stato scartato: serve la ragione, in forma strutturata. È ciò che nel tempo distingue Kalamos da un modello generico, ed è anche lo strumento con cui misuriamo noi stessi.
-3. **Non sostituiamo il gestionale.** Esistono sistemi consolidati per contratti, royalty, ONIX, ordini (Klopotek, Ingenta, Firebrand, Consonance, Schilling). Non li rifacciamo. Kalamos sta sopra o accanto.
+3. **Non sostituiamo il gestionale.** Esistono sistemi consolidati per contratti, royalty, ONIX, ordini (Klopotek, Ingenta, Firebrand, Consonance, Schilling). Non li rifacciamo. Kalamos sta sopra o accanto. La formula da usare: **«siamo un sistema di intelligenza, non un sistema di registrazione»** — loro sanno cosa è successo, noi perché e cosa guardare adesso.
 
 ---
 
@@ -231,7 +231,7 @@ Kalamos-AI/
 | 04-pitch-deck | 🔴 | solo outline, con claim superati |
 | 05-financials | 🟡 | unit economics corrette (costo marginale reale), proiezioni da rifare |
 | 06-product | 🟢 | demo online; `da-demo-a-prodotto.md` è il piano corrente |
-| 07-research | 🟡 | manca la scheda su Storywise |
+| 07-research | 🟢 | scheda su Storywise, Schilling e Ingenta verificata ad agosto 2026 in `competitors.md` |
 | 08-outreach | 🔴 | da fare |
 | 09-demo-day | 🟢 | briefing e Q&A allineati alla demo reale |
 

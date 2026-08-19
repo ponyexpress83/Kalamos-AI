@@ -14,7 +14,7 @@
 
 ## Versione 60 secondi (≈140 parole)
 
-> Kalamos AI nasce da una constatazione semplice. I grandi publisher italiani ricevono migliaia di manoscritti l'anno e possono leggerli davvero solo aumentando lo staff editoriale, cosa che nessuno può permettersi. Il risultato: il 95% dei manoscritti viene rifiutato senza essere letto in profondità, e quelli accolti hanno time-to-market di mesi.
+> Kalamos AI nasce da una constatazione semplice. Le redazioni ricevono più proposte di quante possano approfondire con la sola lettura, e possono leggerne di più solo aumentando lo staff editoriale, cosa che nessuno può permettersi. Il risultato: una parte del flusso viene rifiutata senza essere letta in profondità, e i tempi di risposta all'autore si allungano di mesi.
 >
 > Noi costruiamo un'infrastruttura AI verticale per editoria che produce schede di lettura strutturate in meno di un minuto invece che in giorni, con fit-score sulla collana specifica e comparabili sul mercato italiano e internazionale.
 >
@@ -30,7 +30,7 @@
 
 > Vi racconto Kalamos in tre passi: il problema, la nostra risposta, e perché siamo noi a poterla dare.
 >
-> **Il problema.** Un grande publisher trade riceve tra 5.000 e 20.000 manoscritti l'anno, tra sottomissioni dirette, scout e agenzie. Il flusso editoriale standard prevede che ogni manoscritto significativo riceva una "scheda di lettura": un documento strutturato di 2-5 pagine in cui un lettore esperto sintetizza la trama, valuta la qualità della prosa, identifica il target demografico, suggerisce comparable e raccomanda un'azione editoriale. Una scheda fatta bene richiede 5-15 giorni di lavoro e costa al publisher tra 150 e 500 euro tra retribuzione e overhead.
+> **Il problema.** Un publisher trade riceve ogni anno molte più proposte di quante possa approfondire — da sottomissioni dirette, scout e agenzie. Il flusso editoriale standard prevede che ogni manoscritto significativo riceva una "scheda di lettura": un documento strutturato di 2-5 pagine in cui un lettore esperto sintetizza la trama, valuta la qualità della prosa, identifica il target demografico, suggerisce comparable e raccomanda un'azione editoriale. Una scheda fatta bene richiede 5-15 giorni di lavoro e costa al publisher tra 150 e 500 euro tra retribuzione e overhead.
 >
 > Fate il calcolo: anche un publisher grande non può permettersi di produrre schede per più di qualche centinaio di manoscritti l'anno. Il resto viene rifiutato senza essere letto davvero — sulla base di sinossi, lettere di accompagnamento, o intuizione veloce. Statisticamente, una parte di valore reale si perde in questo filtro.
 >

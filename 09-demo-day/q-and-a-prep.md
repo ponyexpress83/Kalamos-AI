@@ -40,7 +40,7 @@
 > ⚠️ **Non dire mai "network effect fra clienti" o "calibrazioni anonimizzate condivise".** Contraddice la promessa di riservatezza su cui vendiamo la calibrazione (i flop di una casa non escono dal suo perimetro) ed è il modo più rapido per perdere la fiducia di un editore. Il valore si accumula *dentro* ogni relazione, non *fra* i clienti.
 
 ### 8. "ARPU 55K vi sembra realistico per il mercato italiano?"
-> Sì, ma l'ancora non è il costo della singola scheda — è la capacità. Un editore oggi valuta seriamente meno del 15% di ciò che riceve; con Kalamos copre l'intero flusso, e il valore sta nei manoscritti che oggi non legge affatto. Anche con la stima di settore più prudente sul costo per scheda, su migliaia di schede/anno il valore creato per un Pro tier supera i €300K. ARPU €42K = capture intorno al 14%. Conservativo.
+> L'ancora non è il costo della singola scheda: è la capacità. Un editore approfondisce solo una parte di ciò che riceve — quanto esattamente è il primo numero che il PoC misura, e non lo annuncio prima di averlo. Il valore sta nei manoscritti che oggi non legge affatto. La verifica del rapporto fra valore e prezzo la faremo sui volumi reali del primo pilota: proiettarla adesso sarebbe aritmetica, non evidenza.
 
 ### 9. "Quanto è lungo il sales ciclo enterprise editoriale?"
 > 4-9 mesi. È lento e va detto. È il motivo per cui chiediamo l'accelerazione PLAI: il warm intro Mondadori comprime quel ciclo da 9 a 3 mesi per i primi 2-3 contratti.
@@ -53,7 +53,11 @@
 ## DOMANDE TEAM
 
 ### 11. "Chi siete?"
-> Risposta breve: 1 frase per persona. *"[Valerio]: 8 anni di sviluppo, integrazione AI in pipeline produttive, laurea in Filologia Moderna. [Ilaria]: poetessa pubblicata da Pequod, voce editoriale che valida ogni output. [Advisor X]: ex-[nome editore], 20 anni di esperienza editoriale."*
+> ⚠️ **Da sciogliere prima della prossima conversazione, non davanti a loro.** Nella candidatura F6S risultano **2 founder**; nei materiali recenti compaiono Valerio, Ilaria e Philippe con ruoli che cambiano da un documento all'altro. In una due diligence questa incoerenza pesa più di quanto sembri. Servono quattro risposte nette, e sono fatti che solo tu conosci: chi sono oggi i founder, chi lavora a tempo pieno, chi ha equity, chi costruisce il prodotto. Non presentare nessuno come co-founder se non lo è, e non far sparire chi risulta nella candidatura: se un ruolo è cambiato, dillo.
+>
+> Struttura corretta: *"La compagine operativa oggi è questa: io guido prodotto e tecnologia; Ilaria [ruolo esatto] definisce e valida il framework editoriale; Philippe [ruolo esatto] ha contribuito [fase esatta]. Stiamo formalizzando la struttura societaria e sono trasparente su ruoli e impegno."*
+>
+> Risposta breve una volta sciolto il nodo: 1 frase per persona. *"[Valerio]: 8 anni di sviluppo, integrazione AI in pipeline produttive, laurea in Filologia Moderna. [Ilaria]: poetessa pubblicata da Pequod, voce editoriale che valida ogni output. [Advisor X]: ex-[nome editore], 20 anni di esperienza editoriale."*
 
 ### 12. "Siete un solo founder operativo?"
 > [Se vero]: "Sì, oggi sì. È un limite che PLAI ci aiuta a risolvere: il primo hire post-accelerazione è un co-founder tecnico / operativo già identificato e in discussione."
@@ -159,6 +163,12 @@
 
 ### 38. "E se il modello sbaglia tutte le collane insieme? Cosa vede l'editor?"
 > Vede una stima etichettata come offline, non un giudizio AI spacciato per tale. Se nessuna delle collane proposte esiste nel catalogo, la scheda non passa il controllo e il sistema ripiega sulla valutazione euristica, che porta in cima un banner che dice cos'è. Il sistema degrada, ma non mente mai sulla natura di ciò che mostra: è il comportamento che voglio, perché l'errore che non posso permettermi non è "oggi la qualità è più bassa", è "vi ho dato per buono qualcosa che non lo era".
+
+### 39. "Abbiamo già i nostri sistemi per gestire queste cose."
+> Non voglio sostituire il vostro sistema di registrazione, e non credo che nessuno debba. Klopotek, Ingenta o quello che usate registrano cosa è successo: contratti, diritti, royalty, ordini. Kalamos vuole essere il livello di intelligenza sopra quel flusso — collega le fonti, conserva le decisioni con la loro ragione, rende interrogabile il contesto. I vostri sistemi sanno cosa è stato deciso; noi vogliamo che si sappia anche perché. È anche il motivo per cui il PoC è poco invasivo: non chiedo a nessuno di cambiare strumento.
+
+### 40. "Perché non basta Storywise?"
+> Storywise è un concorrente vero e più avanti di noi: collegano l'inbox, fanno report card, comparabili, taste matching, workflow, e dichiarano oltre ventimila manoscritti processati con clienti nominati. Non fingo che non esistano. Le differenze che tengo sono tre: il loro profilo è per account, costruito su generi e parole chiave, il nostro è la collana nominata di un catalogo reale — e per un gruppo con molti marchi è una differenza di sostanza; ogni nostro giudizio porta una citazione che il sistema ritrova nel testo e una collana verificata contro il catalogo; e sull'apprendimento noi vogliamo poter dire di quanto migliora, con quale archivio e con quale metodo. Loro dicono che migliora con l'uso, ma non pubblicano un protocollo. E il mercato italiano e francese, con i suoi cataloghi e la sua lingua, oggi è scoperto: il loro è anglofono.
 
 ### 39. "Quanto ci vuole a metterlo dentro il nostro flusso?"
 > Per il PoC, niente integrazione: lavoriamo sull'archivio e su una coda separata, così non tocchiamo i vostri sistemi mentre state ancora decidendo se vi serve. L'integrazione — casella di posta dedicata, export nel vostro formato di scheda — è la fase successiva ed è deliberatamente fuori dai novanta giorni. Chiedere a una redazione di cambiare workflow prima di aver visto i risultati è il modo più sicuro di far fallire un pilota.

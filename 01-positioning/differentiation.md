@@ -33,6 +33,18 @@
 
 ---
 
+## La riga che risponde a «abbiamo già i nostri sistemi»
+
+> **Kalamos è un sistema di intelligenza, non un sistema di registrazione.**
+
+È la risposta migliore all'obiezione più probabile di una casa strutturata. Klopotek, Ingenta, Firebrand, Consonance e i sistemi interni registrano **cosa** è successo: contratti, diritti, royalty, ONIX, ordini. Kalamos spiega **perché** e cosa guardare adesso. Non li sostituiamo: ci stiamo sopra, o accanto.
+
+Detta così vale doppio, perché rende il PoC meno invasivo: non chiediamo a nessuno di cambiare il sistema su cui lavora.
+
+Lo stesso vale verso i concorrenti più vicini: Schilling Editorial Desk muove il lavoro fra le persone, noi lo ordiniamo per pertinenza al catalogo; Storywise fa submission intelligence, noi puntiamo alla memoria delle decisioni. La mappa verificata è in `07-research/competitors.md`.
+
+---
+
 ## I due differenziatori che maturano nel tempo
 
 Le voci della tabella si possono copiare in sei mesi. Queste due no, perché non sono funzionalità: sono asset che si accumulano.
@@ -92,9 +104,9 @@ Sintetizzando, **il claim che dobbiamo difendere a costo della vita** è:
 
 > Kalamos è l'unica AI editoriale italiana costruita da un team con autorità verticale dimostrabile (poetessa pubblicata + filologo + AI engineer), che produce output compatibile con i workflow esistenti dei publisher trade, che supporta lo scoring per collana specifica, e che può essere operativa in 90 giorni in una divisione Mondadori reale.
 
-Ogni singolo elemento di questo claim è verificabile, difendibile, e ognuno individualmente è un ostacolo serio per qualsiasi competitor. La somma è il fossato.
+Ogni singolo elemento di questo claim è verificabile oggi. **Nessuno di essi, però, è ancora un fossato**: il meccanismo di difendibilità è progettato, non attivato. Dirlo per primi vale più che rivendicarlo — e chi valuta lo verifica in due domande.
 
-**E il fossato si scava mentre si lavora.** Lo scoring per collana è ciò che ci fa entrare; la calibrazione sul catalogo della casa — successi e flop, in perimetro riservato — è ciò che rende doloroso sostituirci dopo dodici mesi. Il primo è una funzionalità, il secondo è un asset che appartiene alla relazione e non si trasferisce a un competitor.
+**Il fossato si scava lavorando, e il PoC è la prima palata.** Lo scoring per collana è ciò che ci fa entrare; la calibrazione sul catalogo della casa — successi e flop, in perimetro riservato — è ciò che renderebbe doloroso sostituirci dopo dodici mesi. Al condizionale, finché quel corpus non esiste: oggi non abbiamo un vantaggio sui dati, abbiamo il meccanismo che può produrlo. Il primo è una funzionalità, il secondo è un asset che appartiene alla relazione e non si trasferisce a un competitor.
 
 Il progetto nasce sull'editoria italiana ma la struttura non è italiana: i profili di collana sono configurabili in qualsiasi lingua, e il problema — troppi manoscritti, troppo poco tempo di lettura senior — è identico in Francia, Spagna e Germania. La presenza europea del gruppo è la via naturale di espansione dopo il primo caso d'uso validato, non un'ambizione da slide.
 

@@ -85,7 +85,7 @@ Aggiungi **un** manoscritto alla coda dal vivo, se la rete regge: circa trenta s
 | Tempo per scheda | **~30 secondi** (media misurata oggi: **28s**) | Misurato in produzione su 6 analisi: 24-30s |
 | Modello in produzione | `claude-opus-4-8` | Se te lo chiedono: il modello sta dietro una variabile d'ambiente, cambiarlo è una riga |
 | Riferimento di settore per una scheda | €150–500 e 5–15 giorni | **Stima di settore, da validare in Fase 1 del PoC** |
-| Piloti in corso / ricavi | **zero** | Detto per primo, non per ultimo |
+| Piloti in corso / ricavi | **zero** | Detto per primo, non per ultimo — ma inquadralo (vedi §3-bis) |
 | PoC proposto | 90 giorni, Sperling & Kupfer, ~300 manoscritti retrospettivi + 30-50 live | `03-poc-proposal/90-day-plan.md` |
 | Manoscritti rifiutati da Kobo nel 2025 per sospetta IA | ~45% | Livres Hebdo / ActuaLitté, dichiarazioni del CEO Tamblyn |
 
@@ -93,13 +93,53 @@ Aggiungi **un** manoscritto alla coda dal vivo, se la rete regge: circa trenta s
 
 ---
 
-## 4. L'ask, in una frase
+## 3-bis. Come si dice "siamo all'inizio" senza sembrare vuoti
 
-> "Chiediamo il percorso early-stage — €100K per circa il 7% — e, subito dopo, la porta su una divisione per il PoC. Il PoC è già disegnato: novanta giorni su Sperling & Kupfer, validato sull'archivio di manoscritti che hanno già giudicato, quindi senza chiedere ai loro lettori di rileggere nulla. Quello che non possiamo darci da soli è l'accesso: è esattamente ciò che PLAI dà."
+Non enumerare tre assenze — nessun pilota, nessun ricavo, nessuna misura. La trasparenza è giusta, l'inquadratura no: descrivi la **progressione verificabile**, non il vuoto.
+
+> "Vi dico cosa abbiamo già tolto dai rischi: un prodotto che funziona e che potete aprire adesso; l'analisi dal vivo di un manoscritto che scegliete voi; nove cataloghi e trentacinque collane modellati; ogni giudizio ancorato a una citazione che il sistema ritrova nel testo; il flusso di redazione già dimostrabile; e nessun dato editoriale riservato ancora usato, quindi nessun debito da sciogliere con nessuno.
+>
+> Siamo pre-ricavo. Il prossimo rischio da eliminare non è tecnico: è la validazione contro decisioni editoriali reali. Ed è l'unico che non possiamo eliminare da soli."
+
+Funziona perché finisce sulla cosa che **loro** possono dare, non sulla cosa che a te manca.
 
 ---
 
-## 5. Le otto domande che possono farti male
+## 3-ter. Le tre formule da non ripetere più
+
+**"È già un prodotto finito, però può essere molto implementato."** Contiene la propria smentita nella seconda metà. Per una corporate "finito" non vuol dire completo di funzioni: vuol dire che **si mette in mano a una persona e non si rompe**. Un prodotto che fa tre cose e non fallisce mai è finito; uno che ne fa quindici e inciampa è un prototipo.
+
+> "Kalamos fa tre cose — legge, ordina per collana, motiva con una citazione verificabile — e le fa senza rompersi. Non è tutto quello che diventerà. È tutto quello che promette oggi."
+
+**"Non legge il romanzo intero."** Non è un limite da confessare, è una scelta di prodotto da spiegare — e apre la pipeline naturale.
+
+> "Nel primo triage Kalamos analizza un estratto standardizzato. I testi che passano possono andare a un secondo livello di analisi integrale, per capitoli. Non pretendiamo che un estratto sostituisca la lettura editoriale: serve a stabilire dove conviene investire per prima l'attenzione umana."
+
+**"Facciamo la stessa cosa a un millesimo del costo."** Una scheda professionale umana e un primo triage automatico non sono prodotti equivalenti, e il confronto secco suona scorretto.
+
+> "Non confronto due giudizi equivalenti. Kalamos comprime il costo del **primo screening**, così la redazione destina il lavoro umano ai testi che meritano approfondimento."
+
+E nel PoC non mettere il costo API in prima fila: a un editore interessano prima **quota di backlog sottoposta a triage, tempo umano risparmiato, recall sui testi che gli editor avrebbero portato avanti, falsi negativi, e collana corretta**. Il costo del modello è una metrica operativa secondaria.
+
+---
+
+## 4. L'ask, in una frase
+
+Il programma ha **due strumenti distinti**: fino a €300K di investimento in equity, e fino a €100K per una collaborazione operativa con una divisione. Fonderli in una frase sola fa pensare che non hai letto come funziona il programma, e ti apre una trattativa sulla valutazione prima del tempo.
+
+Chiedi tre cose, in quest'ordine:
+
+1. **Un PoC di 90 giorni con una divisione.** Accesso controllato a un campione retrospettivo di manoscritti già giudicati e a un lotto corrente.
+2. **Un investimento pre-seed attraverso PLAI**, per rafforzare il team tecnico-editoriale e portare il prototipo a prodotto usabile in redazione.
+3. **Un criterio di successo condiviso**: recall sui manoscritti effettivamente acquisiti, tempo di triage risparmiato, qualità dell'accordo con gli editor.
+
+Se ti chiedono subito la percentuale:
+
+> "Non vorrei negoziare oggi una quota. Vorrei prima capire se condividiamo la stessa tesi industriale. Quello che cerco davvero da PLAI è il PoC con una divisione, perché è lì che possiamo dimostrare il valore — e senza quel dato una valutazione la staremmo inventando tutti e due."
+
+---
+
+## 5. Le nove domande che possono farti male
 
 **1. "Questa è AI o è una demo finta?"**
 > "Il motore è Claude, con output vincolato a uno schema e validato. Le schede che vedete sono generate dal vivo [*se hai lanciato lo script*] / La coda che vedete usa una stima offline etichettata come tale, perché la demo deve funzionare anche senza chiave; l'analisi vera la faccio adesso su un manoscritto che scegliete voi."
@@ -122,7 +162,10 @@ Aggiungi **un** manoscritto alla coda dal vivo, se la rete regge: circa trenta s
 **7. "Sostituisce i nostri editor."**
 > "No, e non è una cortesia: è il confine su cui abbiamo costruito il prodotto. Kalamos non scrive e non decide. Oggi un editor legge davvero una frazione di ciò che riceve; con noi fa triage informato su tutto e usa la lettura profonda dove serve. Più capacità di decidere, non meno potere."
 
-**8. "Siete in due, di cui uno part-time."**
+**8. "Abbiamo già i nostri sistemi."**
+> "Non voglio sostituirli. Klopotek o Ingenta registrano cosa è successo; Kalamos è il livello di intelligenza sopra: collega le fonti, conserva le decisioni con la loro ragione, rende interrogabile il contesto. È anche il motivo per cui il PoC è poco invasivo — non chiedo a nessuno di cambiare strumento."
+
+**9. "Siete in due, di cui uno part-time."**
 > "Sì, ed è il nostro limite più serio. Sto completando l'uscita da Smart Content per essere full-time. Il team è piccolo ma la combinazione è rara: sviluppo software e filologia da una parte, una poetessa pubblicata dall'altra. Il primo hire post-accelerazione è un advisor editoriale con un nome riconoscibile nel settore."
 
 Le altre venticinque sono in `q-and-a-prep.md`.
