@@ -3,20 +3,15 @@ import "./globals.css";
 import Header from "@/components/Header";
 
 export const metadata: Metadata = {
-  title: "Kalamos·AI — Editorial Intelligence Engine",
+  title: "Kalamos AI — Editorial Intelligence Infrastructure",
   description:
-    "Triage e valutazione di manoscritti per editori: scheda di lettura strutturata e fit-score per collana in pochi secondi.",
+    "Kalamos collega analisi dei manoscritti, contesto di catalogo, decisioni editoriali e memoria istituzionale in un workspace AI-native per editori.",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="it">
       <head>
-        {/* Spectral per i titoli; fallback Georgia se offline */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
@@ -25,10 +20,8 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <div className="no-print">
-          <Header />
-        </div>
-        <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6">{children}</main>
+        <div className="no-print"><Header /></div>
+        <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">{children}</main>
       </body>
     </html>
   );

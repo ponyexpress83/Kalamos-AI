@@ -1,0 +1,72 @@
+import Link from "next/link";
+import { demoAttention, demoOpportunities } from "@/lib/demo-workspace";
+import { Panel, PrimaryLink, SecondaryLink, StatCard, StatusPill, WorkspacePage } from "@/components/WorkspaceShell";
+
+export const metadata = { title: "Scrivania — Kalamos AI" };
+
+export default function WorkspaceHome() {
+  const urgent = demoOpportunities.filter((o) => o.deadline).length;
+  const highFit = demoOpportunities.filter((o) => o.fit === "Alto").length;
+
+  return (
+    <WorkspacePage
+      eyebrow="Editorial intelligence desk"
+      title="La redazione che ricorda perché."
+      description="Un'unica vista per capire cosa richiede attenzione adesso, da dove arriva ogni opportunità e quali decisioni umane stanno costruendo la memoria editoriale."
+      actions={<><SecondaryLink href="/redazione">Apri la coda classica</SecondaryLink><PrimaryLink href="/demo">+ Analizza manoscritto</PrimaryLink></>}
+    >
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <StatCard label="Opportunità aperte" value={String(demoOpportunities.length)} detail="Scout, agenzie, foreign rights, interne e unsolicited" />
+        <StatCard label="Fit editoriale alto" value={String(highFit)} detail="Segnale contestuale, non decisione automatica" />
+        <StatCard label="Scadenze attive" value={String(urgent)} detail="Diritti e prossime azioni da verificare" accent />
+        <StatCard label="Decisioni in memoria" value="4" detail="Con motivazione editoriale registrata" />
+      </div>
+
+      <div className="mt-6 grid gap-6 xl:grid-cols-[1.3fr_.7fr]">
+        <Panel title="Acquisition Desk" subtitle="La submission spontanea è solo una delle fonti. Il contesto viene prima dello scoring." action={<Link href="/workspace/acquisitions" className="text-xs font-semibold text-accento">Vedi tutto →</Link>}>
+          <div className="overflow-x-auto">
+            <table className="min-w-full text-left text-sm">
+              <thead className="bg-[#f8f5ef] text-[10px] uppercase tracking-[0.12em] text-slate-400">
+                <tr><th className="px-5 py-3">Titolo</th><th className="px-4 py-3">Fonte</th><th className="px-4 py-3">Imprint</th><th className="px-4 py-3">Fase</th><th className="px-4 py-3">Readiness</th></tr>
+              </thead>
+              <tbody>
+                {demoOpportunities.slice(0, 5).map((o) => (
+                  <tr key={o.id} className="border-t border-[#14213d]/7 hover:bg-[#faf8f4]">
+                    <td className="px-5 py-4"><div className="font-serif font-semibold text-inchiostro">{o.title}</div><div className="mt-0.5 text-xs text-slate-400">{o.author}</div></td>
+                    <td className="px-4 py-4 text-slate-600">{o.source}</td>
+                    <td className="px-4 py-4 text-slate-600">{o.imprint}</td>
+                    <td className="px-4 py-4"><StatusPill tone={o.stage.includes("Rights") ? "warning" : o.fit === "Alto" ? "info" : "neutral"}>{o.stage}</StatusPill></td>
+                    <td className="px-4 py-4"><div className="w-24"><div className="mb-1 flex justify-between text-[10px] text-slate-400"><span>Dossier</span><span>{o.readiness}%</span></div><div className="h-1.5 rounded-full bg-slate-100"><div className="h-full rounded-full bg-inchiostro" style={{ width: `${o.readiness}%` }} /></div></div></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Panel>
+
+        <Panel title="Richiede attenzione" subtitle="Solo segnali operativi che richiedono un'azione umana.">
+          <div className="divide-y divide-[#14213d]/7">
+            {demoAttention.map((item) => (
+              <div key={item.title} className="px-5 py-5 sm:px-6">
+                <div className="flex gap-3"><span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${item.tone === "danger" ? "bg-red-500" : item.tone === "warning" ? "bg-amber-500" : "bg-blue-500"}`} /><div><div className="text-sm font-semibold text-inchiostro">{item.title}</div><div className="mt-1 text-xs leading-5 text-slate-500">{item.detail}</div></div></div>
+              </div>
+            ))}
+          </div>
+        </Panel>
+      </div>
+
+      <div className="mt-6 grid gap-6 lg:grid-cols-3">
+        {[
+          ["Contratti", "Confronta ciò che la redazione crede di aver negoziato con ciò che compare nel draft.", "/workspace/contracts", "1 review"],
+          ["Progetti editoriali", "Dopo la firma la memoria non si resetta: bozze, richieste e principi editoriali restano nello stesso contesto.", "/workspace/projects", "V3 in revisione"],
+          ["Ask Kalamos", "Interroga il contesto del workspace con risposte grounded e fallback stabile per la demo.", "/workspace/ask", "Grounded"],
+        ].map(([title, text, href, badge]) => (
+          <Link key={title} href={href} className="group rounded-2xl border border-[#14213d]/10 bg-[#0b1b31] p-6 text-white shadow-[0_18px_55px_rgba(7,20,38,.12)] transition hover:-translate-y-1 hover:shadow-[0_24px_65px_rgba(7,20,38,.18)]">
+            <div className="flex items-center justify-between"><div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#7fc6ff]">{badge}</div><span className="text-white/30 transition group-hover:translate-x-1 group-hover:text-white/70">→</span></div>
+            <h3 className="mt-5 font-serif text-2xl font-semibold">{title}</h3><p className="mt-3 text-sm leading-6 text-white/55">{text}</p>
+          </Link>
+        ))}
+      </div>
+    </WorkspacePage>
+  );
+}
