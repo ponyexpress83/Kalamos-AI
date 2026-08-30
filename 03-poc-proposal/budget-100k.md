@@ -122,7 +122,7 @@ Riserva per imprevisti. È buona pratica avere il 4-8% di contingency in qualsia
    Il rischio è interamente nostro fino al +15%. Oltre quella soglia, attiviamo una conversazione con Mondadori per redirezione di scope. Questo va detto chiaramente nel contratto.
 
 4. **Equity vs cash mix?**
-   Il PoC è proposto in **cash** (€100K dai €100K PLAI). L'equity investment iniziale (€100K per ~7%) è separato dal PoC budget. Non confondere mai i due flussi nella conversazione con PLAI.
+   Il PoC è proposto in **cash** (fino a €100K, lo strumento di collaborazione operativa). L'investimento in equity — fino a €300K nel modello 2026 — è **un altro strumento**. Non confondere mai i due flussi nella conversazione con PLAI: fonderli è il segnale che non hai letto il programma.
 
 ---
 

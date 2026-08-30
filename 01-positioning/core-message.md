@@ -16,7 +16,7 @@
 Kalamos AI è un SaaS B2B che applica modelli linguistici di nuova generazione ai workflow editoriali di publisher, agenzie letterarie e aggregatori di contenuti. Automatizza la prima lettura dei manoscritti, produce schede di lettura strutturate, valuta il fit con l'identità editoriale di collane specifiche, e identifica titoli comparabili sul mercato.
 
 ### Layer 2 — Perché esistiamo (business truth)
-I grandi editori ricevono migliaia di manoscritti all'anno. Possono leggerli tutti in profondità solo aumentando lo staff editoriale linearmente, cosa che non possono fare per ragioni economiche. Il risultato: opere di valore vengono respinte senza essere lette davvero, e il time-to-market di quelle accolte si dilata di mesi. Kalamos comprime questo collo di bottiglia.
+Le redazioni ricevono più proposte di quante possano approfondire con la sola lettura, e possono leggerne di più solo aumentando lo staff editoriale, cosa che nessuno può fare in proporzione al flusso. Il risultato: opere di valore vengono respinte senza essere lette davvero, e il time-to-market di quelle accolte si dilata di mesi. Kalamos comprime questo collo di bottiglia.
 
 ### Layer 3 — Perché contiamo (cultural truth)
 L'editoria italiana sta affrontando il primo cambio infrastrutturale dai tempi del digitale. Le tecnologie AI possono distruggere il valore (commodity content) o amplificarlo (strumenti di precisione per chi sa giudicare). Kalamos sceglie la seconda strada: **costruiamo strumenti che rendono gli editor più potenti, non superflui**.

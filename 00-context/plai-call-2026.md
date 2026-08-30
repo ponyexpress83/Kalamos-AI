@@ -40,9 +40,11 @@ PLAI cerca soluzioni applicabili a:
 
 | Tipo di supporto | Importo / dettaglio |
 |------------------|---------------------|
-| Equity investment iniziale | €100K (storicamente per ~7% equity) |
-| Follow-on investment potenziale | Fino a **€300K totali** (initial + follow-on) |
-| Budget per PoC e progetti pilota | Fino a **€100K** per progetti di co-sviluppo con il Gruppo Mondadori |
+| Investimento in equity | **fino a €300K** (modello ibrido 2026: equity + collaborazione operativa) |
+| Collaborazione con una divisione | **fino a €100K** per un progetto operativo con il Gruppo o un corporate partner |
+| Compenso Pilot/PoC (growth-stage) | **€40K** per progetti pilota con il Gruppo Mondadori o i corporate partner |
+
+> Numeri aggiornati al comunicato ufficiale 2026: [mondadorigroup.com — PLAI opens the 2026 startup Call](https://www.mondadorigroup.com/media-room/news-and-press-releases/2026/plai-opens-the-2026-startup-call).
 | Mentorship | 45+ ore personalizzate con manager / imprenditori esperti |
 | Workshop | 60+ ore di formazione (business, tech, fundraising, comunicazione) |
 | Network corporate | Accesso a esperti interni Mondadori |
@@ -67,10 +69,12 @@ Determinanti supplementari menzionati ufficialmente:
 
 ## Due track: Early-Stage vs Growth
 
-PLAI distingue due tipologie (storicamente in 2025; presumibilmente confermato in 2026 — da verificare):
+PLAI distingue due tipologie (confermate nel comunicato 2026):
 
-- **Early-Stage**: in fase di validazione del prodotto. Riceve il pacchetto base di €100K + accelerazione.
-- **Growth**: prodotto già validato sul mercato. Riceve supporto mirato + PoC pilota.
+- **Early-Stage**: in fase di validazione del prodotto. Investimento in equity **fino a €300K**, su startup un po' più mature rispetto ai batch precedenti.
+- **Collaborazione operativa**: **fino a €100K** per un PoC con una divisione del Gruppo o un corporate partner. È uno strumento SEPARATO dall'equity: nella conversazione non vanno mai fusi.
+
+> Aggiornato dopo la call del 6 agosto 2026: il modello non è più «€100K per ~7% dentro un batch». I numeri dei materiali precedenti erano quelli del 2024-2025.
 
 **Posizionamento di Kalamos AI**: probabilmente **Early-Stage** allo stato attuale (pre-product, pre-revenue), ma con la possibilità di posizionarsi come "Early-Stage con readiness operativa per PoC immediato".
 

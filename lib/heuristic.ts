@@ -1,0 +1,384 @@
+import type { AnalysisResult, Raccomandazione, Scheda } from "./schema";
+import type { Profilo } from "../config/publishers";
+
+/**
+ * Valutazione EURISTICA offline (nessuna inferenza AI).
+ *
+ * Rende la demo sempre provabile — senza chiave API, offline, o quando
+ * l'analisi dal vivo va in timeout. Deriva una scheda plausibile dai segnali
+ * di superficie del testo (versi, dialogo, cliché, avverbi, lessico di genere)
+ * e assegna un fit a ogni COLLANA di ogni casa editrice selezionata, in base
+ * al `profilo` della collana. Il risultato è sempre `fonte: "simulata"`.
+ *
+ * Modulo PURO (niente fs / API): gira sia lato client sia lato server.
+ */
+
+const CLICHES = [
+  "notte buia e tempestosa", "gelare il sangue", "cuore spezzato",
+  "occhi azzurri penetranti", "un uomo di poche parole", "silenzio irreale",
+  "un brivido lungo la schiena", "il destino aveva deciso",
+  "non credeva nelle coincidenze", "sangue nelle vene", "una lacrima solitaria",
+  "come un fulmine a ciel sereno",
+];
+const KW_COMMERCIAL = ["amore", "cuore", "bacio", "baciò", "vacanza", "sorrise", "sorriso", "estate", "mare", "spiaggia", "sposa", "matrimonio", "romantic", "innamor", "abbracci"];
+const KW_THRILLER = ["omicidio", "ispettore", "commissario", "maresciallo", "sangue", "morto", "morte", "indagine", "delitto", "assassino", "cadavere", "pistola", "vittima", "detective", "indizio"];
+const KW_LITERARY = ["memoria", "silenzio", "tempo", "terra", "madre", "padre", "ricordo", "luce", "ombra", "stagione", "infanzia", "vetro", "assenza"];
+const KW_FANTASY = ["drago", "draghi", "magia", "magico", "mago", "maga", "strega", "regno", "spada", "elfo", "elfi", "orco", "incantesimo", "profezia", "oscuro signore", "cavaliere", "fata", "runa"];
+const KW_CHILDREN = ["bambino", "bambina", "bimbo", "bimba", "mamma", "papà", "orso", "orsetto", "coniglio", "bosco", "scuola", "giocare", "favola", "fiaba", "draghetto", "maestra", "nonno", "nonna"];
+
+interface Signals {
+  wc: number; sentences: number; avgLen: number; avgWordLen: number;
+  dialogueRatio: number; adverbsPer1000: number; cliches: number;
+  commercial: number; thriller: number; literary: number; fantasy: number;
+  children: number; verseLike: boolean; simple: boolean; firstSentence: string;
+}
+
+/** Quota di maiuscole sulle lettere: alta = titolo o intestazione, non prosa. */
+function quotaMaiuscole(riga: string): number {
+  const lettere = riga.replace(/[^a-zA-ZàèéìòùÀÈÉÌÒÙ]/g, "").length;
+  if (lettere === 0) return 0;
+  return riga.replace(/[^A-ZÀÈÉÌÒÙ]/g, "").length / lettere;
+}
+
+/**
+ * Corpo del testo, saltate le righe d'intestazione con cui i manoscritti
+ * aprono quasi sempre il file (titolo, autore, "capitolo primo"). Serve a
+ * citare prosa vera, non il frontespizio.
+ */
+/** Righe di colophon: non sono il testo dell'autore e non vanno mai citate. */
+const COLOPHON = [
+  "diritti riservati", "utilizzo della presente opera", "proprietà letteraria",
+  "isbn", "copyright", "©", "prima edizione", "ristampa", "printed in",
+  "riproduzione", "è vietato", "e' vietato", "in copertina", "progetto grafico",
+  "traduzione di", "titolo originale", "finito di stampare", "editore",
+];
+
+const isColophon = (riga: string) => {
+  const b = riga.toLowerCase();
+  return COLOPHON.some((m) => b.includes(m)) || /\b97[89][\d\s-]{10,}/.test(b);
+};
+
+function corpoNarrativo(raw: string): string {
+  // Le righe di colophon si tolgono ovunque compaiano nel frontespizio, non
+  // solo in testa: un ISBN in mezzo al blocco legale spezzava la scrematura.
+  const righe = raw
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l, idx) => idx > 60 || !isColophon(l));
+  let i = 0;
+  while (i < righe.length) {
+    const l = righe[i];
+    if (l.length === 0 || quotaMaiuscole(l) > 0.3) {
+      i++;
+      continue;
+    }
+    const parole = l.split(/\s+/).length;
+    // Riga di prosa: lunga, oppure chiusa da punteggiatura forte e non brevissima.
+    // "di R. Vinci" ha un punto ma non è prosa; "(estratto — capitolo primo)" nemmeno.
+    if (parole >= 10 || (parole >= 6 && /[.!?…»]\s*$/.test(l))) break;
+    i++;
+  }
+  return righe.slice(i).join("\n").trim() || raw;
+}
+
+/** Prima frase davvero citabile: prosa, abbastanza lunga da dire qualcosa. */
+function primaFraseUtile(candidate: string[], fallback: string): string {
+  const buona = candidate.find((s) => s.trim().split(/\s+/).length >= 8);
+  return (buona ?? candidate[0] ?? fallback).trim().slice(0, 180);
+}
+
+/**
+ * Prosa con gli a-capo forzati (testo "wrappato" a larghezza fissa, tipico dei
+ * .txt esportati da Word o dai lettori ebook): righe corte come in poesia, ma
+ * tutte della STESSA lunghezza, addossate al margine di wrap.
+ *
+ * È la distinzione che conta: i versi hanno lunghezze molto variabili — è il
+ * loro modo di respirare — mentre il wrap automatico produce righe uniformi.
+ * Senza questo controllo un romanzo esportato con a-capo fissi veniva letto
+ * come raccolta di poesie, e il fit finiva sulle collane sbagliate.
+ */
+function proseAcapoForzati(nonEmpty: string[]): boolean {
+  if (nonEmpty.length < 20) return false; // campione troppo corto per dire nulla
+  const len = nonEmpty.map((l) => l.trim().length);
+  const media = len.reduce((s, n) => s + n, 0) / len.length;
+  if (media < 35) return false; // righe davvero brevi: è verso, non wrap
+  const varianza = len.reduce((s, n) => s + (n - media) ** 2, 0) / len.length;
+  const cv = Math.sqrt(varianza) / media; // coefficiente di variazione
+  return cv < 0.4;
+}
+
+function analyzeSignals(text: string): Signals {
+  const raw = text.replace(/\r/g, "");
+  const clean = raw.replace(/\s+/g, " ").trim();
+  const lower = clean.toLowerCase();
+  const words = lower.match(/[a-zàèéìòù’']+/g) ?? [];
+  const wc = words.length;
+  const charTotal = words.reduce((n, w) => n + w.length, 0);
+  const sentenceParts = clean.split(/[.!?]+/).map((s) => s.trim()).filter(Boolean);
+  const sentences = Math.max(1, sentenceParts.length);
+  const adverbs = words.filter((w) => w.endsWith("mente")).length;
+  const quotes = (clean.match(/[«»"“”]/g) ?? []).length;
+  const cliches = CLICHES.reduce((n, c) => (lower.includes(c) ? n + 1 : n), 0);
+  const countKw = (kws: string[]) => kws.reduce((n, k) => (lower.includes(k) ? n + 1 : n), 0);
+
+  const corpo = corpoNarrativo(raw);
+  const lines = raw.split("\n");
+  const nonEmpty = lines.filter((l) => l.trim().length > 0);
+  const shortLines = nonEmpty.filter((l) => l.trim().length <= 60).length;
+  const avgLineWords = wc / Math.max(1, nonEmpty.length);
+  const verseLike =
+    nonEmpty.length >= 4 && shortLines / nonEmpty.length > 0.6 &&
+    avgLineWords < 9 && nonEmpty.length / sentences > 1.2 &&
+    !proseAcapoForzati(nonEmpty);
+
+  const avgWordLen = wc > 0 ? charTotal / wc : 0;
+  const avgLen = wc / sentences;
+  const simple = avgWordLen < 4.7 && avgLen < 13;
+
+  return {
+    wc, sentences, avgLen, avgWordLen,
+    dialogueRatio: quotes / sentences,
+    adverbsPer1000: wc > 0 ? (adverbs / wc) * 1000 : 0,
+    cliches,
+    commercial: countKw(KW_COMMERCIAL),
+    thriller: countKw(KW_THRILLER),
+    literary: countKw(KW_LITERARY),
+    fantasy: countKw(KW_FANTASY),
+    children: countKw(KW_CHILDREN),
+    verseLike, simple,
+    firstSentence: primaFraseUtile(
+      verseLike
+        ? corpo.split("\n").map((l) => l.trim()).filter(Boolean)
+        : corpo.split(/(?<=[.!?…])\s+/).map((s) => s.trim()).filter(Boolean),
+      clean,
+    ),
+  };
+}
+
+const clamp = (n: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, n));
+const round1 = (n: number) => Math.round(n * 2) / 2;
+
+type Bucket = "poesia" | "fantasy" | "ragazzi" | "thriller" | "commercial" | "literary" | "neutro";
+
+function dominantBucket(s: Signals): Bucket {
+  if (s.verseLike) return "poesia";
+  const scores: [Bucket, number][] = [
+    ["ragazzi", s.children + (s.simple ? 2 : 0)],
+    ["fantasy", s.fantasy],
+    ["thriller", s.thriller],
+    ["commercial", s.commercial],
+    ["literary", s.literary],
+  ];
+  scores.sort((a, b) => b[1] - a[1]);
+  return scores[0][1] === 0 ? "neutro" : scores[0][0];
+}
+
+function prosaVoto(s: Signals): number {
+  let v = 6.5;
+  v -= Math.min(3, s.cliches * 0.9);
+  v -= Math.min(2, Math.max(0, (s.adverbsPer1000 - 14) / 9));
+  if (s.avgLen > 45) v -= 0.5;
+  if (s.avgLen < 6 && !s.verseLike) v -= 0.5;
+  if (s.literary > 3) v += 1;
+  if (s.literary > 6) v += 0.5;
+  if (s.verseLike) v += 0.5;
+  return clamp(round1(v), 2, 9);
+}
+
+/** Fit 0-1 di una collana in base al suo profilo e ai segnali del testo. */
+function fitFor(profilo: Profilo, s: Signals, voto: number): number {
+  const q = (voto - 5) / 10;
+  const dlg = clamp(s.dialogueRatio, 0, 1.5);
+  const verse = s.verseLike ? 1 : 0;
+  let base: number;
+
+  switch (profilo) {
+    case "poesia":
+      base = (s.verseLike ? 0.75 : 0.14) + 0.04 * s.literary + 0.3 * q - 0.12 * dlg - 0.05 * s.commercial - 0.05 * s.thriller;
+      break;
+    case "narrativa":
+      base = 0.4 + 0.07 * s.literary + 0.5 * q - 0.05 * s.commercial - 0.03 * s.thriller - 0.28 * verse;
+      break;
+    case "narrativa_autore":
+      base = 0.34 + 0.08 * s.literary + 0.05 * s.thriller + 0.6 * q - 0.06 * s.commercial - 0.25 * verse;
+      break;
+    case "narrativa_commerciale":
+      base = 0.42 + 0.07 * s.commercial + 0.12 * dlg + 0.02 * s.thriller - 0.06 * s.literary - 0.3 * verse;
+      break;
+    case "saggistica":
+      // La non-fiction si riconosce soprattutto per assenza di segnali narrativi.
+      base = 0.3 + 0.2 * q - 0.12 * dlg - 0.03 * s.commercial - 0.03 * s.thriller - 0.03 * s.fantasy - 0.35 * verse;
+      break;
+    case "giallo":
+      base = 0.34 + 0.11 * s.thriller + 0.04 * dlg + 0.03 * s.commercial - 0.05 * s.literary - 0.3 * verse;
+      break;
+    case "fantasy":
+      base = 0.3 + 0.13 * s.fantasy + 0.04 * dlg + 0.03 * s.literary - 0.25 * verse;
+      break;
+    case "albo":
+      base = 0.16 + (s.wc < 300 ? 0.4 : s.wc > 800 ? -0.05 : 0.1) + (s.simple ? 0.18 : 0) + 0.05 * s.children;
+      break;
+    case "ragazzi_piccoli":
+      base = 0.25 + (s.simple ? 0.3 : 0) + (s.wc < 400 ? 0.2 : s.wc > 1200 ? -0.15 : 0) + 0.05 * s.children + 0.04 * dlg - 0.1 * verse;
+      break;
+    case "ragazzi_medi":
+      base = 0.3 + (s.simple ? 0.2 : 0) + (s.avgLen < 16 ? 0.12 : 0) + 0.05 * s.children + 0.03 * dlg - 0.1 * verse;
+      break;
+    case "ragazzi_grandi":
+      base = 0.32 + 0.06 * s.children + 0.03 * dlg + (s.avgLen > 14 ? 0.1 : 0) - 0.03 * s.thriller - 0.1 * verse;
+      break;
+    default:
+      base = 0.4 + 0.4 * q;
+  }
+
+  if (voto < 4) base *= 0.6;
+  return clamp(Number(base.toFixed(2)), 0.08, 0.95);
+}
+
+/**
+ * La raccomandazione è CONTESTUALE alla casa: un testo di qualità ma lontano
+ * dal catalogo non è "prioritario" per quella redazione. Combina qualità della
+ * prosa e miglior fit tra le collane richieste.
+ */
+function raccContestuale(voto: number, bestFit: number): Raccomandazione {
+  if (voto < 4.5) return "scarta"; // prosa debole: scarta ovunque
+  if (bestFit < 0.35) return "scarta"; // fuori catalogo per questa casa
+  if (voto >= 7 && bestFit >= 0.55) return "prioritario";
+  if (bestFit >= 0.75 && voto >= 6) return "prioritario";
+  return "seconda_lettura";
+}
+
+function genereFor(b: Bucket): string {
+  const map: Record<Bucket, string> = {
+    poesia: "Poesia (stima)", fantasy: "Fantasy / fantastico (stima)",
+    ragazzi: "Narrativa per ragazzi (stima)", thriller: "Giallo / thriller (stima)",
+    commercial: "Commercial / feel-good (stima)", literary: "Narrativa letteraria (stima)",
+    neutro: "Narrativa non classificata (stima)",
+  };
+  return map[b];
+}
+function comparablesFor(b: Bucket): Scheda["comparable_titles"] {
+  const map: Record<Bucket, Scheda["comparable_titles"]> = {
+    poesia: [{ titolo: "Raccolta di poesia contemporanea di catalogo", autore: "—", perche: "Struttura in versi e lessico affini alla poesia d'autore." }],
+    fantasy: [{ titolo: "Fantasy di catalogo con world-building", autore: "—", perche: "Immaginario e lessico fantastico riconoscibili." }],
+    ragazzi: [{ titolo: "Narrativa per ragazzi per fasce di lettura", autore: "—", perche: "Lingua semplice e temi affini al pubblico 6-12." }],
+    thriller: [{ titolo: "Giallo/noir di catalogo", autore: "—", perche: "Lessico d'indagine e struttura di genere." }],
+    commercial: [{ titolo: "Filone feel-good commerciale", autore: "—", perche: "Leggibilità e lessico romance da largo pubblico." }],
+    literary: [{ titolo: "Narrativa d'autore contemporanea", autore: "—", perche: "Lessico intimista e densità della prosa." }],
+    neutro: [{ titolo: "Comparabile non determinato", autore: "—", perche: "Segnali insufficienti per un accostamento affidabile." }],
+  };
+  return map[b];
+}
+function targetFor(b: Bucket): string {
+  const map: Record<Bucket, string> = {
+    poesia: "Lettore di poesia contemporanea (stima automatica).",
+    fantasy: "Lettore di fantasy e fantastico (stima automatica).",
+    ragazzi: "Giovani lettori e famiglie (stima automatica).",
+    thriller: "Lettore di giallo/noir (stima automatica).",
+    commercial: "Pubblico ampio del feel-good (stima automatica).",
+    literary: "Lettore di narrativa letteraria (stima automatica).",
+    neutro: "Target non determinato automaticamente.",
+  };
+  return map[b];
+}
+
+export interface HeuristicCollana {
+  nome: string;
+  profilo: Profilo;
+}
+export interface HeuristicPublisher {
+  nome: string;
+  collane: HeuristicCollana[];
+}
+export interface HeuristicInput {
+  titolo?: string;
+  autore?: string;
+  publishers: HeuristicPublisher[];
+}
+
+export function analyzeHeuristic(text: string, input: HeuristicInput): AnalysisResult {
+  const s = analyzeSignals(text);
+  const voto = prosaVoto(s);
+  const bucket = dominantBucket(s);
+
+  const fit_collane = input.publishers.flatMap((p) =>
+    p.collane.map((c) => ({
+      editore: p.nome,
+      collana: c.nome,
+      score: fitFor(c.profilo, s, voto),
+      motivazione:
+        "Stima offline dai segnali del testo (versi, dialogo, lessico di genere): rapporto testo-collana indicativo, non inferenza editoriale.",
+    })),
+  );
+
+  const bestFit = fit_collane.reduce((max, f) => Math.max(max, f.score), 0);
+  const racc = raccContestuale(voto, bestFit);
+  // Caso tipico e prezioso: testo valido ma lontano dal catalogo della casa.
+  const fuoriCatalogo = voto >= 6 && bestFit < 0.35;
+
+  const temi: string[] = [];
+  if (s.verseLike) temi.push("testo in versi");
+  if (s.fantasy > 0) temi.push("immaginario fantastico");
+  if (s.children > 0) temi.push("infanzia / mondo dei ragazzi");
+  if (s.commercial > 0) temi.push("relazioni / sentimenti");
+  if (s.thriller > 0) temi.push("crimine / indagine");
+  if (s.literary > 0) temi.push("memoria / interiorità");
+  if (temi.length === 0) temi.push("temi non rilevati automaticamente");
+
+  const forza: string[] = [];
+  if (s.verseLike) forza.push("Andamento in versi riconoscibile");
+  if (s.dialogueRatio > 0.4) forza.push("Presenza di dialogo");
+  if (s.literary > 3) forza.push("Lessico evocativo");
+  if (s.simple) forza.push("Lingua accessibile");
+  if (forza.length === 0) forza.push("Da valutare con analisi dal vivo");
+
+  const criticita: string[] = [];
+  if (s.cliches > 0) criticita.push(`Cliché rilevati (${s.cliches})`);
+  if (s.adverbsPer1000 > 18) criticita.push("Avverbi in -mente frequenti");
+  if (s.avgLen > 45) criticita.push("Periodi molto lunghi");
+  if (s.wc < 120) criticita.push("Campione breve: stima poco affidabile");
+  if (criticita.length === 0) criticita.push("Nessuna criticità evidente dai segnali di superficie");
+
+  const scheda: Scheda = {
+    titolo_presunto: input.titolo?.trim() || "Testo senza titolo",
+    logline: `Anteprima simulata di un testo di circa ${s.wc} parole (${genereFor(bucket).toLowerCase()}).`,
+    sintesi: `Il testo si apre così: «${s.firstSentence}…». Valutazione euristica offline su ${s.wc} parole: registro riconducibile a ${genereFor(bucket).toLowerCase()}, ${
+      s.verseLike ? "con andamento in versi" : s.dialogueRatio > 0.4 ? "con presenza di dialogo" : "a prevalenza narrativa/descrittiva"
+    }. La densità di avverbi è ${s.adverbsPer1000 > 18 ? "alta" : "contenuta"} e ${
+      s.cliches > 0 ? `si rilevano ${s.cliches} espressioni di maniera` : "non emergono cliché evidenti"
+    }. Questa è una stima automatica di superficie, non una lettura editoriale: attiva l'analisi dal vivo per la valutazione reale.`,
+    genere: genereFor(bucket),
+    temi,
+    qualita_prosa: {
+      voto_su_10: voto,
+      note: `Stima da segnali: lunghezza media periodo ~${s.avgLen.toFixed(0)} parole, avverbi ~${s.adverbsPer1000.toFixed(0)}/1000, cliché ${s.cliches}${s.verseLike ? ", testo in versi" : ""}. Non è un giudizio editoriale.`,
+    },
+    // Citazione letterale: è la prima frase del testo, quindi sempre verificabile.
+    passaggio_a_sostegno: s.firstSentence,
+    target_lettore: targetFor(bucket),
+    comparable_titles: comparablesFor(bucket),
+    punti_di_forza: forza,
+    criticita,
+    fit_collane,
+    raccomandazione: racc,
+    razionale_raccomandazione: fuoriCatalogo
+      ? `Stima offline: la qualità della scrittura c'è (prosa ${voto}/10), ma il fit con il catalogo di ${input.publishers[0]?.nome ?? "questa casa"} è basso (${Math.round(bestFit * 100)}%): non è un testo per questa lista, non è un testo debole. Segnalarlo a chi in gruppo pubblica questo genere è spesso la decisione giusta.`
+      : `Stima offline: prosa ${voto}/10 e miglior fit ${Math.round(bestFit * 100)}% → ${racc.replace("_", " ")}. Anteprima automatica per provare il flusso; la valutazione reale richiede l'analisi dal vivo su Claude.`,
+    nota_metodologica:
+      "Anteprima SIMULATA (offline): valutazione euristica basata su segnali testuali di superficie, non su inferenza AI. Attiva l'analisi dal vivo per la scheda reale. Supporto alla decisione, non sostituzione del giudizio editoriale.",
+  };
+
+  return {
+    scheda,
+    meta: {
+      titolo_input: input.titolo,
+      autore: input.autore,
+      parole: s.wc,
+      valutato_su_estratto: false,
+      parole_inviate: s.wc,
+      editori_richiesti: input.publishers.map((p) => p.nome),
+      tempo_secondi: 1,
+      fonte: "simulata",
+    },
+  };
+}

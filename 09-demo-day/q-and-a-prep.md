@@ -1,6 +1,7 @@
 # Q&A Prep — Domande probabili dal selection panel
 
-> Le 25 domande più probabili al pitch panel PLAI, con risposte preparate.
+> Le domande più probabili al pitch panel PLAI, con risposte preparate.
+> Per la call: leggi prima `briefing-call.md`, che contiene le otto che fanno più male.
 > Provare ad alta voce. Risposte target: 30-60 secondi ciascuna.
 
 ---
@@ -8,13 +9,15 @@
 ## DOMANDE PRODOTTO
 
 ### 1. "Come fate a sapere che il fit-score per collana è davvero migliore di un prompt ben fatto su ChatGPT?"
-> Il fit-score non è un prompt: è un embedding del manoscritto confrontato con un vector profile costruito sul corpus pubblicato della collana. ChatGPT con il miglior prompt può imitarne l'output, ma non ha né il vector profile né il loop di calibrazione editor che noi alimentiamo nel tempo. È la differenza tra rispondere bene una volta e migliorare a ogni iterazione.
+> Su un singolo manoscritto un prompt ben fatto ci arriva vicino, ed è giusto dirlo. La differenza è su tre cose che un prompt non ha. Primo: il catalogo modellato collana per collana, che l'editore non deve riscrivere ogni volta. Secondo: i controlli che impediscono all'output di inventare — la collana proposta viene verificata contro il catalogo reale e la citazione contro il testo caricato; con ChatGPT una collana inesistente arriva all'editor senza che nessuno se ne accorga. Terzo: il loop di calibrazione, che fa migliorare il sistema a ogni scheda validata. È la differenza fra rispondere bene una volta e migliorare a ogni iterazione.
+>
+> ⚠️ **Non dire** "è un embedding confrontato con un vector profile": il retrieval vettoriale è progettato, non ancora costruito. Se te lo chiedono, la risposta è al punto 29.
 
 ### 2. "Cosa succede se Anthropic / OpenAI lancia un servizio per editori domani?"
 > Sarebbe un endorsement della categoria, non una minaccia. Big Tech vende modelli orizzontali; noi vendiamo una soluzione verticale con workflow specifico, lingua italiana, integrazione enterprise editoriale. Se succedesse, diventeremmo target di acquisizione, non vittime.
 
 ### 3. "Quanto siete dipendenti da Claude / Anthropic?"
-> L'architettura è LLM-agnostic. Oggi usiamo Claude perché ha qualità superiore su task narrativi lunghi e finestra di contesto utile. Abbiamo testato fallback su modelli secondari per resilienza. Se Anthropic triplicasse i prezzi, potremmo passare a modelli open-source self-hosted con qualità accettabile, perdendo 10-15% di accuratezza ma non il prodotto.
+> Oggi giriamo su Claude, e il modello è dietro una sola variabile di configurazione: cambiarlo è una riga, non una riscrittura. Non ho ancora fatto un benchmark comparativo su un altro fornitore — lo dico perché lo scoprireste comunque. Quello che ho misurato è il costo: siamo intorno a tre-sei centesimi per scheda, quindi anche un raddoppio del listino non tocca il modello di business. Il rischio vero non è il prezzo, è la disponibilità del servizio, e si copre con un secondo fornitore in fallback: è lavoro di giorni, non di mesi.
 
 ### 4. "Come gestite l'IP del manoscritto?"
 > Clausola contrattuale esplicita: il manoscritto resta proprietà dell'autore/editore, mai usato per training del modello base (opt-out garantito da Anthropic), encryption at-rest, isolamento per tenant. È il primo punto che chiediamo di chiarire in ogni contratto pilot.
@@ -27,13 +30,17 @@
 ## DOMANDE BUSINESS
 
 ### 6. "Avete traction reale?"
-> Onestà calibrata sui numeri reali. Esempio: "Oggi abbiamo [N] conversazioni qualificate, [N] LOI, MVP processato su [N] manoscritti reali. PLAI è esattamente l'acceleratore della prima fase enterprise, non un sostituto del go-to-market."
+> No, e lo dico per primo. Nessun pilota, nessun ricavo, nessuna misura di concordanza con un editor reale. Quello che abbiamo è una demo pubblica funzionante con inferenza vera, nove cataloghi editoriali modellati per un totale di trentacinque collane reali, e un PoC disegnato fino ai KPI. È esattamente il buco che il PoC deve chiudere — ed è il motivo per cui siamo qui invece che a chiedere un round a un fondo.
+>
+> ⚠️ Se hai conversazioni qualificate o LOI reali al momento della call, aggiungile qui con nome e data. Se non ce le hai, la risposta sopra è più forte di una vaga: un panel che riceve mille candidature riconosce il vago al primo colpo.
 
 ### 7. "Perché un editore dovrebbe comprare da voi e non costruirsi il tool internamente?"
-> Tre ragioni. (1) Costo opportunity: un major dovrebbe distogliere 4-6 ML engineer per 18 mesi per arrivare al nostro punto attuale. (2) Verticalità: il fit-score è il risultato di iterazione su workflow editoriali, non solo codice. (3) Network effect: ogni cliente Kalamos beneficia delle calibrazioni anonimizzate dell'intero network.
+> Tre ragioni. (1) Costo opportunità: un major dovrebbe distogliere 4-6 ML engineer per 18 mesi per arrivare al nostro punto attuale. (2) Verticalità: il fit-score è il risultato di iterazione su workflow editoriali, non solo codice. (3) L'asset di calibrazione: il corpus costruito con i vostri editor — rubrica, esempi giudicati, soglie, titoli riusciti e flop — cresce ogni mese e resta vostro. Un competitor non ce l'ha; un team interno dovrebbe ricostruirlo da zero.
+>
+> ⚠️ **Non dire mai "network effect fra clienti" o "calibrazioni anonimizzate condivise".** Contraddice la promessa di riservatezza su cui vendiamo la calibrazione (i flop di una casa non escono dal suo perimetro) ed è il modo più rapido per perdere la fiducia di un editore. Il valore si accumula *dentro* ogni relazione, non *fra* i clienti.
 
 ### 8. "ARPU 55K vi sembra realistico per il mercato italiano?"
-> Sì, ma l'ancora non è il costo della singola scheda — è la capacità. Un editore oggi valuta seriamente meno del 15% di ciò che riceve; con Kalamos copre l'intero flusso, e il valore sta nei manoscritti che oggi non legge affatto. Anche con la stima di settore più prudente sul costo per scheda, su migliaia di schede/anno il valore creato per un Pro tier supera i €300K. ARPU €42K = capture intorno al 14%. Conservativo.
+> L'ancora non è il costo della singola scheda: è la capacità. Un editore approfondisce solo una parte di ciò che riceve — quanto esattamente è il primo numero che il PoC misura, e non lo annuncio prima di averlo. Il valore sta nei manoscritti che oggi non legge affatto. La verifica del rapporto fra valore e prezzo la faremo sui volumi reali del primo pilota: proiettarla adesso sarebbe aritmetica, non evidenza.
 
 ### 9. "Quanto è lungo il sales ciclo enterprise editoriale?"
 > 4-9 mesi. È lento e va detto. È il motivo per cui chiediamo l'accelerazione PLAI: il warm intro Mondadori comprime quel ciclo da 9 a 3 mesi per i primi 2-3 contratti.
@@ -46,7 +53,11 @@
 ## DOMANDE TEAM
 
 ### 11. "Chi siete?"
-> Risposta breve: 1 frase per persona. *"[Valerio]: 8 anni di sviluppo, integrazione AI in pipeline produttive, laurea in Filologia Moderna. [Ilaria]: poetessa pubblicata da Pequod, voce editoriale che valida ogni output. [Advisor X]: ex-[nome editore], 20 anni di esperienza editoriale."*
+> ⚠️ **Da sciogliere prima della prossima conversazione, non davanti a loro.** Nella candidatura F6S risultano **2 founder**; nei materiali recenti compaiono Valerio, Ilaria e Philippe con ruoli che cambiano da un documento all'altro. In una due diligence questa incoerenza pesa più di quanto sembri. Servono quattro risposte nette, e sono fatti che solo tu conosci: chi sono oggi i founder, chi lavora a tempo pieno, chi ha equity, chi costruisce il prodotto. Non presentare nessuno come co-founder se non lo è, e non far sparire chi risulta nella candidatura: se un ruolo è cambiato, dillo.
+>
+> Struttura corretta: *"La compagine operativa oggi è questa: io guido prodotto e tecnologia; Ilaria [ruolo esatto] definisce e valida il framework editoriale; Philippe [ruolo esatto] ha contribuito [fase esatta]. Stiamo formalizzando la struttura societaria e sono trasparente su ruoli e impegno."*
+>
+> Risposta breve una volta sciolto il nodo: 1 frase per persona. *"[Valerio]: 8 anni di sviluppo, integrazione AI in pipeline produttive, laurea in Filologia Moderna. [Ilaria]: poetessa pubblicata da Pequod, voce editoriale che valida ogni output. [Advisor X]: ex-[nome editore], 20 anni di esperienza editoriale."*
 
 ### 12. "Siete un solo founder operativo?"
 > [Se vero]: "Sì, oggi sì. È un limite che PLAI ci aiuta a risolvere: il primo hire post-accelerazione è un co-founder tecnico / operativo già identificato e in discussione."
@@ -111,13 +122,56 @@
 ## DOMANDE TECNICHE (addestramento e difensibilità)
 
 ### 26. "Come addestrate il modello? Avete un modello vostro o è una chiamata a Claude?"
-> Onestamente: oggi non abbiamo un modello nostro, ed è una scelta. Kalamos gira su Claude. "Addestrare Kalamos" vuol dire quattro cose. Codificare in prompt strutturati la rubrica di valutazione di Sperling — il lavoro degli editor, non nostro. Dare al modello esempi di manoscritti già giudicati, così rispecchia il vostro gusto e non un giudizio generico. Costruire per ogni collana un profilo vettoriale dal catalogo pubblicato, per il fit-score. E tarare le soglie di decisione sui vostri verdetti storici. Il fine-tuning di un modello proprietario è un'ottimizzazione futura, sensata quando i dati la giustificano — non un prerequisito.
+> Onestamente: oggi non abbiamo un modello nostro, ed è una scelta. Kalamos gira su Claude. "Addestrare Kalamos" vuol dire quattro cose. Codificare in prompt strutturati la rubrica di valutazione di Sperling — il lavoro degli editor, non nostro. Dare al modello esempi di manoscritti già giudicati, così rispecchia il vostro gusto e non un giudizio generico. Descrivere ogni collana a partire dal catalogo pubblicato, ed è ciò che oggi fa il fit-score; il passo successivo è costruire quel profilo per via vettoriale, così il modello confronta il testo con i passaggi di catalogo più vicini invece che con una descrizione. E tarare le soglie di decisione sui vostri verdetti storici. Il fine-tuning di un modello proprietario è un'ottimizzazione futura, sensata quando i dati la giustificano — non un prerequisito.
 
 ### 27. "Allora è prompt engineering con un altro nome. Cosa vi rende difendibili?"
 > In parte è giusto chiamarla così, e non mi nascondo. La difensibilità non è nell'algoritmo — embeddare un testo contro un catalogo è cosa nota, un competitor la replica in settimane. È nel corpus di calibrazione: rubrica, esempi gold, soglie, costruiti conversazione per conversazione con i vostri editor. Cresce a ogni mese di uso. Un competitor non lo ha; un team interno dovrebbe ricostruirlo da zero. Vendiamo l'asset accumulato, non il codice.
 
 ### 28. "Quanti dati servono perché funzioni? E se l'archivio di Sperling è troppo piccolo?"
 > Per la calibrazione bastano poche decine di manoscritti già giudicati: il modello di frontiera fa il lavoro pesante, gli esempi lo orientano. Per la validazione serve invece abbastanza storico da contenere un numero significativo di titoli acquisiti — è la ragione per cui guardiamo a 18-24 mesi di archivio e per cui abbiamo scelto Sperling, che ha il volume giusto. Se l'archivio fosse magro, allarghiamo la finestra temporale prima di ridurre il campione.
+
+---
+
+## DOMANDE NATE DALLA DEMO (le più probabili in call)
+
+### 29. "Perché non usate un database vettoriale? Sarebbe l'approccio standard."
+> Perché non l'ho ancora costruito, e preferisco dirvelo che farvelo scoprire. Oggi il catalogo è descritto in modo strutturato — nove case, trentacinque collane reali — e passato al modello insieme al testo. Il retrieval vettoriale serve a due cose precise: restringere il campo, così il modello confronta il manoscritto con le due o tre collane più vicine invece che con tutte, e rendere il fit più difendibile, perché l'editor vede *contro quali passaggi di catalogo* il testo è stato confrontato. È il primo lavoro tecnico del PoC, e ha senso farlo su un catalogo vero, non sui nove che ho modellato per la demo.
+
+### 30. "Come impedite al modello di inventare una collana che non esiste?"
+> Con del codice, non con un prompt. La collana che il modello propone viene confrontata con il catalogo reale di quell'editore: se non c'è, viene scartata prima che la scheda arrivi all'editor. Stessa cosa per la citazione: deve comparire nel testo caricato, altrimenti la scheda lo segnala. L'abbiamo costruito dopo un errore vero — in una versione precedente il modello aveva attribuito a un editore una collana inesistente. In redazione basta quello per chiudere la conversazione, e nessun prompt lo impedisce in modo affidabile.
+
+### 31. "Quanto vi costa una scheda?"
+> Tre-sei centesimi di API, a seconda della lunghezza del testo. È calcolato sui prompt reali con il listino pubblico, e la demo mostra il costo misurato sui token effettivi a ogni analisi. Il numero interessante non è quello: è che senza il tetto sull'estratto rappresentativo sarebbe circa sette volte tanto. La leva non è il prezzo del modello, è quanto testo gli mandi.
+
+### 32. "Valutate su un estratto e non sul romanzo intero. Non è un limite serio?"
+> Per il triage no, ed è deliberato: incipit, campione centrale e finale, con i tagli su confini di scena, bastano a decidere se un testo merita una lettura vera — è più o meno quello che fa un lettore quando deve smaltire una pila. La scheda dichiara sempre quando è prodotta su estratto. Per l'editing strutturale, che è un altro prodotto, serve il testo intero, e lì il costo cambia. Confondere le due cose sarebbe disonesto verso l'editore.
+
+### 33. "E se il modello sbaglia su un manoscritto che poi diventa un bestseller?"
+> Succederà, e il sistema è tarato per renderlo meno probabile del contrario: la north-star del PoC è il **recall sui titoli acquisiti** — di ciò che avete comprato, quanto vi avremmo segnalato — non la precisione. Un falso positivo costa un'ora di lettura; un falso negativo costa un libro. E la raccomandazione non è mai un cestino automatico: è un ordine di priorità su una coda che oggi non viene letta affatto.
+
+### 34. "Il vostro sistema segnala i manoscritti scritti con l'IA?"
+> Non ancora, è in roadmap, e quando ci sarà non sarà un verdetto. I rilevatori hanno falsi positivi importanti: un falso positivo che chiude la porta a un autore vero è un danno peggiore del problema. Daremo un indicatore con livello di confidenza e i passaggi che l'hanno determinato, e la decisione resterà all'editor. Il contesto è concreto: nel 2025 Kobo ha rifiutato circa il 45% degli autopubblicati ricevuti per sospetta generazione IA. Per noi è anche una questione di posizionamento — Kalamos è un valutatore che difende il lavoro umano, non un generatore.
+
+### 35. "Perché dovremmo darvi i nostri dati di vendita, compresi i fallimenti?"
+> Perché sono l'unico modo per non farvi ripagare letture che avete già pagato una volta. I flop dichiarati restano nel perimetro concordato: non escono, non sono visibili ad altre case, non alimentano modelli condivisi. E potete iniziare senza: il PoC parte dall'archivio delle decisioni storiche, che avete già. La calibrazione sulle vendite è il passo due, quando avrete visto come trattiamo il passo uno.
+
+### 36. "Funziona solo in italiano?"
+> Oggi è costruito e provato sull'editoria italiana, che è il mercato dove abbiamo l'autorità per parlare. La struttura però non è italiana: i profili di collana sono descrizioni configurabili in qualunque lingua, e il problema — troppi manoscritti, troppo poco tempo di lettura senior — è identico in Francia, Spagna e Germania. La presenza europea del Gruppo è la via naturale di espansione dopo il primo caso d'uso validato, non un'ambizione da slide.
+
+### 37. "La citazione la confrontate parola per parola? È un match esatto?"
+> È un match letterale ancorato all'inizio della citazione, con tolleranza sui troncamenti. Se il modello cita una frase lunga e la tronca con i puntini, il controllo accetta la corrispondenza sull'incipit invece di bocciarla: verifica che la frase *cominci* dove dice, non che sia identica fino all'ultima parola. È una tolleranza voluta — un controllo troppo rigido segnalerebbe come sospette citazioni corrette, e un allarme che grida sempre non lo guarda più nessuno.
+
+### 38. "E se il modello sbaglia tutte le collane insieme? Cosa vede l'editor?"
+> Vede una stima etichettata come offline, non un giudizio AI spacciato per tale. Se nessuna delle collane proposte esiste nel catalogo, la scheda non passa il controllo e il sistema ripiega sulla valutazione euristica, che porta in cima un banner che dice cos'è. Il sistema degrada, ma non mente mai sulla natura di ciò che mostra: è il comportamento che voglio, perché l'errore che non posso permettermi non è "oggi la qualità è più bassa", è "vi ho dato per buono qualcosa che non lo era".
+
+### 39. "Abbiamo già i nostri sistemi per gestire queste cose."
+> Non voglio sostituire il vostro sistema di registrazione, e non credo che nessuno debba. Klopotek, Ingenta o quello che usate registrano cosa è successo: contratti, diritti, royalty, ordini. Kalamos vuole essere il livello di intelligenza sopra quel flusso — collega le fonti, conserva le decisioni con la loro ragione, rende interrogabile il contesto. I vostri sistemi sanno cosa è stato deciso; noi vogliamo che si sappia anche perché. È anche il motivo per cui il PoC è poco invasivo: non chiedo a nessuno di cambiare strumento.
+
+### 40. "Perché non basta Storywise?"
+> Storywise è un concorrente vero e più avanti di noi: collegano l'inbox, fanno report card, comparabili, taste matching, workflow, e dichiarano oltre ventimila manoscritti processati con clienti nominati. Non fingo che non esistano. Le differenze che tengo sono tre: il loro profilo è per account, costruito su generi e parole chiave, il nostro è la collana nominata di un catalogo reale — e per un gruppo con molti marchi è una differenza di sostanza; ogni nostro giudizio porta una citazione che il sistema ritrova nel testo e una collana verificata contro il catalogo; e sull'apprendimento noi vogliamo poter dire di quanto migliora, con quale archivio e con quale metodo. Loro dicono che migliora con l'uso, ma non pubblicano un protocollo. E il mercato italiano e francese, con i suoi cataloghi e la sua lingua, oggi è scoperto: il loro è anglofono.
+
+### 39. "Quanto ci vuole a metterlo dentro il nostro flusso?"
+> Per il PoC, niente integrazione: lavoriamo sull'archivio e su una coda separata, così non tocchiamo i vostri sistemi mentre state ancora decidendo se vi serve. L'integrazione — casella di posta dedicata, export nel vostro formato di scheda — è la fase successiva ed è deliberatamente fuori dai novanta giorni. Chiedere a una redazione di cambiare workflow prima di aver visto i risultati è il modo più sicuro di far fallire un pilota.
 
 ---
 

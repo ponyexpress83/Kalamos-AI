@@ -10,7 +10,7 @@
 
 Kalamos AI è un'infrastruttura SaaS B2B di intelligenza editoriale per i grandi publisher trade. Riceviamo manoscritti inediti e produciamo schede di lettura strutturate con fit-scoring rispetto all'identità di una collana editoriale specifica, in meno di trenta minuti per manoscritto.
 
-Il prodotto risponde a un problema operativo riconosciuto: un grande editore italiano riceve oltre 10.000 proposte all'anno e ne può valutare seriamente meno del 15%. Il collo di bottiglia è la capacità di lettura, non la qualità dell'offerta. Kalamos non sostituisce l'editor: lo amplifica, permettendogli di concentrare il giudizio umano sui manoscritti che meritano la sua attenzione.
+Il prodotto risponde a un problema operativo riconosciuto: le redazioni ricevono più proposte di quante possano approfondire con la sola lettura. Il collo di bottiglia è la capacità di lettura, non la qualità dell'offerta. Kalamos non sostituisce l'editor: lo amplifica, permettendogli di concentrare il giudizio umano sui manoscritti che meritano la sua attenzione.
 
 La defensibilità del progetto è il team. Combiniamo competenze ingegneristiche AI (8+ anni di esperienza sviluppo, integrazione modelli linguistici in pipeline produttive) con voce editoriale autentica (collana di poesia pubblicata da Pequod, formazione in Filologia Moderna). Questa composizione consente di costruire un prodotto che capisce davvero il workflow di una casa editrice, non una sua traduzione tecnologica generica.
 

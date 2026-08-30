@@ -49,15 +49,18 @@ Non è un modello per-seat: il valore percepito è la *capacità di processament
 
 ## Costo variabile per manoscritto processato (target)
 
-| Voce | Costo |
-|---|---|
-| Token API (Claude Sonnet/Opus blend, manoscritto medio 80K parole) | €4–8 |
-| Vector storage + retrieval | €0.5 |
-| Compute orchestration | €0.5 |
-| Buffer & contingency | €1 |
-| **Costo marginale per manoscritto** | **€6–10** |
+| Voce | Costo | Base |
+|---|---|---|
+| Token API (Claude Sonnet, triage su estratto rappresentativo) | **$0,03–0,06** | Calcolato sui prompt reali della demo, listino pubblico agosto 2026 |
+| Vector storage + retrieval | €0,10 | Stima: l'indice di collana si calcola una volta, non per manoscritto |
+| Compute orchestration | €0,10 | Stima |
+| Buffer & contingency | €0,25 | Copre i casi che richiedono il testo integrale |
+| **Costo marginale per manoscritto (triage)** | **€0,50–1** | |
+| Analisi sul testo integrale (editing strutturale, non triage) | €0,40–0,80 di soli token | ~135K token per un romanzo da 90K parole |
 
-Vs costo manuale: €150–500. Margine di compressione ~20–50x.
+Vs costo manuale: €150–500 [DA VERIFICARE sui dati reali dell'editore]. Il margine di compressione è di **due ordini di grandezza**, e la leva non è il prezzo del modello: è il tetto sull'estratto rappresentativo, che da solo vale ~7× sul costo per scheda.
+
+> **Nota sulla revisione.** La versione precedente stimava €4–8 di token per manoscritto e €6–10 di costo marginale: un ordine di grandezza sopra il reale, calcolato prima che esistesse la demo. Il costo effettivo è ora misurabile — l'app cattura i token restituiti dall'API e mostra il costo per scheda in redazione. Con la vecchia stima il gross margin per cliente era sottostimato di conseguenza: da rifare quando i volumi del primo pilota daranno numeri veri invece che calcolati.
 
 ---
 

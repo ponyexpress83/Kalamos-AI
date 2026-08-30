@@ -9,7 +9,7 @@
 
 PLAI offre **due flussi distinti**:
 
-1. **Equity initial**: ~€100K per ~7% (numeri tipici da batch precedenti, da verificare nei T&C 2026).
+1. **Equity**: fino a €300K (modello ibrido 2026). La percentuale NON si propone: si discute dopo aver condiviso la tesi industriale.
 2. **PoC budget**: fino a €100K dedicati alla realizzazione di un proof-of-concept in un contesto reale Mondadori.
 
 Inoltre: possibilità di follow-on fino a **€300K equity totali** post-accelerazione, se la traction lo giustifica.
