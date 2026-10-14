@@ -10,6 +10,8 @@ Il debug ha trovato ventidue difetti. Quindici sono corretti in cinque commit, c
 
 Metodo: lettura di tutto il codice applicativo, build di produzione, server locale, giro completo in Chromium (desktop e 390 px) con script ripetibili, `curl` sulle route. I numeri di costo sono **calcolati** da `lib/limiti.ts` e dal listino in `lib/pricing.ts`, non misurati.
 
+> **Aggiornamento, 14 ottobre sera.** Le cinque mosse di conversione del §2 sono implementate: schede reali per casa con un comando, «Richiedi un pilota» (modulo e invio), landing per l'editore, footer e informativa privacy, analytics senza cookie. Restano i dati che ha solo il fondatore: vedi `06-product/checklist-lancio.md`.
+
 ---
 
 ## 1. Cosa è stato corretto
