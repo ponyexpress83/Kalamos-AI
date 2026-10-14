@@ -13,6 +13,7 @@ import PublisherChips, { type PublisherOption } from "./PublisherChips";
 import PrintButton from "./PrintButton";
 import RecommendationBadge from "./RecommendationBadge";
 import EditorFeedback from "./EditorFeedback";
+import CtaPilota from "./CtaPilota";
 import { MAX_TEXT_CHARS } from "@/lib/limiti";
 
 /**
@@ -529,6 +530,7 @@ export default function Analyzer({
           La coda resta in questo browser (localStorage) e compare nella vista
           Redazione: è il vostro slush pile dopo Kalamos.
         </p>
+        <CtaPilota />
       </div>
     );
   }
@@ -561,6 +563,7 @@ export default function Analyzer({
         )}
         <SchedaView result={result} />
         {resultKey && <EditorFeedback schedaKey={resultKey} />}
+        <CtaPilota />
       </div>
     );
   }

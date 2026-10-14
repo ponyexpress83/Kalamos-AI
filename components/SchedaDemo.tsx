@@ -9,6 +9,7 @@ import { getRedazione } from "@/lib/redazione";
 import SchedaView from "./SchedaView";
 import PrintButton from "./PrintButton";
 import EditorFeedback from "./EditorFeedback";
+import CtaPilota from "./CtaPilota";
 
 export interface SchedaDemoPublisher {
   id: string;
@@ -93,6 +94,7 @@ export default function SchedaDemo({
 
       <SchedaView result={result} />
       <EditorFeedback schedaKey={`demo-${id}`} />
+      <CtaPilota />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Spectral } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 /**
  * Font servito dal nostro dominio: next/font lo scarica alla build. Prima il
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <div className="no-print"><Header /></div>
         <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">{children}</main>
+        <div className="no-print"><Footer /></div>
       </body>
     </html>
   );

@@ -14,6 +14,7 @@ import BatchTable, { type BatchRow } from "./BatchTable";
 import KpiRedazione from "./KpiRedazione";
 import FeedbackCounter from "./FeedbackCounter";
 import SessionRows from "./SessionRows";
+import CtaPilota from "./CtaPilota";
 
 export interface ScrivaniaPublisher {
   id: string;
@@ -213,6 +214,8 @@ export default function Scrivania({
           ? "Schede generate dal vivo su Claude, servite da cache."
           : "I manoscritti in coda mostrano stime offline etichettate; l'analisi reale si genera aggiungendo un manoscritto."}
       </p>
+
+      <CtaPilota contesto="redazione" />
     </div>
   );
 }
