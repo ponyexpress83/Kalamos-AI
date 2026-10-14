@@ -13,6 +13,7 @@ import PublisherChips, { type PublisherOption } from "./PublisherChips";
 import PrintButton from "./PrintButton";
 import RecommendationBadge from "./RecommendationBadge";
 import EditorFeedback from "./EditorFeedback";
+import { MAX_TEXT_CHARS } from "@/lib/limiti";
 
 /**
  * Intestazioni della chiamata di analisi. Il token c'è solo se configurato:
@@ -52,6 +53,34 @@ interface BatchFile {
 const MIN_LOADING_MS = 3200;
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
 const MAX_BATCH = 5;
+/**
+ * Corpo massimo di una richiesta a una funzione Vercel: 4,5 MB secondo la
+ * documentazione Vercel (non riverificata da questo ambiente). Il PDF viaggia
+ * in base64, che pesa 4/3 del file: oltre ~3,2 MB la piattaforma risponde 413
+ * prima ancora di raggiungere la route, con una pagina non JSON. Meglio dirlo
+ * qui, con un messaggio utile, che lasciar fallire la richiesta.
+ */
+const MAX_BASE64_CHARS = 4_300_000;
+
+const TESTO_TROPPO_LUNGO = `Testo troppo lungo: il limite è ${MAX_TEXT_CHARS.toLocaleString("it-IT")} caratteri. Dividi il manoscritto in più parti.`;
+
+/** Il server ha risposto con l'euristica invece che con l'analisi AI. */
+const NOTA_SERVER_EURISTICA =
+  "Il server non ha eseguito l'analisi AI (chiave non configurata o servizio non raggiungibile): questa è un'anteprima euristica, non una scheda di lettura.";
+
+/**
+ * Messaggio da mostrare quando la richiesta di analisi non va a buon fine.
+ * Il server spiega già il motivo in italiano (limite di frequenza, testo o
+ * spesa oltre il tetto, chiave mancante): va mostrato quello. Prima un 429
+ * diventava «tempo limite del server… o piano Vercel Pro».
+ */
+function motivoErrore(status: number, errore: string | undefined, troppiEditori: boolean): string {
+  if (errore) return errore;
+  if (status === 413) return "Richiesta troppo grande per il server.";
+  if (status === 504 || status === 408)
+    return `L'analisi dal vivo ha superato il tempo limite del server.${troppiEditori ? " Riprova con 1-2 case editrici per volta." : ""}`;
+  return `Analisi dal vivo non riuscita (errore ${status}).`;
+}
 
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -130,8 +159,28 @@ export default function Analyzer({
   }
 
   async function onFile(e: React.ChangeEvent<HTMLInputElement>) {
+    await gestisciFile(Array.from(e.target.files ?? []));
+    e.target.value = ""; // permette di ricaricare lo stesso file dopo un errore
+  }
+
+  /**
+   * Il riquadro diceva «Trascina o seleziona», ma senza gestori di drag & drop
+   * il browser apriva il file trascinato al posto della pagina, perdendo la
+   * demo. Ora il rilascio passa di qui come la selezione.
+   */
+  const [trascinando, setTrascinando] = useState(false);
+  function onDragOver(e: React.DragEvent) {
+    e.preventDefault();
+    setTrascinando(true);
+  }
+  async function onDrop(e: React.DragEvent) {
+    e.preventDefault();
+    setTrascinando(false);
+    await gestisciFile(Array.from(e.dataTransfer.files ?? []));
+  }
+
+  async function gestisciFile(list: File[]) {
     setFileError(null);
-    const list = Array.from(e.target.files ?? []);
     if (list.length === 0) return;
 
     // Più file → batch (solo .txt, fino a MAX_BATCH).
@@ -155,6 +204,10 @@ export default function Analyzer({
         const read: BatchFile[] = [];
         for (const f of list) {
           const text = await f.text();
+          if (text.length > MAX_TEXT_CHARS) {
+            setFileError(`${f.name}: ${TESTO_TROPPO_LUNGO}`);
+            return;
+          }
           if (text.trim()) read.push({ name: f.name, text });
         }
         if (read.length === 0) {
@@ -182,11 +235,22 @@ export default function Analyzer({
     try {
       if (isPdf) {
         const buf = await f.arrayBuffer();
-        setFile({ name: f.name, kind: "pdf", pdfBase64: abToBase64(buf) });
+        const pdfBase64 = abToBase64(buf);
+        if (pdfBase64.length > MAX_BASE64_CHARS) {
+          setFileError(
+            `PDF di ${(f.size / 1024 / 1024).toLocaleString("it-IT", { maximumFractionDigits: 1 })} MB: oltre circa 3 MB il server non lo accetta. Esporta il testo in .txt: viene valutato su estratto e costa una frazione.`,
+          );
+          return;
+        }
+        setFile({ name: f.name, kind: "pdf", pdfBase64 });
       } else if (isTxt) {
         const text = await f.text();
         if (!text.trim()) {
           setFileError("Il file è vuoto.");
+          return;
+        }
+        if (text.length > MAX_TEXT_CHARS) {
+          setFileError(TESTO_TROPPO_LUNGO);
           return;
         }
         setFile({ name: f.name, kind: "txt", text });
@@ -233,6 +297,8 @@ export default function Analyzer({
       }
       const data = await res.json();
       if (!res.ok || !data || data.error) return { result: heuristic(), fallback: true };
+      // Risposta 200 ma euristica: il server non ha potuto usare l'AI.
+      if ((data as AnalysisResult).meta?.fonte === "simulata") return { result: data as AnalysisResult, fallback: true };
       return { result: data as AnalysisResult, fallback: false };
     } catch {
       return { result: heuristic(), fallback: true };
@@ -268,7 +334,7 @@ export default function Analyzer({
       demoOffline
         ? "Batch in modalità dimostrativa offline: stime euristiche, nessuna chiamata all'API."
         : fallbacks > 0
-          ? `${fallbacks} manoscritti su ${batchFiles.length} sono ripiegati sull'anteprima offline (timeout o chiave assente).`
+          ? `${fallbacks} manoscritti su ${batchFiles.length} sono ripiegati sull'anteprima offline (limite di frequenza, timeout, testo oltre i limiti o AI non disponibile sul server).`
           : null,
     );
     setBatchProgress(null);
@@ -279,6 +345,10 @@ export default function Analyzer({
   async function analyze() {
     if (!canAnalyze) return;
     if (batchFiles.length > 0) return analyzeBatch();
+    if (!demoId && !file && pasted.length > MAX_TEXT_CHARS) {
+      setError(TESTO_TROPPO_LUNGO);
+      return;
+    }
     setError(null);
     setView("loading");
 
@@ -362,25 +432,14 @@ export default function Analyzer({
         data = null;
       }
       if (!res.ok || !data) {
+        const motivo = motivoErrore(res.status, data?.error, troppiEditori);
         if (localText && localText.trim()) {
-          const cap =
-            res.status === 503
-              ? "Chiave API non configurata sul server."
-              : res.status === 401
-                ? "Chiave API non valida."
-                : `Analisi dal vivo non riuscita (tempo limite del server${troppiEditori ? "; troppe case editrici selezionate" : ""}).`;
-          fallbackNote = `${cap} Sotto trovi un'anteprima offline; per la scheda reale ${
-            res.status === 503 || res.status === 401
-              ? "configura la chiave su Vercel"
-              : "riprova con 1-2 case editrici (o piano Vercel Pro)"
-          }.`;
+          fallbackNote = `${motivo} Sotto trovi un'anteprima offline, non una scheda di lettura.`;
           return heuristic();
         }
-        throw new Error(
-          data?.error ||
-            "L'analisi dal vivo ha superato il tempo limite del server. Riprova con meno case editrici o un manoscritto demo.",
-        );
+        throw new Error(motivo);
       }
+      if (data.meta?.fonte === "simulata") fallbackNote = NOTA_SERVER_EURISTICA;
       return data as AnalysisResult;
     })();
 
@@ -567,7 +626,14 @@ export default function Analyzer({
           <h2 className="mb-2 font-serif text-xl font-bold text-inchiostro">
             Oppure carica un file
           </h2>
-          <label className="flex h-[152px] cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-carta-scura bg-white/40 p-4 text-center transition hover:border-accento">
+          <label
+            onDragOver={onDragOver}
+            onDragLeave={() => setTrascinando(false)}
+            onDrop={onDrop}
+            className={`flex h-[152px] cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed p-4 text-center transition hover:border-accento ${
+              trascinando ? "border-accento bg-accento/5" : "border-carta-scura bg-white/40"
+            }`}
+          >
             <input
               type="file"
               multiple
@@ -598,7 +664,7 @@ export default function Analyzer({
               <span className="font-sans text-sm text-stone-500">
                 Trascina o seleziona uno o più file
                 <span className="mt-1 block text-xs text-stone-400">
-                  .txt o .pdf · fino a {MAX_BATCH} .txt in batch · max 10 MB
+                  .txt o .pdf (fino a 3 MB) · fino a {MAX_BATCH} .txt in batch
                 </span>
               </span>
             )}
