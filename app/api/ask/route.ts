@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 import { answerDemoQuestion, demoSourcesForQuestion, workspaceContextText } from "@/lib/demo-workspace";
+import { chiaveChiamante, consumaQuota } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -9,9 +10,27 @@ export const maxDuration = 30;
 
 const MODEL = process.env.ANTHROPIC_MODEL || "claude-sonnet-4-6";
 
+/**
+ * La sessione demo si ottiene con un clic, quindi da sola non protegge la
+ * chiave Anthropic: senza questo limite /api/ask era una chiamata a pagamento
+ * ripetibile all'infinito. Stessa logica e stessi limiti noti di /api/analyze.
+ */
+const FINESTRE_ASK = [
+  { durataMs: 60_000, massimo: 8 },
+  { durataMs: 60 * 60_000, massimo: 60 },
+];
+
 export async function POST(req: NextRequest) {
   const session = verifySessionToken(req.cookies.get(SESSION_COOKIE)?.value);
   if (!session) return NextResponse.json({ error: "Sessione scaduta." }, { status: 401 });
+
+  const quota = consumaQuota(`ask:${chiaveChiamante(req)}`, FINESTRE_ASK);
+  if (!quota.ammessa) {
+    return NextResponse.json(
+      { error: `Troppe domande in poco tempo. Riprova fra ${quota.riprovaFraSecondi} secondi.` },
+      { status: 429, headers: { "retry-after": String(quota.riprovaFraSecondi ?? 60) } },
+    );
+  }
 
   let question = "";
   try {
