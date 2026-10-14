@@ -153,6 +153,15 @@ export default function SchedaView({ result }: { result: AnalysisResult }) {
       <Section title="Target di lettore">{scheda.target_lettore}</Section>
 
       <Section title="Comparable">
+        {/* Gli altri campi hanno un controllo deterministico (collana nel
+            catalogo, citazione nel testo); i comparabili no. Un editore li
+            controlla per primi: meglio dirlo che farglielo scoprire. */}
+        {meta.fonte === "live" && (
+          <p className="mb-3 font-sans text-[13px] leading-relaxed text-stone-500">
+            Proposti dal modello e non verificati automaticamente: controlla
+            titolo e autore prima di citarli.
+          </p>
+        )}
         <ul className="space-y-3">
           {scheda.comparable_titles.map((c, i) => (
             <li key={i}>

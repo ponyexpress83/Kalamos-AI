@@ -118,7 +118,9 @@ export default function SelettoreRedazione({
       <p className="mt-8 font-sans text-xs leading-relaxed text-stone-400">
         Demo: la scelta resta in questo browser e definisce il contesto della
         sessione. Nel prodotto reale ogni redazione ha il proprio ambiente,
-        i propri utenti e il proprio perimetro dati.
+        i propri utenti e il proprio perimetro dati. Nessuna di queste case
+        editrici è cliente di Kalamos né ha collaborato alla demo: i cataloghi
+        sono ricostruiti dalle fonti pubbliche.
       </p>
     </div>
   );
