@@ -1,64 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-const STEPS = [
-  "Lettura del manoscritto…",
-  "Analisi della prosa e della voce…",
-  "Calcolo del fit di collana…",
-  "Ricerca dei comparabili di mercato…",
-  "Composizione della scheda…",
-];
-
+/**
+ * Attesa dell'analisi. Prima scorreva una lista di passaggi a tempo
+ * («Ricerca dei comparabili di mercato…») che non corrispondeva a ciò che
+ * accade: una sola chiamata al modello, senza ricerche. Ora si dice il vero.
+ */
 export default function LoadingSteps({ progress }: { progress?: string }) {
-  const [i, setI] = useState(0);
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      setI((prev) => Math.min(prev + 1, STEPS.length - 1));
-    }, 900);
-    return () => clearInterval(id);
-  }, []);
-
   return (
-    <div className="mx-auto max-w-md py-16 text-center">
+    <div className="mx-auto max-w-md py-16 text-center" role="status" aria-live="polite">
       <div className="mb-6 flex justify-center">
         <span className="inline-block h-8 w-8 animate-spin rounded-full border-2 border-carta-scura border-t-accento" />
       </div>
-      {progress && (
-        <p className="mb-4 font-sans text-sm font-medium text-inchiostro">{progress}</p>
-      )}
-      <ul className="space-y-2 text-left">
-        {STEPS.map((s, idx) => {
-          const done = idx < i;
-          const active = idx === i;
-          return (
-            <li
-              key={s}
-              className={`flex items-center gap-3 font-sans text-sm transition ${
-                done
-                  ? "text-stone-400"
-                  : active
-                    ? "text-inchiostro"
-                    : "text-stone-300"
-              }`}
-            >
-              <span
-                className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[10px] ${
-                  done
-                    ? "bg-emerald-500 text-white"
-                    : active
-                      ? "bg-accento text-white"
-                      : "bg-carta-scura text-stone-400"
-                }`}
-              >
-                {done ? "✓" : active ? "·" : ""}
-              </span>
-              {s}
-            </li>
-          );
-        })}
-      </ul>
+      {progress && <p className="mb-3 font-sans text-sm font-medium text-inchiostro">{progress}</p>}
+      <p className="font-sans text-sm text-stone-600">
+        Kalamos sta leggendo il testo e componendo la scheda sulle collane scelte.
+      </p>
       <p className="mt-8 font-serif text-sm italic text-stone-500">
         Kalamos legge in parallelo all'editor, mai al suo posto.
       </p>

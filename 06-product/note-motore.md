@@ -17,11 +17,11 @@ Proposta: `maxRetries: 0`, oppure un timeout di circa 25 secondi con un tentativ
 
 ## `lib/limiti.ts`
 
-Non è tra i file protetti, ma tocca la stessa route. `MAX_PDF_BYTES` vale 6 MB, mentre su Vercel il corpo di una richiesta si ferma a 4,5 MB (documentazione Vercel, non riverificata oggi). Un PDF in base64 oltre circa 3,2 MB non arriva mai alla route, quindi il tetto del server non scatta mai. Dal 14 ottobre il client blocca prima; allineare anche il server a ~3,2 MB renderebbe coerente il messaggio per chi chiama l'API direttamente.
+Non è tra i file protetti, ma tocca la stessa route. `MAX_PDF_BYTES` valeva 6 MB, mentre su Vercel il corpo di una richiesta si ferma a 4,5 MB (documentazione Vercel, non riverificata oggi): un PDF in base64 oltre circa 3,2 MB non arrivava mai alla route. **Risolto il 14 ottobre**: il client blocca prima dell'invio e il tetto del server è sceso a 3 MB.
 
 ## `config/publishers.ts`
 
-`defaultOn` è attivo su tre case (Sperling & Kupfer, Einaudi, Il Battello a Vapore), mentre l'interfaccia consiglia «1-2 case per volta» per l'analisi dal vivo. Un'analisi senza redazione scelta parte quindi già nella condizione sconsigliata. Si può correggere in `components/Analyzer.tsx` (preselezionare le prime due) senza toccare il catalogo.
+`defaultOn` è attivo su tre case (Sperling & Kupfer, Einaudi, Il Battello a Vapore), mentre l'interfaccia consiglia «1-2 case per volta» per l'analisi dal vivo. Un'analisi senza redazione scelta parte quindi già nella condizione sconsigliata. **Risolto il 14 ottobre** in `components/Analyzer.tsx`, che preseleziona solo le prime due, senza toccare il catalogo.
 
 ## `lib/heuristic.ts`
 

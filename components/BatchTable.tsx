@@ -90,7 +90,17 @@ export default function BatchTable({ rows }: { rows: BatchRow[] }) {
             <tr
               key={r.id}
               onClick={() => router.push(r.href ?? `/scheda/${r.id}`)}
-              className="cursor-pointer border-b border-carta-scura/60 transition last:border-0 hover:bg-carta-scura/40"
+              // Raggiungibile e apribile anche da tastiera, non solo col mouse.
+              tabIndex={0}
+              role="link"
+              aria-label={`Apri la scheda di ${r.titolo}`}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  router.push(r.href ?? `/scheda/${r.id}`);
+                }
+              }}
+              className="cursor-pointer border-b border-carta-scura/60 outline-none transition last:border-0 hover:bg-carta-scura/40 focus-visible:bg-carta-scura/50 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accento/50"
             >
               <td className="px-3 py-3 sm:px-4">
                 <div className="font-serif text-[15px] font-semibold text-inchiostro">

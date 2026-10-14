@@ -106,9 +106,11 @@ export default function Analyzer({
   const [demoId, setDemoId] = useState<string | null>(null);
   const [pasted, setPasted] = useState("");
   const [file, setFile] = useState<UploadedFile | null>(null);
+  // Al massimo due case preselezionate: è il consiglio scritto accanto ai
+  // selettori per l'analisi dal vivo. Il catalogo ne marca tre come default.
   const [selected, setSelected] = useState<string[]>(() => {
     const on = publishers.filter((p) => p.defaultOn).map((p) => p.id);
-    return on.length > 0 ? on : publishers.slice(0, 2).map((p) => p.id);
+    return (on.length > 0 ? on : publishers.map((p) => p.id)).slice(0, 2);
   });
   // La redazione attiva definisce il contesto: si valuta per la sua casa.
   const [redazioneId, setRedazioneId] = useState<string | null>(null);

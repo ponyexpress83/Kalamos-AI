@@ -80,8 +80,12 @@ Con il tetto predefinito di **$1,00**:
 | sonnet-4-6 | $0,075 | $0,925 | ~**102** |
 | opus-4-8 | $0,125 | $0,875 | ~**57** |
 
-`MAX_PDF_BYTES = 6 MB` è la seconda rete, non la prima: a ~60 KB per pagina
-sono già circa 105 pagine, quindi in produzione il tetto di spesa morde prima.
+`MAX_PDF_BYTES = 3 MB` è la seconda rete, non la prima: a ~60 KB per pagina
+sono circa 52 pagine, quindi su Opus i due tetti coincidono quasi, su Sonnet
+morde prima la dimensione. Era 6 MB fino al 14 ottobre 2026, ma non poteva
+scattare: in base64 un PDF da 6 MB supera il corpo massimo di una richiesta
+Vercel (4,5 MB, documentazione Vercel), e la piattaforma lo respingeva prima
+della route.
 
 **Come si contano le pagine.** Prima si cercano i marcatori `/Type /Page` nel
 file; se il PDF comprime gli oggetti quei marcatori non si vedono, e si stima

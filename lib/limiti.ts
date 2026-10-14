@@ -15,8 +15,15 @@ import { prezzoModello } from "./pricing";
 /** Tetto sul testo incollato o sul `.txt`. Oltre: 413. */
 export const MAX_TEXT_CHARS = 1_200_000;
 
-/** Tetto sul PDF, misurato sui byte decodificati. Oltre: 413. */
-export const MAX_PDF_BYTES = 6 * 1024 * 1024;
+/**
+ * Tetto sul PDF, misurato sui byte decodificati. Oltre: 413.
+ * Era 6 MB, ma non poteva mai scattare: il PDF viaggia in base64 (4/3 del
+ * file) e Vercel ferma il corpo di una richiesta a 4,5 MB secondo la sua
+ * documentazione. 3 MB in base64 sono circa 4,2 MB: sotto la soglia, così
+ * chi chiama l'API riceve il messaggio della route e non quello della
+ * piattaforma.
+ */
+export const MAX_PDF_BYTES = 3 * 1024 * 1024;
 
 /**
  * Tetto di spesa per singola richiesta, in dollari. Superato il tetto la
