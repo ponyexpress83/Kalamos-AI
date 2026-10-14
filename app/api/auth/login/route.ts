@@ -38,7 +38,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Richiesta non valida." }, { status: 400 });
   }
 
-  const email = body.email?.trim() || "editor.demo@kalamos.ai";
+  const email = body.email?.trim() || "editor.demo@redazione.example";
 
   if (body.demo) {
     if (!demoAccessEnabled()) {

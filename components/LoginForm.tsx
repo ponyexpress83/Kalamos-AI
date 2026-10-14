@@ -46,7 +46,7 @@ export default function LoginForm() {
         <span>
           Entra nel workspace dimostrativo
           <span className="mt-1 block text-xs font-normal text-white/75">
-            Percorso stabile, dati demo già preparati per la presentazione.
+            Dati di esempio, nessuna registrazione.
           </span>
         </span>
         <span className="text-xl transition group-hover:translate-x-1">→</span>
@@ -97,7 +97,7 @@ export default function LoginForm() {
       )}
 
       <p className="text-xs leading-relaxed text-white/40">
-        Il workspace pubblico usa esclusivamente dati dimostrativi. Le credenziali riservate possono essere configurate sul deployment senza esporle nel client.
+        Il workspace pubblico usa solo dati dimostrativi. L'accesso con credenziali è riservato alle redazioni in pilota.
       </p>
     </div>
   );

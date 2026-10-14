@@ -44,7 +44,7 @@ export default function LoginPage() {
               <div className="text-xs font-semibold uppercase tracking-[0.2em] text-[#68b9ff]">Accesso</div>
               <h2 className="mt-2 font-serif text-3xl font-semibold">Entra in Kalamos</h2>
               <p className="mt-2 text-sm leading-6 text-white/50">
-                Per la presentazione puoi utilizzare il workspace dimostrativo protetto, senza dipendere da configurazioni esterne.
+                Il workspace dimostrativo usa dati di esempio e si apre con un clic. Le decisioni che registri restano nel tuo browser.
               </p>
             </div>
             <LoginForm />

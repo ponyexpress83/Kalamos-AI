@@ -3,6 +3,8 @@ import { Spectral } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Analytics } from "@vercel/analytics/next";
+import { SITE_URL } from "@/lib/sito";
 
 /**
  * Font servito dal nostro dominio: next/font lo scarica alla build. Prima il
@@ -19,9 +21,10 @@ const spectral = Spectral({
 });
 
 export const metadata: Metadata = {
-  title: "Kalamos AI — Editorial Intelligence Infrastructure",
+  metadataBase: new URL(SITE_URL),
+  title: "Kalamos AI — la scheda di lettura sul vostro catalogo",
   description:
-    "Kalamos collega analisi dei manoscritti, contesto di catalogo, decisioni editoriali e memoria istituzionale in un workspace AI-native per editori.",
+    "Kalamos legge i manoscritti che arrivano in redazione e prepara la scheda sulle collane del vostro catalogo, con una citazione verificata nel testo. L'editor decide; Kalamos ricorda perché.",
   openGraph: {
     title: "Kalamos AI",
     description:
@@ -39,6 +42,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="no-print"><Header /></div>
         <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">{children}</main>
         <div className="no-print"><Footer /></div>
+        {/* Statistiche di visita senza cookie; vanno attivate nel progetto Vercel. */}
+        <Analytics />
       </body>
     </html>
   );
