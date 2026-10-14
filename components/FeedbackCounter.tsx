@@ -16,8 +16,8 @@ export default function FeedbackCounter() {
   return (
     <p className="mb-4 font-sans text-xs text-stone-500">
       Schede validate dall'editor in questo browser:{" "}
-      <span className="font-semibold text-inchiostro">{n}</span> — ogni giudizio
-      è un dato di calibrazione.
+      <span className="font-semibold text-inchiostro">{n}</span> — restano su
+      questo dispositivo.
     </p>
   );
 }

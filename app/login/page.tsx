@@ -6,12 +6,12 @@ export const metadata = { title: "Accesso — Kalamos AI" };
 
 export default function LoginPage() {
   return (
-    <div className="full-bleed -mt-10 min-h-[calc(100vh-57px)] bg-[#071426] text-white">
+    <div className="full-bleed -mt-10 -mb-10 min-h-screen bg-[#071426] text-white">
       <div className="relative isolate overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_20%,rgba(44,139,222,.22),transparent_28%),radial-gradient(circle_at_70%_70%,rgba(229,83,61,.13),transparent_30%)]" />
         <div className="paper-orbit paper-orbit-a" aria-hidden="true" />
         <div className="paper-orbit paper-orbit-b" aria-hidden="true" />
-        <div className="relative mx-auto grid min-h-[calc(100vh-57px)] max-w-6xl items-center gap-12 px-6 py-14 lg:grid-cols-[1.05fr_.75fr] lg:px-10">
+        <div className="relative mx-auto grid min-h-screen max-w-6xl items-center gap-12 px-6 py-14 lg:grid-cols-[1.05fr_.75fr] lg:px-10">
           <section>
             <Link href="/" className="inline-block">
               <Logo height={46} variant="paper" />

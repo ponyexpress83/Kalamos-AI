@@ -44,8 +44,9 @@ export default function EditorFeedback({ schedaKey }: { schedaKey: string }) {
         Il giudizio dell'editor
       </div>
       <p className="mb-3 font-sans text-sm text-stone-600">
-        Il giudizio dell'editor calibra Kalamos sul gusto della casa: più schede
-        validate, più il fit è vostro.
+        Registra se sei d'accordo con la scheda. In questa demo il giudizio resta
+        nel tuo browser; in un pilota diventa la memoria delle decisioni della
+        redazione, la base su cui misurare se Kalamos migliora.
       </p>
       <div className="flex flex-wrap items-center gap-3">
         <button
@@ -83,7 +84,7 @@ export default function EditorFeedback({ schedaKey }: { schedaKey: string }) {
             onChange={(e) => setNota(e.target.value)}
             onBlur={salvaNota}
             rows={2}
-            placeholder="Nota per la calibrazione (facoltativa): cosa correggeresti?"
+            placeholder="Nota facoltativa: cosa correggeresti nella scheda?"
             className="w-full resize-y rounded-md border border-carta-scura bg-white/70 p-2 font-sans text-sm text-inchiostro outline-none focus:border-accento"
           />
         </div>

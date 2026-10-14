@@ -13,7 +13,7 @@ const config: Config = {
       },
       fontFamily: {
         // Heading serif (editoriale), corpo sans pulito
-        serif: ["Spectral", "Georgia", "Cambria", "'Times New Roman'", "serif"],
+        serif: ["var(--font-spectral)", "Spectral", "Georgia", "Cambria", "'Times New Roman'", "serif"],
         sans: [
           "ui-sans-serif",
           "system-ui",

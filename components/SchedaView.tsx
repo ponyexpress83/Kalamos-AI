@@ -59,8 +59,8 @@ export default function SchedaView({ result }: { result: AnalysisResult }) {
           <p className="mt-1 font-sans text-[14px] leading-relaxed text-amber-900">
             Valutazione euristica basata sui segnali del testo (lunghezza,
             dialogo, cliché, lessico), <strong>non</strong> inferenza AI. Serve a
-            provare il flusso su qualsiasi manoscritto. Per la scheda reale,
-            disattiva la modalità offline e usa l'analisi dal vivo.
+            provare il flusso su qualsiasi manoscritto. La scheda reale si
+            ottiene dall'analisi dal vivo, da «Analizza».
           </p>
         </div>
       )}

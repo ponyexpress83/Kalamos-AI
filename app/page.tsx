@@ -11,7 +11,7 @@ const modules = [
 
 export default function LandingPage() {
   return (
-    <div className="full-bleed -mt-10 overflow-hidden">
+    <div className="full-bleed -mt-10 -mb-10 overflow-hidden">
       <section className="relative isolate min-h-[720px] overflow-hidden bg-[#071426] text-white">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_73%_22%,rgba(53,154,243,.25),transparent_28%),radial-gradient(circle_at_75%_75%,rgba(229,83,61,.16),transparent_30%)]" />
         <div className="paper-orbit paper-orbit-a" aria-hidden="true" />

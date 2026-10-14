@@ -24,7 +24,7 @@ export default function WorkspaceLayout({ children }: { children: React.ReactNod
   if (!session) redirect("/login");
 
   return (
-    <div className="full-bleed -mt-10 min-h-screen bg-[#f3efe8]">
+    <div className="full-bleed -mt-10 -mb-10 min-h-screen bg-[#f3efe8]">
       <div className="grid min-h-screen lg:grid-cols-[250px_minmax(0,1fr)]">
         <div className="hidden lg:block">
           <div className="sticky top-0 h-screen"><WorkspaceNav email={session.email} /></div>
