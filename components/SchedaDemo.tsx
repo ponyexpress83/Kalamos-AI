@@ -27,7 +27,7 @@ export default function SchedaDemo({
   provenienza,
   arrivato,
   text,
-  cache,
+  schedePerCasa,
   publishers,
 }: {
   id: string;
@@ -36,7 +36,8 @@ export default function SchedaDemo({
   provenienza: string;
   arrivato: string;
   text: string;
-  cache?: { generata_il: string; modello: string; result: AnalysisResult };
+  /** Schede reali pre-generate, per id della casa editrice. */
+  schedePerCasa: Record<string, { generata_il: string; modello: string; result: AnalysisResult }>;
   publishers: SchedaDemoPublisher[];
 }) {
   const [result, setResult] = useState<AnalysisResult | null>(null);
@@ -46,25 +47,20 @@ export default function SchedaDemo({
     const redId = getRedazione();
     const casa = publishers.find((p) => p.id === redId);
 
-    // Scheda reale, se copre la redazione attiva (o se non c'è redazione).
+    // Scheda reale della redazione attiva; senza redazione, la prima disponibile.
+    const cache = casa ? schedePerCasa[casa.id] : Object.values(schedePerCasa)[0];
     if (cache) {
-      const fit = casa
-        ? cache.result.scheda.fit_collane.filter((f) => f.editore === casa.nome)
-        : cache.result.scheda.fit_collane;
-      if (fit.length > 0) {
-        setResult({
-          ...cache.result,
-          scheda: { ...cache.result.scheda, fit_collane: fit },
-          meta: {
-            ...cache.result.meta,
-            cache: { generata_il: cache.generata_il, modello: cache.modello },
-          },
-        });
-        setEtichetta(
-          `scheda generata dal vivo il ${cache.generata_il} con ${cache.modello} · servita da cache`,
-        );
-        return;
-      }
+      setResult({
+        ...cache.result,
+        meta: {
+          ...cache.result.meta,
+          cache: { generata_il: cache.generata_il, modello: cache.modello },
+        },
+      });
+      setEtichetta(
+        `scheda generata dal vivo il ${cache.generata_il} con ${cache.modello} · servita da cache`,
+      );
+      return;
     }
 
     const target = casa
@@ -72,7 +68,7 @@ export default function SchedaDemo({
       : publishers.slice(0, 2).map((p) => ({ nome: p.nome, collane: p.collane }));
     setResult(analyzeHeuristic(text, { titolo, autore, publishers: target }));
     setEtichetta("stima offline etichettata · analisi reale disponibile dalla demo");
-  }, [cache, text, titolo, autore, publishers]);
+  }, [schedePerCasa, text, titolo, autore, publishers]);
 
   if (!result) return null;
 

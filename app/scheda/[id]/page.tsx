@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import SchedaDemo from "@/components/SchedaDemo";
 import { manuscripts, getManuscriptMeta, getManuscriptText } from "@/lib/manuscripts";
-import { getCachedScheda } from "@/lib/schede";
+import { getCachedSchede } from "@/lib/schede";
 import { publishers } from "@/config/publishers";
 
 /** Data di arrivo relativa a oggi: rigenerazione oraria della pagina statica. */
@@ -24,7 +24,7 @@ export default function SchedaPage({ params }: { params: { id: string } }) {
       provenienza={meta.provenienza}
       arrivato={meta.arrivato}
       text={text}
-      cache={getCachedScheda(meta.id)}
+      schedePerCasa={getCachedSchede(meta.id)}
       publishers={publishers.map((p) => ({
         id: p.id,
         nome: p.nome,

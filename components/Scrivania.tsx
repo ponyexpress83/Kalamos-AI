@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { AnalysisResult, AnalysisMeta } from "@/lib/schema";
+import type { SchedaInCoda } from "@/lib/schede";
 import type { Ambito, Gruppo, Profilo } from "@/config/publishers";
 import { analyzeHeuristic } from "@/lib/heuristic";
 import { getRedazione, setRedazione, clearRedazione } from "@/lib/redazione";
@@ -31,8 +32,8 @@ export interface ScrivaniaManoscritto {
   provenienza: string;
   arrivato: string;
   text: string;
-  /** Scheda reale pre-generata, se disponibile. */
-  cache?: { generata_il: string; modello: string; result: AnalysisResult };
+  /** Schede reali pre-generate, per id della casa editrice. */
+  schedePerCasa?: Record<string, SchedaInCoda>;
 }
 
 /**
@@ -51,14 +52,15 @@ export default function Scrivania({
 
   useEffect(() => {
     // ?casa=<id> apre direttamente una redazione (link condivisibile per demo).
+    // Un id sconosciuto si ignora: prima finiva salvato nel browser.
     const param = new URLSearchParams(window.location.search).get("casa");
-    if (param) {
+    if (param && publishers.some((p) => p.id === param)) {
       setRedazione(param);
       setRedazioneId(param);
       return;
     }
     setRedazioneId(getRedazione());
-  }, []);
+  }, [publishers]);
 
   const pubById = useMemo(() => {
     const m: Record<string, ScrivaniaPublisher> = {};
@@ -77,25 +79,24 @@ export default function Scrivania({
     const metasReali: AnalysisMeta[] = [];
 
     const rows = manoscritti.map((m) => {
-      // Se esiste la scheda reale e copre questa casa, si usa quella.
-      const cachedFit = m.cache?.result.scheda.fit_collane.filter(
-        (f) => f.editore === casa.nome,
-      );
-      let result: AnalysisResult;
-      if (m.cache && cachedFit && cachedFit.length > 0) {
-        result = {
-          ...m.cache.result,
-          scheda: { ...m.cache.result.scheda, fit_collane: cachedFit },
-        };
-        metasReali.push(m.cache.result.meta);
+      // Se esiste la scheda reale per questa casa, si usa quella.
+      const reale = m.schedePerCasa?.[casa.id];
+      let fit: AnalysisResult["scheda"]["fit_collane"];
+      let raccomandazione: AnalysisResult["scheda"]["raccomandazione"];
+      if (reale && reale.fit_collane.length > 0) {
+        fit = reale.fit_collane;
+        raccomandazione = reale.raccomandazione;
+        metasReali.push(reale.meta);
       } else {
-        result = analyzeHeuristic(m.text, {
+        const stima = analyzeHeuristic(m.text, {
           titolo: m.titolo,
           autore: m.autore,
           publishers: target,
         });
+        fit = stima.scheda.fit_collane;
+        raccomandazione = stima.scheda.raccomandazione;
       }
-      const best = [...result.scheda.fit_collane].sort((a, b) => b.score - a.score)[0];
+      const best = [...fit].sort((a, b) => b.score - a.score)[0];
       return {
         id: m.id,
         titolo: m.titolo,
@@ -104,7 +105,7 @@ export default function Scrivania({
         editore: best?.editore ?? casa.nome,
         collana: best?.collana ?? "—",
         fitPct: best ? pct(best.score) : 0,
-        raccomandazione: result.scheda.raccomandazione,
+        raccomandazione,
       } satisfies BatchRow;
     });
 

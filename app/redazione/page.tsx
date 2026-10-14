@@ -3,7 +3,7 @@ import Scrivania, {
   type ScrivaniaPublisher,
 } from "@/components/Scrivania";
 import { manuscripts, getManuscriptText } from "@/lib/manuscripts";
-import { getCachedScheda } from "@/lib/schede";
+import { getSchedeInCoda } from "@/lib/schede";
 import { publishers } from "@/config/publishers";
 
 export const metadata = { title: "Redazione — Kalamos·AI" };
@@ -26,7 +26,7 @@ export default function RedazionePage() {
     provenienza: m.provenienza,
     arrivato: m.arrivato,
     text: getManuscriptText(m.id) ?? "",
-    cache: getCachedScheda(m.id),
+    schedePerCasa: getSchedeInCoda(m.id),
   }));
 
   const pubs: ScrivaniaPublisher[] = publishers.map((p) => ({
