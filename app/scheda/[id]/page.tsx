@@ -4,6 +4,9 @@ import { manuscripts, getManuscriptMeta, getManuscriptText } from "@/lib/manuscr
 import { getCachedScheda } from "@/lib/schede";
 import { publishers } from "@/config/publishers";
 
+/** Data di arrivo relativa a oggi: rigenerazione oraria della pagina statica. */
+export const revalidate = 3600;
+
 export function generateStaticParams() {
   return manuscripts.map((m) => ({ id: m.id }));
 }

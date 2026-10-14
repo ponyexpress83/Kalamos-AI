@@ -11,6 +11,13 @@ const suggestions = [
 
 type Msg = { role: "user" | "assistant"; text: string; sources?: string[]; mode?: string };
 
+/** Il modo della risposta detto in italiano: prima si leggeva "llm-grounded". */
+const modi: Record<string, string> = {
+  "llm-grounded": "risposta AI sul contesto demo",
+  "deterministic-demo": "risposta preimpostata · AI non configurata",
+  "deterministic-fallback": "risposta preimpostata · AI non raggiungibile",
+};
+
 export default function AskKalamosClient() {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState<Msg[]>([
@@ -35,7 +42,7 @@ export default function AskKalamosClient() {
 
   return <div className="grid min-h-[620px] overflow-hidden rounded-2xl border border-[#14213d]/10 bg-white/85 shadow-[0_18px_60px_rgba(20,33,61,.06)] lg:grid-cols-[280px_1fr]">
     <aside className="border-b border-[#14213d]/8 bg-[#f8f5ef] p-5 lg:border-b-0 lg:border-r"><div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-accento">Prompt suggeriti</div><div className="mt-4 space-y-2">{suggestions.map((s) => <button key={s} onClick={() => void ask(s)} className="w-full rounded-xl border border-[#14213d]/8 bg-white px-3 py-3 text-left text-xs leading-5 text-slate-600 transition hover:border-[#14213d]/20 hover:text-inchiostro">{s}</button>)}</div><div className="mt-6 rounded-xl border border-blue-100 bg-blue-50 p-3 text-[11px] leading-5 text-blue-700">Il fallback deterministico mantiene il percorso demo utilizzabile anche se il provider AI non risponde.</div></aside>
-    <div className="flex min-h-0 flex-col"><div className="flex-1 space-y-5 overflow-y-auto p-5 sm:p-7">{messages.map((m, i) => <div key={i} className={`max-w-3xl ${m.role === "user" ? "ml-auto" : ""}`}><div className={`rounded-2xl px-4 py-3 text-sm leading-6 ${m.role === "user" ? "bg-inchiostro text-white" : "border border-[#14213d]/8 bg-[#faf8f4] text-slate-700"}`}>{m.text}</div>{m.sources && <div className="mt-2 flex flex-wrap gap-2">{m.sources.map((s) => <span key={s} className="rounded-full border border-[#14213d]/8 bg-white px-2.5 py-1 text-[10px] font-medium text-slate-400">{s}</span>)}{m.mode && <span className="px-1 py-1 text-[10px] text-slate-300">{m.mode}</span>}</div>}</div>)}{loading && <div className="text-xs text-slate-400">Kalamos sta leggendo il contesto…</div>}</div>
+    <div className="flex min-h-0 flex-col"><div className="flex-1 space-y-5 overflow-y-auto p-5 sm:p-7">{messages.map((m, i) => <div key={i} className={`max-w-3xl ${m.role === "user" ? "ml-auto" : ""}`}><div className={`rounded-2xl px-4 py-3 text-sm leading-6 ${m.role === "user" ? "bg-inchiostro text-white" : "border border-[#14213d]/8 bg-[#faf8f4] text-slate-700"}`}>{m.text}</div>{m.sources && <div className="mt-2 flex flex-wrap gap-2">{m.sources.map((s) => <span key={s} className="rounded-full border border-[#14213d]/8 bg-white px-2.5 py-1 text-[10px] font-medium text-slate-400">{s}</span>)}{m.mode && <span className="px-1 py-1 text-[10px] text-slate-400">{modi[m.mode] ?? m.mode}</span>}</div>}</div>)}{loading && <div className="text-xs text-slate-400">Kalamos sta leggendo il contesto…</div>}</div>
       <form onSubmit={submit} className="border-t border-[#14213d]/8 p-4 sm:p-5"><div className="flex gap-3 rounded-2xl border border-[#14213d]/10 bg-white p-2 shadow-sm"><input value={question} onChange={(e) => setQuestion(e.target.value)} placeholder="Chiedi qualcosa sul workspace editoriale…" className="min-w-0 flex-1 bg-transparent px-3 py-2 text-sm text-inchiostro outline-none placeholder:text-slate-300" /><button disabled={!question.trim() || loading} className="rounded-xl bg-accento px-4 py-2 text-sm font-semibold text-white disabled:opacity-40">Invia →</button></div></form>
     </div>
   </div>;

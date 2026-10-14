@@ -8,6 +8,9 @@ import { publishers } from "@/config/publishers";
 
 export const metadata = { title: "Redazione — Kalamos·AI" };
 
+/** Le date di arrivo sono relative a oggi: la pagina statica si rigenera ogni ora. */
+export const revalidate = 3600;
+
 /**
  * Scrivania dell'editor: schermata principale dell'app.
  * Il server fornisce testi e schede in cache; il client applica il contesto

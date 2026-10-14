@@ -1,3 +1,12 @@
+import { giornoDaOggi } from "./format";
+
+/**
+ * Le date dei dati demo sono relative a oggi: con date fisse la demo mostrava
+ * "scadenze attive" passate da settimane. Gli scarti riproducono la cronologia
+ * originale del caso (nota di acquisizione, negoziazione, bozze, scadenze).
+ */
+const breve: Intl.DateTimeFormatOptions = { day: "numeric", month: "short" };
+
 export type OpportunitySource =
   | "Scout"
   | "Agenzia"
@@ -27,7 +36,7 @@ export const demoOpportunities: DemoOpportunity[] = [
   {
     id: "op-001",
     title: "Il giardino di vetro",
-    author: "Marta Bellacqua",
+    author: "Marta Bevilacqua",
     source: "Agenzia",
     sourceOrg: "Agenzia Letteraria Aurora",
     language: "Italiano",
@@ -36,7 +45,7 @@ export const demoOpportunities: DemoOpportunity[] = [
     fit: "Alto",
     readiness: 82,
     owner: "Giulia Bianchi",
-    deadline: "3 settembre",
+    deadline: giornoDaOggi(4),
     nextAction: "Confermare seconda lettura e verificare i diritti audio",
     rationale:
       "Voce autoriale forte e struttura ibrida coerente con il profilo pubblico della collana. Restano da verificare i diritti audio e un secondo parere editoriale.",
@@ -44,7 +53,7 @@ export const demoOpportunities: DemoOpportunity[] = [
   {
     id: "op-002",
     title: "Sette giorni a Portofino",
-    author: "Carla Monterosso",
+    author: "Carla Montersino",
     source: "Scout",
     sourceOrg: "Mediterranean Literary Scout",
     language: "Italiano",
@@ -53,7 +62,7 @@ export const demoOpportunities: DemoOpportunity[] = [
     fit: "Alto",
     readiness: 91,
     owner: "Marco Rinaldi",
-    deadline: "5 settembre",
+    deadline: giornoDaOggi(6),
     nextAction: "Preparare acquisition meeting",
     rationale:
       "Posizionamento commerciale chiaro, comparabili leggibili e forte coerenza con la linea feel-good. Dossier quasi completo.",
@@ -70,7 +79,7 @@ export const demoOpportunities: DemoOpportunity[] = [
     fit: "Alto",
     readiness: 73,
     owner: "Elena Conti",
-    deadline: "2 settembre",
+    deadline: giornoDaOggi(3),
     nextAction: "Confermare audiobook e finestra di offerta",
     rationale:
       "Segnale editoriale promettente; la priorità è chiudere le informazioni sui diritti prima che la finestra di offerta scada.",
@@ -93,7 +102,7 @@ export const demoOpportunities: DemoOpportunity[] = [
   },
   {
     id: "op-005",
-    title: "La stazione delle locuste",
+    title: "La stagione delle locuste",
     author: "Nuccio Carbè",
     source: "Interna",
     sourceOrg: "Segnalazione editoriale",
@@ -111,7 +120,7 @@ export const demoOpportunities: DemoOpportunity[] = [
 
 export const demoAttention = [
   {
-    title: "2 scadenze diritti questa settimana",
+    title: "2 scadenze diritti nei prossimi giorni",
     detail: "Les jours fragiles · Il giardino di vetro",
     tone: "warning",
   },
@@ -150,7 +159,7 @@ export const demoContract = {
       expected: "Esclusi",
       contracted: "Inclusi",
       status: "material",
-      sourceExpected: "Nota acquisition · 18 ago",
+      sourceExpected: `Nota acquisition · ${giornoDaOggi(-12, breve)}`,
       sourceContract: "Draft v2 · clausola 6.2",
     },
     {
@@ -159,16 +168,16 @@ export const demoContract = {
       expected: "12 mesi",
       contracted: "18 mesi",
       status: "difference",
-      sourceExpected: "Verbale negoziazione · 20 ago",
+      sourceExpected: `Verbale negoziazione · ${giornoDaOggi(-10, breve)}`,
       sourceContract: "Draft v2 · clausola 9.1",
     },
     {
       id: "delivery",
       label: "Consegna definitiva",
-      expected: "15 ottobre",
-      contracted: "30 settembre",
+      expected: giornoDaOggi(46),
+      contracted: giornoDaOggi(31),
       status: "difference",
-      sourceExpected: "Email agente · 21 ago",
+      sourceExpected: `Email agente · ${giornoDaOggi(-9, breve)}`,
       sourceContract: "Draft v2 · clausola 3.4",
     },
     {
@@ -177,7 +186,7 @@ export const demoContract = {
       expected: "Italia",
       contracted: "Italia",
       status: "match",
-      sourceExpected: "Acquisition case · 18 ago",
+      sourceExpected: `Acquisition case · ${giornoDaOggi(-12, breve)}`,
       sourceContract: "Draft v2 · clausola 5.1",
     },
   ] satisfies DemoContractTerm[],
@@ -185,17 +194,17 @@ export const demoContract = {
 
 export const demoProject = {
   title: "Il giardino di vetro",
-  author: "Marta Bellacqua",
+  author: "Marta Bevilacqua",
   imprint: "Einaudi Stile Libero",
   status: "Editing",
-  nextDeadline: "3 settembre",
+  nextDeadline: giornoDaOggi(4),
   health: "Attenzione",
   acquisitionReason:
     "La voce frammentaria e la struttura ibrida erano tra i principali motivi registrati per la seconda lettura.",
   versions: [
-    { version: "V1", date: "6 agosto", words: 78210, state: "Acquisita" },
-    { version: "V2", date: "18 agosto", words: 74680, state: "Revisionata" },
-    { version: "V3", date: "27 agosto", words: 73110, state: "In revisione" },
+    { version: "V1", date: giornoDaOggi(-24), words: 78210, state: "Acquisita" },
+    { version: "V2", date: giornoDaOggi(-12), words: 74680, state: "Revisionata" },
+    { version: "V3", date: giornoDaOggi(-3), words: 73110, state: "In revisione" },
   ],
   semanticDiff: [
     "Capitolo 2 ridotto e apertura spostata più vicino all'incidente iniziale.",
@@ -213,28 +222,28 @@ export const demoProject = {
 
 export const demoMemory = [
   {
-    date: "29 ago",
+    date: giornoDaOggi(-1, breve),
     imprint: "Einaudi Stile Libero",
     decision: "Seconda lettura",
     reason: "Voce più distintiva di quanto suggerito dal primo scoring.",
     source: "Il giardino di vetro",
   },
   {
-    date: "28 ago",
+    date: giornoDaOggi(-2, breve),
     imprint: "Sperling & Kupfer",
     decision: "Strong interest",
     reason: "Posizionamento commerciale chiaro e comparabili coerenti.",
     source: "Sette giorni a Portofino",
   },
   {
-    date: "27 ago",
+    date: giornoDaOggi(-3, breve),
     imprint: "Einaudi Stile Libero",
     decision: "Pass",
     reason: "Tema coerente, ma voce troppo convenzionale rispetto al catalogo recente.",
     source: "Il ponte d'inverno",
   },
   {
-    date: "26 ago",
+    date: giornoDaOggi(-4, breve),
     imprint: "Sperling & Kupfer",
     decision: "Seconda lettura",
     reason: "Fit medio, ma forte potenziale di pubblico segnalato dall'editor.",
@@ -259,16 +268,24 @@ export function workspaceContextText(): string {
   return `CONTESTO WORKSPACE KALAMOS — DATI DIMOSTRATIVI\n\nOPPORTUNITÀ\n${opportunities}\n\nCONTRATTO — ${demoContract.project}\n${contract}\n\nPROGETTO EDITORIALE — ${demoProject.title}\nMotivo acquisizione: ${demoProject.acquisitionReason}\nRichieste:\n${requests}\nDifferenze V2→V3:\n${demoProject.semanticDiff.join("\n")}\n`;
 }
 
+/**
+ * Autore, autori, autrice, autrici. Il suggerimento in pagina dice "autrice",
+ * che non contiene "autore": la domanda suggerita riceveva la risposta generica.
+ */
+function parlaDiAutore(q: string): boolean {
+  return q.includes("autor") || q.includes("autric");
+}
+
 export function demoSourcesForQuestion(question: string): string[] {
   const q = question.toLowerCase();
   if (q.includes("audiobook") || q.includes("contratt") || q.includes("diritt")) {
-    return ["Nota acquisition · 18 ago", "Draft v2 · clausola 6.2"];
+    return ["Nota acquisition · " + giornoDaOggi(-12, breve), "Draft v2 · clausola 6.2"];
   }
-  if (q.includes("version") || q.includes("v2") || q.includes("v3") || q.includes("autore")) {
+  if (q.includes("version") || q.includes("v2") || q.includes("v3") || parlaDiAutore(q)) {
     return ["Manoscritto V2", "Manoscritto V3", "Editorial requests"];
   }
   if (q.includes("perché") || q.includes("seconda lettura") || q.includes("acquis")) {
-    return ["Scheda editoriale", "Decision memory · 29 ago", "Catalogue baseline"];
+    return ["Scheda editoriale", `Decision memory · ${giornoDaOggi(-1, breve)}`, "Catalogue baseline"];
   }
   return ["Acquisition Desk", "Editorial Memory", "Workspace demo"];
 }
@@ -278,8 +295,8 @@ export function answerDemoQuestion(question: string): string {
   if (q.includes("audiobook")) {
     return "I diritti audiobook richiedono revisione: nelle note di acquisition risultano esclusi, mentre il Draft v2 li include. Kalamos lo segnala come potenziale differenza materiale; la decisione finale resta al team Legal/Rights.";
   }
-  if (q.includes("prima") && q.includes("autore")) {
-    return "Prima della call con l'autrice controllerei quattro punti: la richiesta sulla motivazione è solo parzialmente recepita; restano aperte continuità temporale e protezione della voce frammentaria; la V3 riduce proprio una caratteristica registrata come forza in acquisizione; la prossima deadline è il 3 settembre.";
+  if (q.includes("prima") && parlaDiAutore(q)) {
+    return `Prima della call con l'autrice controllerei quattro punti: la richiesta sulla motivazione è solo parzialmente recepita; restano aperte continuità temporale e protezione della voce frammentaria; la V3 riduce proprio una caratteristica registrata come forza in acquisizione; la prossima deadline è il ${giornoDaOggi(4)}.`;
   }
   if (q.includes("v2") || q.includes("v3") || q.includes("cambi")) {
     return "Tra V2 e V3 il capitolo 2 è stato ridotto, una scena espositiva del capitolo 5 è stata eliminata e la motivazione della protagonista è diventata più esplicita. Kalamos segnala anche un possibile drift: la frammentazione della voce è diminuita rispetto al principio editoriale registrato in acquisizione.";

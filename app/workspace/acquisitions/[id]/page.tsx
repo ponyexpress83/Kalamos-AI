@@ -4,6 +4,9 @@ import OpportunityDecisionClient from "@/components/OpportunityDecisionClient";
 import { demoOpportunities } from "@/lib/demo-workspace";
 import { Panel, StatusPill, WorkspacePage } from "@/components/WorkspaceShell";
 
+/** Scadenze relative a oggi: rigenerazione oraria della pagina statica. */
+export const revalidate = 3600;
+
 export function generateStaticParams() { return demoOpportunities.map((o) => ({ id: o.id })); }
 
 export default function OpportunityPage({ params }: { params: { id: string } }) {

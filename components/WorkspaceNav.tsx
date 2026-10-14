@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Logo from "./Logo";
+import LogoutButton from "./LogoutButton";
 
 const links = [
   ["/workspace", "Scrivania", "⌂"],
@@ -16,13 +17,6 @@ const links = [
 
 export default function WorkspaceNav({ email }: { email: string }) {
   const pathname = usePathname();
-  const router = useRouter();
-
-  async function logout() {
-    await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/");
-    router.refresh();
-  }
 
   return (
     <aside className="flex h-full flex-col border-r border-white/8 bg-[#071426] text-white">
@@ -60,9 +54,7 @@ export default function WorkspaceNav({ email }: { email: string }) {
 
       <div className="border-t border-white/8 p-4">
         <div className="truncate text-xs text-white/38">{email}</div>
-        <button onClick={logout} className="mt-2 text-xs font-medium text-white/55 transition hover:text-white">
-          Esci dal workspace →
-        </button>
+        <LogoutButton className="mt-2 text-xs font-medium text-white/55 transition hover:text-white" />
       </div>
     </aside>
   );

@@ -25,6 +25,19 @@ export const raccomandazioneStyle: Record<
   },
 };
 
+/**
+ * Data a `giorni` da oggi, in italiano e sul fuso di Roma ("16 ottobre").
+ * Serve ai dati dimostrativi: una demo con scadenze già passate perde credito
+ * al primo sguardo. Le pagine statiche che la usano si rigenerano ogni ora.
+ */
+export function giornoDaOggi(
+  giorni: number,
+  opzioni: Intl.DateTimeFormatOptions = { day: "numeric", month: "long" },
+): string {
+  const d = new Date(Date.now() + giorni * 86_400_000);
+  return d.toLocaleDateString("it-IT", { timeZone: "Europe/Rome", ...opzioni });
+}
+
 /** Score 0-1 → percentuale intera. */
 export function pct(score: number): number {
   return Math.round(Math.max(0, Math.min(1, score)) * 100);

@@ -1,5 +1,6 @@
 import { readFileSync } from "fs";
 import path from "path";
+import { giornoDaOggi } from "./format";
 
 /**
  * Manoscritti demo precaricati.
@@ -28,6 +29,10 @@ export interface ManuscriptMeta {
   arrivato: string;
 }
 
+/** Arrivo relativo a oggi: una coda "in arrivo" datata agosto non è credibile in ottobre. */
+const arrivo = (giorniFa: number) =>
+  giornoDaOggi(-giorniFa, { weekday: "short", day: "numeric", month: "short" });
+
 export const manuscripts: ManuscriptMeta[] = [
   {
     id: "01_il-giardino-di-vetro",
@@ -37,7 +42,7 @@ export const manuscripts: ManuscriptMeta[] = [
     genere: "Narrativa letteraria",
     parole: 662,
     provenienza: "email · manoscritti@",
-    arrivato: "lun 3 ago",
+    arrivato: arrivo(1),
   },
   {
     id: "02_sette-giorni-a-portofino",
@@ -47,7 +52,7 @@ export const manuscripts: ManuscriptMeta[] = [
     genere: "Commercial / feel-good",
     parole: 586,
     provenienza: "email · manoscritti@",
-    arrivato: "lun 3 ago",
+    arrivato: arrivo(1),
   },
   {
     id: "03_le-ombre-del-passato",
@@ -57,7 +62,7 @@ export const manuscripts: ManuscriptMeta[] = [
     genere: "Thriller / giallo",
     parole: 501,
     provenienza: "portale proposte",
-    arrivato: "dom 2 ago",
+    arrivato: arrivo(2),
   },
   {
     id: "04_la-stagione-delle-locuste",
@@ -67,7 +72,7 @@ export const manuscripts: ManuscriptMeta[] = [
     genere: "Noir / narrativa civile",
     parole: 562,
     provenienza: "agenzia letteraria",
-    arrivato: "sab 1 ago",
+    arrivato: arrivo(3),
   },
 ];
 
