@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "schede": "node scripts/generate-schede.mjs",
-    "verifica-lancio": "node scripts/verifica-lancio.mjs"
+    "verifica-lancio": "node scripts/verifica-lancio.mjs",
+    "legale:docx": "for f in 10-legale/dpa-pilota 10-legale/nda-pilota; do pandoc \"$f.md\" -o \"$f.docx\"; done"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.105.0",

@@ -22,11 +22,14 @@ export const azienda: {
   /** Se diversa da emailContatto, per le richieste sui dati personali. */
   emailPrivacy: string | null;
 } = {
-  ragioneSociale: null,
+  // Dalla scheda camerale indicata dal fondatore il 16 ottobre 2026. P.IVA,
+  // sede e REA vanno copiati dalla visura: la pagina non era raggiungibile
+  // da dove è stato scritto questo file.
+  ragioneSociale: "Smart Content S.r.l.s.",
   partitaIva: null,
   sede: null,
   registroImprese: null,
-  emailContatto: null,
+  emailContatto: "info@kalamos.studio",
   emailPrivacy: null,
 };
 
