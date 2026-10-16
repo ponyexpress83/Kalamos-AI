@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import SchedaView from "@/components/SchedaView";
 import PrintButton from "@/components/PrintButton";
@@ -12,12 +12,13 @@ import CtaPilota from "@/components/CtaPilota";
  * Scheda di un manoscritto analizzato in questa sessione del browser
  * (coda batch in localStorage). Client-only per definizione.
  */
-export default function SchedaSessionePage({ params }: { params: { key: string } }) {
+export default function SchedaSessionePage({ params }: { params: Promise<{ key: string }> }) {
+  const { key } = use(params);
   const [entry, setEntry] = useState<SessionEntry | null | undefined>(undefined);
 
   useEffect(() => {
-    setEntry(getSessionEntry(params.key) ?? null);
-  }, [params.key]);
+    setEntry(getSessionEntry(key) ?? null);
+  }, [key]);
 
   if (entry === undefined) return null; // primo render lato client
 

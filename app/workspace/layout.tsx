@@ -19,8 +19,8 @@ const mobileLinks = [
  * Il cancello vero è in middleware.ts; questo controllo resta per avere
  * l'email della sessione e come seconda difesa.
  */
-export default function WorkspaceLayout({ children }: { children: React.ReactNode }) {
-  const session = verifySessionToken(cookies().get(SESSION_COOKIE)?.value);
+export default async function WorkspaceLayout({ children }: { children: React.ReactNode }) {
+  const session = verifySessionToken((await cookies()).get(SESSION_COOKIE)?.value);
   if (!session) redirect("/login");
 
   return (

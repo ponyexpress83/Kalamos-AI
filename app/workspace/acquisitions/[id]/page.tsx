@@ -9,8 +9,9 @@ export const revalidate = 3600;
 
 export function generateStaticParams() { return demoOpportunities.map((o) => ({ id: o.id })); }
 
-export default function OpportunityPage({ params }: { params: { id: string } }) {
-  const o = demoOpportunities.find((x) => x.id === params.id);
+export default async function OpportunityPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const o = demoOpportunities.find((x) => x.id === id);
   if (!o) notFound();
 
   return <WorkspacePage eyebrow="Acquisition case" title={o.title} description={`${o.author} · ${o.source} · ${o.sourceOrg}`} actions={<Link href="/workspace/acquisitions" className="rounded-xl border border-[#14213d]/10 bg-white px-4 py-2.5 text-sm font-medium text-inchiostro">← Acquisition Desk</Link>}>

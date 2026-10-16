@@ -11,9 +11,10 @@ export function generateStaticParams() {
   return manuscripts.map((m) => ({ id: m.id }));
 }
 
-export default function SchedaPage({ params }: { params: { id: string } }) {
-  const meta = getManuscriptMeta(params.id);
-  const text = getManuscriptText(params.id);
+export default async function SchedaPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const meta = getManuscriptMeta(id);
+  const text = getManuscriptText(id);
   if (!meta || !text) notFound();
 
   return (
