@@ -44,7 +44,7 @@ New Media & Advertising, Education
 
 ### 2.1 Problema (300-500 parole)
 
-I grandi publisher trade italiani ricevono tra 5.000 e 20.000 manoscritti all'anno, tra sottomissioni dirette, agenzie letterarie e scouting. Il processo standard di valutazione prevede che ogni manoscritto significativo venga sottoposto a una "scheda di lettura" — un documento strutturato di 2-5 pagine che sintetizza la trama, valuta la qualità della prosa, identifica il target demografico, propone titoli comparabili e raccomanda un'azione editoriale.
+I publisher trade italiani ricevono ogni anno molte più proposte di quante possano approfondire, fra sottomissioni dirette, agenzie letterarie e scouting. Il processo standard di valutazione prevede che ogni manoscritto significativo venga sottoposto a una "scheda di lettura" — un documento strutturato di 2-5 pagine che sintetizza la trama, valuta la qualità della prosa, identifica il target demografico, propone titoli comparabili e raccomanda un'azione editoriale.
 
 Una scheda di lettura fatta bene richiede 5-15 giorni di lavoro da parte di un lettore esperto e costa al publisher tra 150 e 500 euro tra retribuzione e overhead organizzativo. Anche un grande publisher può permettersi di produrre schede formali solo per una frazione dei manoscritti ricevuti — il resto viene rifiutato sulla base di sinossi, lettere di accompagnamento, o intuizione veloce di una segreteria editoriale.
 
@@ -64,7 +64,7 @@ Le soluzioni AI generaliste (ChatGPT, Claude usati ad hoc dall'editor) sono inad
 
 ### 2.2 Soluzione (300-500 parole)
 
-Kalamos AI è un SaaS B2B che produce schede di lettura editoriali strutturate in 15-30 minuti per manoscritto, calibrato sull'identità di una specifica collana o casa editrice. Il sistema è costruito su tre componenti tecniche:
+Kalamos AI è un SaaS B2B che produce schede di lettura editoriali strutturate in meno di un minuto per manoscritto (triage su estratto rappresentativo; sotto i 30 minuti sul testo integrale), calibrato sull'identità di una specifica collana o casa editrice. Il sistema è costruito su tre componenti tecniche:
 
 1. **Editorial analysis engine**: pipeline AI multi-step che processa il manoscritto integrale producendo sintesi strutturata (trama, personaggi, tematiche), valutazione qualitativa della prosa, identificazione del target demografico e di mercato, raccomandazione editoriale.
 
@@ -77,7 +77,7 @@ L'output di Kalamos è una scheda di lettura strutturata in formato compatibile 
 La differenza tecnica chiave rispetto a un ChatGPT generico non sta nella sofisticatezza del modello base (usiamo i migliori LLM disponibili: Claude, GPT-4 e successori) ma nell'**architettura specializzata**: prompt engineering verticale, retrieval su corpus di valutazioni editoriali, scoring calibrato per collana, output strutturato. Tutto questo richiede competenza editoriale autentica nel team che costruisce — non si replica leggendo qualche libro di publishing.
 
 **Il valore concreto per un publisher**:
-- Riduzione del tempo per scheda da 5-15 giorni a 15-30 minuti (~99% riduzione tempo)
+- Riduzione del tempo per scheda da giorni a meno di un minuto per il triage. La baseline di 5-15 giorni è una stima di settore [DA VERIFICARE sui dati reali dell'editore in Fase 1 del PoC]: il rapporto va misurato, non annunciato
 - Riduzione del costo per scheda da €150-500 a <€15 all-in (~95% riduzione costo)
 - Possibilità di valutare in modo informato 10× più manoscritti senza assumere lettori
 - Recupero di valore editoriale da manoscritti che sarebbero stati rifiutati senza lettura

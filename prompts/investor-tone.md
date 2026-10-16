@@ -78,7 +78,7 @@ QUANDO MI FORNISCI UN DRAFT:
 
 ❌ **Prima**: *"Negli ultimi anni l'industria editoriale ha visto una crescita esponenziale dei manoscritti ricevuti, generando una sfida significativa per le case editrici."*
 
-✅ **Dopo**: *"Un grande editore italiano riceve oltre 10.000 manoscritti l'anno e ne valuta seriamente meno del 15%. Il collo di bottiglia non è la qualità: è la capacità di lettura."*
+✅ **Dopo**: *"Le redazioni ricevono più proposte di quante possano approfondire con la sola lettura. Il collo di bottiglia non è la qualità: è la capacità di lettura."* — concreto ma non attaccabile. Un numero si mette solo quando lo abbiamo misurato noi.
 
 ### Esempio B — Value prop
 

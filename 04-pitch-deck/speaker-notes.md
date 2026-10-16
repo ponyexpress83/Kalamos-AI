@@ -20,7 +20,7 @@ Distinguere chiaramente: tool per scrivere vs infrastruttura per valutare. Citar
 Tre cose, in quest'ordine: (1) cosa fa, (2) come si integra, (3) cosa NON fa. Il "cosa non fa" è importante: "Non sostituiamo l'editor. Lo amplifichiamo." Mostrare l'output reale a schermo, non descriverlo a parole.
 
 ## Slide 5 — Defensibilità (45s)
-È il momento del team-as-moat. Nominare Ilaria Cesarini per nome, citare la pubblicazione Pequod. Non è autocelebrazione — è prova che il prodotto è stato disegnato da chi conosce il mestiere editoriale. *"Un developer puro non costruirebbe Kalamos. Un editor puro non saprebbe costruirlo."*
+È il momento del team come ragione di credibilità — non chiamarlo moat, un team non è un fossato. Nominare Ilaria Cesarini per nome, citare la pubblicazione Pequod. Non è autocelebrazione — è prova che il prodotto è stato disegnato da chi conosce il mestiere editoriale. *"Un developer puro non costruirebbe Kalamos. Un editor puro non saprebbe costruirlo."*
 
 ## Slide 6 — Demo (90s)
 **Provata 20 volte.** Se è video: 60 secondi, sottotitoli, no audio. Se è live: avere backup video pronto. Prima del demo, dire UNA frase: *"Vi mostro 60 secondi di output reale su un manoscritto inviato da un autore esordiente la settimana scorsa."* Dopo il demo, NIENTE: lasciare 2 secondi di silenzio. Il pubblico deve assorbire.

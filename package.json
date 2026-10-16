@@ -1,0 +1,31 @@
+{
+  "name": "kalamos-demo",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "schede": "node scripts/generate-schede.mjs",
+    "verifica-lancio": "node scripts/verifica-lancio.mjs",
+    "legale:docx": "for f in 10-legale/dpa-pilota 10-legale/nda-pilota; do pandoc \"$f.md\" -o \"$f.docx\"; done"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.105.0",
+    "@vercel/analytics": "^2.0.1",
+    "next": "^15.5.28",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13",
+    "typescript": "^5.5.4"
+  }
+}

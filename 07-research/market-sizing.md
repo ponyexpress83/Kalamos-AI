@@ -52,7 +52,7 @@ Estendendo a EU prossimo (Spagna, Francia, Germania, UK) con stessi tassi di pen
 | Metrica | Valore stimato | Fonte |
 |---|---|---|
 | Titoli pubblicati/anno Italia (varia, escluso scolastico) | ~70.000 | AIE Rapporto annuale |
-| Manoscritti ricevuti/anno top 5 editori | 8.000-15.000 ciascuno | Stima da conversazioni di settore |
+| Manoscritti ricevuti/anno top 5 editori | 8.000-15.000 ciascuno **[DA VERIFICARE]** | Stima da conversazioni di settore, mai confermata su un dato di un editore. Non usarla in un materiale esterno |
 | % manoscritti ricevuti effettivamente valutati | <15% | Stima da editor interviewati |
 | Costo medio lettura editoriale interna | €150-500/scheda | Stima da freelance rates |
 | Tempo medio scheda di lettura | 5-15 giorni | Stima |

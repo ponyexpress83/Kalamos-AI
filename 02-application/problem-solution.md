@@ -9,7 +9,7 @@
 
 I grandi editori trade italiani sono strutturalmente sotto-capacità nella valutazione dei manoscritti in entrata. Tre dati delineano il problema:
 
-1. **Volume**: 8.000–15.000 manoscritti/anno per un major. Capacità di valutazione effettiva: meno del 15% del flusso.
+1. **Volume**: più proposte di quante la redazione possa approfondire leggendole. Il rapporto esatto fra ricevuto e approfondito è il primo dato che il PoC misura sull'editore [DA VERIFICARE].
 2. **Tempo**: una scheda di lettura completa richiede 5–15 giorni di lavoro a un lettore senior. Il backlog cresce più velocemente di quanto si possa smaltire.
 3. **Costo**: €150–500 a scheda completa, prevalentemente in lavoro umano qualificato non scalabile.
 
@@ -27,7 +27,7 @@ L'output non è un riassunto generico. È:
 - **Struttura narrativa** (arco, ritmo, snodi).
 - **Voce e registro** (analisi stilistica, riferimenti possibili).
 - **Mercato di riferimento** (target, posizionamento, comparable).
-- **Fit-score di collana** (es. "Strade Blu: 71/100 — buona compatibilità, criticità su X"; "Einaudi Stile Libero: 43/100 — fuori perimetro").
+- **Fit-score di collana**: lo stesso romanzo letterario che nella demo ottiene 27% da Sperling & Kupfer (raccomandazione: scarta) ottiene 90% da Einaudi su Stile Libero (raccomandazione: prioritario). Il fit misura il rapporto fra testo e catalogo, non una qualità astratta.
 - **Verdetto operativo** (richiamare l'autore / chiedere revisioni / archiviare con feedback).
 
 L'editor riceve un input strutturato che gli permette di decidere in 20 minuti se vale la pena leggere il manoscritto in versione integrale. Il giudizio finale resta umano, sempre. Kalamos è l'imbuto che ribalta il rapporto segnale/rumore.

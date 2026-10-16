@@ -18,6 +18,15 @@ Negli ultimi 18 mesi diversi editori internazionali hanno pubblicato position pa
 
 ---
 
+### 1-bis. Lo slush pile si riempie di testi generati da IA (dato forte, verificato)
+Nel 2025 **Kobo Writing Life ha rifiutato ~45% dei libri autopubblicati ricevuti**, e il CEO Michael Tamblyn attribuisce oltre 8 rifiuti su 10 a opere "manifestamente generate da IA e di pessima qualità". Le grandi case editrici francesi dichiarano di rifiutare i libri scritti con IA, ma alcuni vengono comunque pubblicati.
+Fonti: [Livres Hebdo](https://www.livreshebdo.fr/article/intelligence-artificielle-en-2025-kobo-refuse-pres-dun-livre-autoedite-sur-deux) · [ActuaLitté](https://actualitte.com/article/132212/acteurs-numeriques/kobo-a-refuse-45-des-livres-autoedites-soumis-en-2025-pour-soupcons-d-ia).
+Dato correlato (segnalato, da verificare): >33% degli editori accetta l'IA per lavori amministrativi/di supporto [DA VERIFICARE].
+
+**Implicazione per Kalamos**: doppia. (a) Il triage diventa ancora più necessario: il volume dello slush cresce e la qualità media crolla. (b) Un **AI-check di provenienza** (segnale con confidenza, mai verdetto) come feature roadmap posiziona Kalamos dalla parte giusta: l'IA che difende il lavoro umano dagli abusi dell'IA — esattamente la linea "supporto, non generazione" che gli editori già accettano.
+
+---
+
 ### 2. Calo dei tempi di decisione editoriale come priorità
 Le case editrici stanno cercando di accorciare il "time to publication" sotto la pressione di:
 - Self-publishing che esce in 2 settimane

@@ -1,84 +1,138 @@
-# Demo Script — Kalamos AI per PLAI
+# Demo Script — Kalamos AI
 
-> Script da provare ad alta voce. Durata target: 75 secondi.
-> Versione live + versione video pre-registrata (backup).
-
----
-
-## Versione LIVE (75s)
-
-**[0:00–0:05] Setup**
-
-> "Vi mostro 60 secondi di Kalamos AI su un manoscritto reale inviato la settimana scorsa a un editore italiano di medio livello. Autore esordiente, romanzo, 95.000 parole."
-
-*(condividere schermo, browser già aperto su dashboard editor)*
-
-**[0:05–0:15] Dashboard**
-
-> "Questa è la vista che ha l'editor di mattina, aprendo la posta. Sette manoscritti nuovi nella notte. Senza Kalamos sarebbero sette giornate di lavoro distribuite sui suoi lettori. Apro il primo."
-
-*(click su titolo)*
-
-**[0:15–0:45] Scheda di lettura**
-
-> "Scheda generata in 22 minuti. Quattro sezioni: sinossi, struttura, voce, mercato. Ma il vero valore è qui in alto a destra."
-
-*(zoom sul box fit-score)*
-
-> "Fit-score 71 su 100 sulla collana Strade Blu. 43 su Stile Libero. L'editor sa, prima di leggere una sola riga, se questo manoscritto vale la sua attenzione per questa specifica collana — non in astratto."
-
-*(scroll giù alla sezione verdetto)*
-
-> "Verdetto operativo: 'Richiamare l'autore, chiedere il manoscritto integrale e tre capitoli aggiuntivi sulla seconda parte, che il sistema identifica come più debole.'"
-
-**[0:45–1:00] Punto finale**
-
-> "L'editor ha appena risparmiato cinque giorni di lavoro. Ma non ha delegato il giudizio: lo userà sui manoscritti che meritano davvero la sua attenzione. Questo è quello che facciamo a Kalamos."
-
-*(chiudere screen share)*
+> Script click-per-click sulla demo reale (`kalamos-ai.vercel.app`).
+> Durata: 4-5 minuti in versione piena, 90 secondi in versione compressa.
+> Provare ad alta voce almeno due volte prima della call.
 
 ---
 
-## Versione VIDEO pre-registrata (60s)
+## Prima di iniziare
 
-Identica struttura, con queste regole:
-
-- **Sottotitoli sempre attivi** (panel potrebbe non avere audio)
-- **No audio narrativo** o solo sottofondo strumentale leggerissimo
-- **Mouse cursor visibile e lento** (per essere seguibile)
-- **Zoom su elementi chiave** (fit-score, verdetto)
-- **No transizioni fancy** — taglio secco, professionale
-
-Esportare in: MP4 H.264, 1920×1080, 30fps, max 50MB.
+- [ ] `node scripts/generate-schede.mjs` eseguito (server attivo + `ANTHROPIC_API_KEY`): senza, la coda mostra stime euristiche etichettate, non inferenza reale.
+- [ ] Tab 1 aperto su `kalamos-ai.vercel.app/redazione?casa=sperling-kupfer`
+- [ ] Tab 2 aperto su `kalamos-ai.vercel.app/redazione?casa=einaudi` — il cambio di redazione è il momento decisivo, non cercarlo dal vivo
+- [ ] Un `.txt` sul desktop per l'analisi in diretta — **non un PDF** (vedi sotto)
+- [ ] Sessione del browser svuotata (link "svuota" in Redazione), così la card KPI dice 4 e non un numero gonfiato dalle prove
+- [ ] Se mostri il batch, i file devono avere nomi leggibili: il titolo dedotto compare nelle schede, ma la barra di avanzamento mostra il nome del file
+- [ ] Screenshot delle tre schermate nel telefono, come rete di sicurezza
 
 ---
 
-## Leave-behind e backup statico
+## Versione piena (4-5 minuti)
 
-Se la demo live o il video saltano (problemi tecnici, no audio, no rete), usare le **schede di esempio** in `schede-esempio/` come prova tangibile da mettere sul tavolo. Sono opere di pubblico dominio nel formato di output reale e mostrano il differenziatore in modo immediato: *La coscienza di Zeno* riceve "Rigetta" su Sperling e "Acquisizione forte" su una collana letteraria — prova visiva che il fit-score misura il rapporto testo–collana, non una qualità astratta. Stamparne due e portarle sempre.
+### [0:00–0:30] Apertura — parla del gesto, non del prodotto
+
+*(schermo non ancora condiviso)*
+
+> "Un editor di Sperling apre la posta il lunedì e trova quaranta manoscritti. Sa già che trentotto non sono per la sua lista, ma per saperlo davvero deve leggerli, e leggere costa giorni-persona di lettori senior. Il risultato è che l'autore aspetta mesi e ogni tanto il manoscritto giusto si perde nel rumore.
+>
+> Vi mostro la scrivania di quell'editor con Kalamos acceso."
+
+*(condividi lo schermo — Tab 1)*
+
+### [0:30–1:30] La scrivania di redazione
+
+> "Questa è **Sperling & Kupfer**. Non è la vista di un autore che carica il suo romanzo: è la coda dei manoscritti in arrivo, con la provenienza — email, portale proposte, agenzia — e la data. Kalamos li ha già letti tutti."
+
+*(indica una riga, senza cliccare)*
+
+> "Per ciascuno propone una collana **del catalogo di Sperling** e una percentuale di fit. In testa c'è *Sette giorni a Portofino*, feel-good, 73% su **Pandora**. In fondo un romanzo letterario al 27%, con raccomandazione di scarto."
+
+*(pausa di due secondi — lascia leggere la tabella)*
+
+### [1:30–2:30] Il ribaltamento — il momento che devono ricordare
+
+*(passa al Tab 2)*
+
+> "Adesso cambio redazione. Stessi quattro manoscritti, stessa giornata. Questa è **Einaudi**."
+
+*(silenzio per due secondi, lascia che leggano)*
+
+> "Il romanzo letterario che da Sperling era un 27% da scartare, qui è **90%, prioritario, Einaudi Stile Libero**. Il noir passa da 31 a **95%**. E il feel-good che a Sperling era in testa scende a 35, e per giunta cambia collana: non finisce in Stile Libero ma in Supercoralli.
+>
+> Il fit non misura se un libro è bello. Misura il rapporto fra quel testo e quel catalogo. È la differenza fra un giudizio letterario e una decisione editoriale."
+
+*(se hai tempo, aggiungi)*
+
+> "Un solo manoscritto va male in entrambe le case: il giallo pieno di cliché. Prosa debole significa scarta ovunque. Il sistema distingue *non è per voi* da *non è buono*, e sono due informazioni diverse per un editor."
+
+### [2:30–3:45] La scheda — il giudizio verificabile
+
+*(clicca su una riga — apri la scheda)*
+
+> "Questa è la scheda di lettura: sintesi, voce e struttura, voto di prosa, target, comparabili, punti di forza e criticità."
+
+*(scorri fino a **Passaggio a sostegno**)*
+
+> ⚠️ **Solo su testo incollato o `.txt`.** Sui PDF l'app non estrae il testo — lo legge il modello — quindi il controllo non può confermare la citazione e a schermo compare un messaggio che lo spiega, non la conferma verde. Se dici "il sistema verifica" mentre lo schermo dice altro, perdi il momento migliore.
+
+> "E qui c'è la parte a cui tengo di più. Ogni giudizio è ancorato a una citazione **letterale** del manoscritto, e il sistema verifica che quella frase esista davvero nel testo caricato. La collana proposta viene confrontata con il catalogo reale dell'editore: se il modello se ne inventa una, il codice la scarta prima che arrivi all'editor.
+>
+> Questo pezzo l'abbiamo costruito dopo un errore vero: in una versione precedente il modello aveva attribuito a un editore una collana che non esiste. In redazione basta quello per chiudere la conversazione. Nessun prompt lo impedisce in modo affidabile — una lista di controllo sì."
+
+### [3:45–4:30] Analisi dal vivo (se la rete regge)
+
+> Un solo manoscritto, circa trenta secondi. **Mai il batch dal vivo**: i file girano in sequenza e tre `.txt` sono 1'42" di schermo fermo.
+
+*(torna in redazione → "+ Aggiungi manoscritto" → carica il `.txt`)*
+
+> "Faccio l'analisi adesso, così vedete che non è un video. Trenta secondi circa."
+
+*(mentre gira)*
+
+> "In alto la redazione mostra i KPI misurati: tempo per scheda e costo API per scheda, calcolato sui token effettivi. Siamo intorno a tre-sei centesimi. Il riferimento di settore per una scheda professionale è 150-500 euro e 5-15 giorni — è una stima di settore, da validare sui dati reali dell'editore, ed è il primo numero che il PoC deve misurare davvero."
+
+### [4:30–5:00] Chiusura
+
+> "Kalamos non scrive il libro e non decide cosa pubblicare. Legge prima dell'editor e gli consegna la coda ordinata, con il perché e la citazione a sostegno. Toglie l'attesa, non il giudizio."
+
+*(chiudi la condivisione)*
 
 ---
 
-## Cose da NON fare durante il demo
+## Versione compressa (90 secondi)
 
-- ❌ Mostrare il backend, la console, il codice
-- ❌ Aprire DevTools per "guardare cosa fa l'API"
-- ❌ Dire "ovviamente questo è ancora MVP, ci sono dei bug..."
-- ❌ Fare scroll velocissimi: lasciare 2-3 secondi su ogni vista importante
-- ❌ Demo di più di un manoscritto (uno solo, fatto bene)
+Se hai poco tempo, tieni solo questo:
 
-## Cose da preparare PRIMA
+1. **[0:00–0:20]** L'editor, i quaranta manoscritti del lunedì, i giorni-persona.
+2. **[0:20–0:50]** Tab Sperling: la coda ordinata con collana e fit.
+3. **[0:50–1:20]** Tab Einaudi: il ribaltamento. *"Lo stesso testo, due redazioni, due destini opposti."*
+4. **[1:20–1:30]** *"Il giudizio è verificabile: ogni scheda cita il testo, e la collana è controllata contro il catalogo reale."*
 
-- [ ] Browser bookmark direttamente sulla dashboard
-- [ ] Manoscritto di demo già caricato e processato (no live processing!)
-- [ ] Backup: stesso flusso in video MP4 + screenshot statici come ultimo backup
-- [ ] Verificare proiezione/screen sharing 10 minuti prima
-- [ ] Internet stabile + hotspot di backup
+Il ribaltamento della coda è l'unica cosa che devono ricordare. Tutto il resto è dettaglio.
 
-## Manoscritto di demo: criteri di scelta
+---
 
-- **Reale** (anonimizzato, consenso dell'autore)
-- **Mediamente buono** (fit-score né 95 né 10 su 100 — il valore di Kalamos si vede nelle sfumature)
-- **Italiano**
-- **Lunghezza 70-100K parole** (rappresentativo di un romanzo trade)
-- **Genere**: scegliere un genere coerente con la collana target Mondadori (Sperling/Strade Blu).
+## Numeri della demo — verificati il 5 agosto 2026
+
+| Manoscritto | Sperling & Kupfer | Einaudi | Il Battello a Vapore | Ladolfi |
+|---|---|---|---|---|
+| *Il giardino di vetro* — letterario | 27% Scarta | **90% Prioritario** (Stile Libero) | 53% Seconda lettura (Azzurra) | 25% Scarta |
+| *La stagione delle locuste* — noir civile | 31% Scarta | **95% Prioritario** (Stile Libero) | 37% Seconda lettura (Arancio) | 12% Scarta |
+| *Sette giorni a Portofino* — feel-good | **73% Seconda lettura** (Pandora) | 35% Seconda lettura (Supercoralli) | 44% Seconda lettura (Azzurra) | 8% Scarta |
+| *Le ombre del passato* — giallo con cliché | 42% Scarta | 32% Scarta | 22% Scarta | 8% Scarta |
+
+> Verificati il 5 agosto 2026 sulla demo online: 16 celle su 16 coincidono.
+> Valori della modalità offline etichettata (senza chiave API). Con le schede reali generate, i numeri cambiano: **rileggi la tabella dopo aver lanciato `generate-schede.mjs`** e non citare a memoria quelli vecchi.
+
+Nota per te: su Sperling tutti e quattro finiscono su *Pandora*, perché le altre collane sono Saggi, Economia e Varia. Non è un difetto — su Sperling il segnale è la percentuale, non la varietà di collana. La varietà si vede su Einaudi e sul Battello.
+
+---
+
+## Cose da NON fare durante la demo
+
+- ❌ Mostrare console, codice, DevTools
+- ❌ Dire "è ancora un MVP, ci sono dei bug"
+- ❌ Scorrere veloce: due secondi fermi su ogni vista che conta
+- ❌ Aprire più di due schede di lettura (una fatta bene basta)
+- ❌ Chiamare "clienti" gli editori nel selettore: sono cataloghi pubblici modellati, non partner
+- ❌ Mostrare Ladolfi come momento: sono quattro "Scarta" su quattro, tutti sulla stessa collana. Vale due secondi come controprova ("un testo in prosa non è per una casa di poesia"), non di più
+- ❌ Presentare le stime offline come inferenza AI: sono etichettate, e l'etichetta è un punto a favore, non da nascondere
+
+---
+
+## Se la demo salta
+
+1. **Screenshot nel telefono** — le tre schermate: coda Sperling, coda Einaudi, scheda con il passaggio citato.
+2. **La tabella qui sopra**, letta ad alta voce: il ribaltamento si capisce anche senza schermo.
+3. Non scusarti più di una volta. *"Ve la mando appena chiudiamo"* e vai avanti col discorso.

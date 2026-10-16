@@ -1,0 +1,78 @@
+"use client";
+
+import type { Ambito, Gruppo, Profilo } from "@/config/publishers";
+
+export interface PublisherOption {
+  id: string;
+  nome: string;
+  ambito: Ambito;
+  gruppo: Gruppo;
+  defaultOn?: boolean;
+  collane: { nome: string; profilo: Profilo }[];
+}
+
+const ORDER: Ambito[] = [
+  "Narrativa",
+  "Bambini e ragazzi",
+  "Fantasy e fantascienza",
+  "Poesia",
+];
+
+export default function PublisherChips({
+  publishers,
+  selected,
+  onToggle,
+}: {
+  publishers: PublisherOption[];
+  selected: string[];
+  onToggle: (id: string) => void;
+}) {
+  const gruppi = ORDER.map((ambito) => ({
+    ambito,
+    voci: publishers.filter((p) => p.ambito === ambito),
+  })).filter((g) => g.voci.length > 0);
+
+  return (
+    <div className="space-y-4">
+      {gruppi.map((g) => (
+        <div key={g.ambito}>
+          <div className="mb-1.5 font-sans text-[11px] font-semibold uppercase tracking-wider text-stone-400">
+            {g.ambito}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {g.voci.map((p) => {
+              const on = selected.includes(p.id);
+              return (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => onToggle(p.id)}
+                  aria-pressed={on}
+                  title={`${p.gruppo} · ${p.collane.length} collane`}
+                  className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 font-sans text-sm transition ${
+                    on
+                      ? "border-inchiostro bg-inchiostro text-carta"
+                      : "border-carta-scura bg-white/60 text-stone-600 hover:border-inchiostro/40"
+                  }`}
+                >
+                  {p.nome}
+                  {p.gruppo === "Gruppo Mondadori" && (
+                    <span
+                      className={`rounded-full border px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${
+                        on
+                          ? "border-carta/40 text-carta/90"
+                          : "border-accento/40 text-accento"
+                      }`}
+                    >
+                      Mondadori
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}

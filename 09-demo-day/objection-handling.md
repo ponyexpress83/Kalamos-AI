@@ -10,7 +10,7 @@
 **Tentazione**: difendersi con dettagli tecnici, suonare aggressivi.
 
 **Risposta giusta**: 
-> "Capisco la domanda — è quella che mi farei al posto vostro. La differenza concreta sono tre cose: (1) il vector profile di collana, che ChatGPT non ha, (2) il loop di calibrazione editor, che richiede un prodotto e non un prompt, (3) la conformità enterprise — IP, GDPR, isolamento dati — che ChatGPT non fornisce nativamente. Posso mostrarvi il pezzo specifico di pipeline che lo evidenzia se vi è utile."
+> "Capisco la domanda — è quella che mi farei al posto vostro. La differenza concreta sono quattro cose: (1) il catalogo modellato collana per collana, che l'editor non deve riscrivere nel prompt ogni volta; (2) i controlli che impediscono l'invenzione — la collana proposta è verificata contro il catalogo reale, la citazione contro il testo caricato, e con ChatGPT una collana inesistente arriva all'editor senza che nessuno se ne accorga; (3) il loop di calibrazione, che richiede un prodotto e non un prompt; (4) la conformità enterprise — IP, GDPR, isolamento dati. Se vi è utile ve lo mostro adesso sulla demo: due redazioni diverse, stesso manoscritto, verdetti opposti."
 
 *Tono: pacato, fattuale, con offerta di approfondimento.*
 
@@ -30,7 +30,7 @@
 ## Obiezione 3: "Sono i lettori esterni che gli editori non vogliono pagare di più. Voi siete un costo aggiuntivo, non un risparmio"
 
 **Risposta**:
-> "Vero che i lettori esterni sono già un costo basso unitario. Ma il problema non è la spesa: è la capacità. Un editore che oggi ne valuta 1.500/anno potrebbe valutarne 8.000 con Kalamos — lo stesso budget assoluto, dieci volte la copertura. Stiamo vendendo accesso a un pool di manoscritti che oggi viene chiuso senza essere letto. Quello sì che vale il prezzo."
+> "Vero che i lettori esterni sono già un costo basso unitario. Ma il problema non è la spesa: è la capacità. Un editore che oggi ne approfondisce una parte può portare il triage su tutto il flusso, a parità di budget. Di quanto, esattamente, è quello che il PoC deve misurare da voi: non ho un moltiplicatore da darvi oggi e non voglio inventarlo. Stiamo vendendo accesso a un pool di manoscritti che oggi viene chiuso senza essere letto. Quello sì che vale il prezzo."
 
 ---
 
